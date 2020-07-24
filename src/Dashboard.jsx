@@ -10,8 +10,13 @@ import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
 
-class IssueList extends React.Component {
+class Dashboard extends React.Component {
   render() {
-    "placeholder for Dashboard"
+    return(
+    "Placeholder for Dashboard!:)"
+    );
   }
 }
+
+
+export default Dashboard;

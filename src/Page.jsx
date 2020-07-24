@@ -23,7 +23,7 @@ function NavBar({ user, onUserChange }) {
         <LinkContainer exact to="/">
           <NavItem>Home</NavItem>
         </LinkContainer>
-        <LinkContainer to="/issues">
+        <LinkContainer to="/dashboard">
           <NavItem>Dashboard</NavItem>
         </LinkContainer>
         <LinkContainer to="/issues">
@@ -62,6 +62,7 @@ function Footer() {
       <p className="text-center">
         Full source code available at this
         {' '}
+        {/*TO DO: Change Repo address*/}
         <a href="https://github.com/vasansr/pro-mern-stack-2">
           GitHub repository
         </a>
