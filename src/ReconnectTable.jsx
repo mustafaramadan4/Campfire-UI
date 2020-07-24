@@ -27,16 +27,16 @@ class IssueRowPlain extends React.Component {
     //   <Tooltip id="delete-tooltip" placement="top">Delete Issue</Tooltip>
     // );
 
-    function onClose(e) {
-      e.preventDefault();
-      closeIssue(index);
-    }
+    // function onClose(e) {
+    //   e.preventDefault();
+    //   closeIssue(index);
+    // }
 
 
-    function onDelete(e) {
-      e.preventDefault();
-      deleteIssue(index);
-    }
+    // function onDelete(e) {
+    //   e.preventDefault();
+    //   deleteIssue(index);
+    // }
 
     const tableRow = (
       <tr>
