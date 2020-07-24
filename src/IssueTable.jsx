@@ -14,7 +14,7 @@ class IssueRowPlain extends React.Component {
     //   issue, location: { search }, closeIssue, deleteIssue, index,
     // } = this.props;
     const {
-      contact, location: { search }, deactivateContact, deleteIssue, index,
+      contact, location: { search }, deactivateContact, deleteContact, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
@@ -38,7 +38,7 @@ class IssueRowPlain extends React.Component {
 
     function onDelete(e) {
       e.preventDefault();
-      deleteIssue(index);
+      deleteContact(index);
     }
 
     const tableRow = (
@@ -95,13 +95,13 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ contacts, deactivateContact, deleteIssue }) {
+export default function IssueTable({ contacts, deactivateContact, deleteContact }) {
   const issueRows = contacts.map((contact, index) => (
     <IssueRow
       key={contact.id}
       contact={contact}
       deactivateContact={deactivateContact}
-      deleteIssue={deleteIssue}
+      deleteContact={deleteContact}
       index={index}
     />
   ));

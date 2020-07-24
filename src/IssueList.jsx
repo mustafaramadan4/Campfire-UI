@@ -111,7 +111,7 @@ class IssueList extends React.Component {
     };
     // this.closeIssue = this.closeIssue.bind(this);
     this.deactivateContact = this.deactivateContact.bind(this);
-    this.deleteIssue = this.deleteIssue.bind(this);
+    this.deleteContact = this.deleteContact.bind(this);
   }
 
   componentDidMount() {
@@ -221,6 +221,52 @@ class IssueList extends React.Component {
     }
   }
 
+  // Implemented Delete Contact
+  async deleteContact(index) {
+    const query = `mutation contactDelete($id: Int!) {
+      contactDelete(id: $id)
+    }`;
+    const { contacts } = this.state;
+    const { location: { pathname, search }, history } = this.props;
+    const { showSuccess, showError } = this.props;
+    const { id } = contacts[index];
+    const data = await graphQLFetch(query, { id }, showError);
+    if (data && data.contactDelete) {
+      this.setState((prevState) => {
+        const newList = [...prevState.contacts];
+        if (pathname === `/issues/${id}`) {
+          history.push({ pathname: '/issues', search });
+        }
+        newList.splice(index, 1);
+        return { contacts: newList };
+      });
+      const undoMessage = (
+        <span>
+          {`Deleted contact ${id} successfully.`}
+          <Button bsStyle="link" onClick={() => this.restoreContact(id)}>
+            UNDO
+          </Button>
+        </span>
+      );
+      showSuccess(undoMessage);
+    } else {
+      this.loadData();
+    }
+  }
+
+  // Implemented Restore Contact
+  async restoreContact(id) {
+    const query = `mutation contactRestore($id: Int!) {
+      contactRestore(id: $id)
+    }`;
+    const { showSuccess, showError } = this.props;
+    const data = await graphQLFetch(query, { id }, showError);
+    if (data) {
+      showSuccess(`Contact ${id} restored successfully.`);
+      this.loadData();
+    }
+  }
+
   async restoreIssue(id) {
     const query = `mutation issueRestore($id: Int!) {
       issueRestore(id: $id)
@@ -271,7 +317,7 @@ class IssueList extends React.Component {
         <IssueTable
           contacts={contacts}
           deactivateContact={this.deactivateContact}
-          deleteIssue={this.deleteIssue}
+          deleteContact={this.deleteContact}
         />
         <IssueDetail issue={selectedContact} />
         <Pagination>
