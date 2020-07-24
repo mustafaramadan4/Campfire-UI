@@ -5,7 +5,7 @@ export default function IssueDetail({ issue }) {
     return (
       <div>
         <h3>Description</h3>
-        <pre>{issue.description}</pre>
+        <pre>{issue.notes}</pre>
       </div>
     );
   }

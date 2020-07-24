@@ -40,16 +40,23 @@ class IssueRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
-        <td>{issue.id}</td>
+        {/* <td>{issue.id}</td>
         <td>{issue.status}</td>
         <td>{issue.owner}</td>
         <td>{issue.created.toDateString()}</td>
         <td>{issue.effort}</td>
         <td>{issue.due ? issue.due.toDateString() : ''}</td>
+        <td>{issue.title}</td> */}
+        <td>{issue.name}</td>
+        <td>{issue.company}</td>
         <td>{issue.title}</td>
+        <td>{issue.frequency}</td>
+        <td>{issue.email}</td>
+        <td>{issue.Linkedin}</td>
+        <td>{issue.priority}</td>
         {/* Added Placeholders for  Familiarity and Context */}
-        <td>PlaceHolder</td>
-        <td>PlaceHolder</td>
+        <td>{issue.familiarity}</td>
+        <td>{issue.context}</td>
         <td>
           <LinkContainer to={`/edit/${issue.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>

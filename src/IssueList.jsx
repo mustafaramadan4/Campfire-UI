@@ -74,29 +74,48 @@ class IssueList extends React.Component {
       }
     }`;
 
-    const data = await graphQLFetch(query, vars, showError);
+    const contactListQuery = `query contactList(
+      $activeStatus: Boolean
+      $page: Int
+      $hasSelection: Boolean!
+      $selectedId: Int!
+      ) {
+      contactList(page:$page, activeStatus: $activeStatus) {
+        contacts {
+          id name company title contactFrequency email
+          phone LinkedIn priority familiarity contextSpace
+          activeStatus}
+        pages
+      }
+      contact(id: $selectedId) @include (if : $hasSelection) {
+        id notes
+      }
+    }`;
+
+    // modified to contact list query
+    const data = await graphQLFetch(contactListQuery, vars, showError);
     return data;
   }
 
   constructor() {
     super();
-    const initialData = store.initialData || { issueList: {} };
+    const initialData = store.initialData || { contactList: {} };
     const {
-      issueList: { issues, pages }, issue: selectedIssue,
+      contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
     delete store.initialData;
     this.state = {
-      issues,
-      selectedIssue,
+      contacts,
+      selectedContact,
       pages,
     };
-    this.closeIssue = this.closeIssue.bind(this);
+    // this.closeIssue = this.closeIssue.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
   }
 
   componentDidMount() {
-    const { issues } = this.state;
-    if (issues == null) this.loadData();
+    const { contacts } = this.state;
+    if (contacts == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -115,9 +134,12 @@ class IssueList extends React.Component {
     const data = await IssueList.fetchData(match, search, showError);
     if (data) {
       this.setState({
-        issues: data.issueList.issues,
-        selectedIssue: data.issue,
-        pages: data.issueList.pages,
+        // changed to contactList query and contacts
+        contacts: data.contactList.contacts,
+        // Load notes if selecting the Contact
+        selectedContact: data.contact,
+        // changed to contactList query and contacts
+        pages: data.contactList.pages,
       });
     }
   }
@@ -189,10 +211,10 @@ class IssueList extends React.Component {
   }
 
   render() {
-    const { issues } = this.state;
-    if (issues == null) return null;
+    const { contacts } = this.state;
+    if (contacts == null) return null;
 
-    const { selectedIssue, pages } = this.state;
+    const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
     const params = new URLSearchParams(search);
@@ -224,11 +246,11 @@ class IssueList extends React.Component {
           </Panel.Body>
         </Panel>
         <IssueTable
-          issues={issues}
+          issues={contacts}
           closeIssue={this.closeIssue}
           deleteIssue={this.deleteIssue}
         />
-        <IssueDetail issue={selectedIssue} />
+        <IssueDetail issue={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
