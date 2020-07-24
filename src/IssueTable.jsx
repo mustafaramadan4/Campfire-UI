@@ -10,26 +10,29 @@ import UserContext from './UserContext.js';
 // eslint-disable-next-line react/prefer-stateless-function
 class IssueRowPlain extends React.Component {
   render() {
+    // const {
+    //   issue, location: { search }, closeIssue, deleteIssue, index,
+    // } = this.props;
     const {
-      issue, location: { search }, closeIssue, deleteIssue, index,
+      contact, location: { search }, deactivateContact, deleteIssue, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
 
-    const selectLocation = { pathname: `/issues/${issue.id}`, search };
+    const selectLocation = { pathname: `/issues/${contact.id}`, search };
     const editTooltip = (
-      <Tooltip id="close-tooltip" placement="top">Edit Issue</Tooltip>
+      <Tooltip id="close-tooltip" placement="top">Edit Contact</Tooltip>
     );
     const closeTooltip = (
-      <Tooltip id="close-tooltip" placement="top">Close Issue</Tooltip>
+      <Tooltip id="close-tooltip" placement="top">Deactivate Contact</Tooltip>
     );
     const deleteTooltip = (
-      <Tooltip id="delete-tooltip" placement="top">Delete Issue</Tooltip>
+      <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
 
-    function onClose(e) {
+    function onDeactivate(e) {
       e.preventDefault();
-      closeIssue(index);
+      deactivateContact(index);
     }
 
 
@@ -47,18 +50,18 @@ class IssueRowPlain extends React.Component {
         <td>{issue.effort}</td>
         <td>{issue.due ? issue.due.toDateString() : ''}</td>
         <td>{issue.title}</td> */}
-        <td>{issue.name}</td>
-        <td>{issue.company}</td>
-        <td>{issue.title}</td>
-        <td>{issue.frequency}</td>
-        <td>{issue.email}</td>
-        <td>{issue.Linkedin}</td>
-        <td>{issue.priority}</td>
+        <td>{contact.name}</td>
+        <td>{contact.company}</td>
+        <td>{contact.title}</td>
+        <td>{contact.frequency}</td>
+        <td>{contact.email}</td>
+        <td>{contact.Linkedin}</td>
+        <td>{contact.priority}</td>
         {/* Added Placeholders for  Familiarity and Context */}
-        <td>{issue.familiarity}</td>
-        <td>{issue.context}</td>
+        <td>{contact.familiarity}</td>
+        <td>{contact.context}</td>
         <td>
-          <LinkContainer to={`/edit/${issue.id}`}>
+          <LinkContainer to={`/edit/${contact.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
               <Button bsSize="xsmall">
                 <Glyphicon glyph="edit" />
@@ -67,8 +70,8 @@ class IssueRowPlain extends React.Component {
           </LinkContainer>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
-            <Button disabled={disabled} bsSize="xsmall" onClick={onClose}>
-              <Glyphicon glyph="remove" />
+            <Button disabled={disabled} bsSize="xsmall" onClick={onDeactivate}>
+              <Glyphicon glyph="off" />
             </Button>
           </OverlayTrigger>
           {' '}
@@ -92,12 +95,12 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ issues, closeIssue, deleteIssue }) {
-  const issueRows = issues.map((issue, index) => (
+export default function IssueTable({ contacts, deactivateContact, deleteIssue }) {
+  const issueRows = contacts.map((contact, index) => (
     <IssueRow
-      key={issue.id}
-      issue={issue}
-      closeIssue={closeIssue}
+      key={contact.id}
+      contact={contact}
+      deactivateContact={deactivateContact}
       deleteIssue={deleteIssue}
       index={index}
     />

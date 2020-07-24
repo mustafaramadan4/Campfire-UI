@@ -110,6 +110,7 @@ class IssueList extends React.Component {
       pages,
     };
     // this.closeIssue = this.closeIssue.bind(this);
+    this.deactivateContact = this.deactivateContact.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
   }
 
@@ -160,6 +161,28 @@ class IssueList extends React.Component {
         const newList = [...prevState.issues];
         newList[index] = data.issueUpdate;
         return { issues: newList };
+      });
+    } else {
+      this.loadData();
+    }
+  }
+
+  // Implemented OFF status TODO: Implement On/Off in the same button?
+  async deactivateContact(index) {
+    const query = `mutation contactDeactivate($id: Int!) {
+      contactUpdate(id: $id, changes: { activeStatus: false }) {
+        id name activeStatus
+      }
+    }`;
+    const { contacts } = this.state;
+    const { showError } = this.props;
+    const data = await graphQLFetch(query, { id: contacts[index].id },
+      showError);
+    if (data) {
+      this.setState((prevState) => {
+        const newList = [...prevState.contacts];
+        newList[index] = data.contactUpdate;
+        return { contacts: newList };
       });
     } else {
       this.loadData();
@@ -246,8 +269,8 @@ class IssueList extends React.Component {
           </Panel.Body>
         </Panel>
         <IssueTable
-          issues={contacts}
-          closeIssue={this.closeIssue}
+          contacts={contacts}
+          deactivateContact={this.deactivateContact}
           deleteIssue={this.deleteIssue}
         />
         <IssueDetail issue={selectedContact} />
