@@ -56,7 +56,7 @@ class IssueRowPlain extends React.Component {
         <td>{issue.priority}</td>
         {/* Added Placeholders for  Familiarity and Context */}
         {/* <td>{issue.familiarity}</td> */}
-        {/* <td>{issue.context}</td> */}
+        <td>{issue.context}</td>
         <td>
           <LinkContainer to={`/edit/${issue.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
@@ -97,8 +97,8 @@ export default function IssueTable({ issues, closeIssue, deleteIssue }) {
     <IssueRow
       key={issue.id}
       issue={issue}
-      closeIssue={closeIssue}
-      deleteIssue={deleteIssue}
+      // closeIssue={closeIssue}
+      // deleteIssue={deleteIssue}
       index={index}
     />
   ));
@@ -123,8 +123,8 @@ export default function IssueTable({ issues, closeIssue, deleteIssue }) {
           <th>Email</th>
           <th>Linkedin</th> */}
           <th>Priority</th>
-          {/* <th>Familiarity</th>
-          <th>Context</th> */}
+          {/* <th>Familiarity</th>  */}
+          <th>Context</th>
           <th>Contact</th>
         </tr>
       </thead>
