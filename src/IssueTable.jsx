@@ -47,6 +47,9 @@ class IssueRowPlain extends React.Component {
         <td>{issue.effort}</td>
         <td>{issue.due ? issue.due.toDateString() : ''}</td>
         <td>{issue.title}</td>
+        {/* Added Placeholders for  Familiarity and Context */}
+        <td>PlaceHolder</td>
+        <td>PlaceHolder</td>
         <td>
           <LinkContainer to={`/edit/${issue.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
@@ -97,14 +100,25 @@ export default function IssueTable({ issues, closeIssue, deleteIssue }) {
     <Table bordered condensed hover responsive>
       <thead>
         <tr>
-          <th>ID</th>
+          {/* <th>ID</th>
           <th>Status</th>
           <th>Owner</th>
           <th>Created</th>
           <th>Effort</th>
           <th>Due Date</th>
           <th>Title</th>
-          <th>Action</th>
+          <th>Action</th> */}
+          {/* Modified for Campfire Contact object */}
+          <th>Name</th>
+          <th>Company</th>
+          <th>Title</th>
+          <th>Frequency</th>
+          <th>Email</th>
+          <th>Linkedin</th>
+          <th>Priority</th>
+          <th>Familiarity</th>
+          <th>Context</th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
