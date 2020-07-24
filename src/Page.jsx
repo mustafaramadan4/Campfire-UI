@@ -17,17 +17,14 @@ function NavBar({ user, onUserChange }) {
   return (
     <Navbar fluid>
       <Navbar.Header>
-        <Navbar.Brand>CampFire</Navbar.Brand>
+        <Navbar.Brand>Issue Tracker</Navbar.Brand>
       </Navbar.Header>
       <Nav>
         <LinkContainer exact to="/">
           <NavItem>Home</NavItem>
         </LinkContainer>
         <LinkContainer to="/issues">
-          <NavItem>Dashboard</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/issues">
-          <NavItem>Contacts</NavItem>
+          <NavItem>Issue List</NavItem>
         </LinkContainer>
         <LinkContainer to="/report">
           <NavItem>Report</NavItem>
