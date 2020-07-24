@@ -6,7 +6,8 @@ import routes from './routes.js';
 export default function Contents() {
   return (
     <Switch>
-      <Redirect exact from="/" to="/issues" />
+      {/* Changed redirect to "/dashboard" for now, maybe change to "/login" later*/}
+      <Redirect exact from="/" to="/dashboard" />
       {routes.map(attrs => <Route {...attrs} key={attrs.path} />)}
     </Switch>
   );
