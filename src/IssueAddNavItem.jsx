@@ -39,21 +39,27 @@ class IssueAddNavItem extends React.Component {
       Linkedin: form.linkedin.value,
       // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
-    /* TO DO: add form needs to handle submit, the query string would be the mutation api call to contactAdd
-    * it also needs to require at least one field out of the email, phone, and linkedin, which pedro did implement in issue.js i believe
-    * think it would automatically get resolved if the correct contactAdd is called as that function has validateContact
+    /* TO DO: the add form needs to handle submit, the query string has been updated with the mutation api call to contactAdd. It is just not adding to the DB upon submit click.
     */
-    const query = `mutation issueAdd($issue: IssueInputs!) {
-      issueAdd(issue: $issue) {
-        id
-      }
-    }`;
+
+   const query = `mutation contactAdd($contact: ContactInputs!) {
+    contactAdd(contact: $contact) {
+      id
+    }
+  }`;
+
+    // const query = `mutation issueAdd($issue: IssueInputs!) {
+    //   issueAdd(issue: $issue) {
+    //     id
+    //   }
+    // }`;
 
     const { showError } = this.props;
-    const data = await graphQLFetch(query, { issue }, showError);
+    const data = await graphQLFetch(query, { contact }, showError);
+    // updated graphQL var pass from issue to contact
     if (data) {
       const { history } = this.props;
-      history.push(`/edit/${data.issueAdd.id}`);
+      history.push(`/edit/${data.contactAdd.id}`);
     }
   }
 
