@@ -18,9 +18,8 @@ export default class IssueAdd extends React.Component {
       email: form.email.value,
       phone: form.phone.value,
       LinkedIn: form.LinkedIn.value,
-      // owner: form.owner.value,
-      // title: form.title.value,
-      // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      // Setting last contact date as the date the contact was created because it's required for issue edit to be rendered
+      lastContactDate: new Date(),
     };
     const { createIssue } = this.props;
     createIssue(contact);
