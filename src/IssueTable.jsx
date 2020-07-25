@@ -31,6 +31,15 @@ class IssueRowPlain extends React.Component {
     );
 
     function onDeactivate(e) {
+      /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
+      * and further develop as a toggle button.
+      * Also, there's a weird behavior when we click the deactivate button on the table, the content of the table disappears.
+      */
+      if (contact.activeStatus === true) {
+        console.log("activeStatus is: " + contact.activeStatus);
+      } else {
+        console.log("activeStatus is: " + contact.activeStatus);
+      }
       e.preventDefault();
       deactivateContact(index);
     }
