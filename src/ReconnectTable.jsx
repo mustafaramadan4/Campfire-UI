@@ -59,6 +59,9 @@ class IssueRowPlain extends React.Component {
         <td>{issue.context}</td>
         <td>
           <LinkContainer to={`/edit/${issue.id}`}>
+            {/* TO DO: (suggestion) I think we might need an onclick handler on the button, so that we can differentiate the behavior
+            between just clicking an edit and being redirected to the edit page via clicking this button
+            - to set the lastContactDate to the current Date()*/}
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
               <Button bsStyle="primary">
                 Reconnect!
