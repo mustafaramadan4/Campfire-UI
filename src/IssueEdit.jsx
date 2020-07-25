@@ -164,7 +164,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Name"
+                  name="name"
                   value={name}
                   onChange={this.onChange}
                   key={id}
@@ -176,7 +176,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Company"
+                  name="company"
                   value={company}
                   onChange={this.onChange}
                   key={id}
@@ -188,7 +188,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Title"
+                  name="title"
                   value={title}
                   onChange={this.onChange}
                   key={id}
@@ -200,7 +200,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass="select"
-                  name="Contact Frequency"
+                  name="contactFrequency"
                   value={contactFrequency}
                   onChange={this.onChange}
                 >
@@ -220,7 +220,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Email"
+                  name="email"
                   value={email}
                   onChange={this.onChange}
                   key={id}
@@ -232,7 +232,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Phone"
+                  name="phone"
                   value={phone}
                   onChange={this.onChange}
                 />
@@ -266,13 +266,13 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass="select"
-                  name="Priority"
+                  name="priority"
                   value={priority}
                   onChange={this.onChange}
                 >
-                  <option value="Weekly">Low</option>
-                  <option value="Biweekly">Medium</option>
-                  <option value="Monthly">High</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
                 </FormControl>
               </Col>
             </FormGroup>
@@ -281,15 +281,14 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass="select"
-                  name="Familiarity"
+                  name="familiarity"
                   value={familiarity}
                   onChange={this.onChange}
                 >
-                  <option value="Familiar">Familiar</option>
-                  <option value="Unfamiliar">Unfamiliar</option>
-                  <option value="Intimate">Intimate</option>
-                  <option value="Intimate">Intimate</option>
-                  <option value="Meaningful">meaningful</option>
+                  <option value="familiar">Familiar</option>
+                  <option value="unfamiliar">Unfamiliar</option>
+                  <option value="intimate">Intimate</option>
+                  <option value="meaningful">Meaningful</option>
                 </FormControl>
               </Col>
             </FormGroup>
@@ -298,7 +297,7 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="Context Space"
+                  name="contextSpace"
                   value={contextSpace}
                   onChange={this.onChange}
                 />
@@ -309,12 +308,12 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass="select"
-                  name="Familiarity"
+                  name="activeStatus"
                   value={activeStatus}
                   onChange={this.onChange}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
                 </FormControl>
               </Col>
             </FormGroup>
@@ -335,7 +334,7 @@ class IssueEdit extends React.Component {
                 <FormControl
                   componentClass={DateInput}
                   onValidityChange={this.onValidityChange}
-                  name="Next Contact Date"
+                  name="nextContactDate"
                   value={nextContactDate}
                   onChange={this.onChange}
                   key={id}
@@ -351,7 +350,7 @@ class IssueEdit extends React.Component {
                   tag="textarea"
                   rows={4}
                   cols={50}
-                  name="Notes"
+                  name="notes"
                   value={notes}
                   onChange={this.onChange}
                   key={id}
