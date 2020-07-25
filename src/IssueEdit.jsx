@@ -16,10 +16,12 @@ import UserContext from './UserContext.js';
 
 class IssueEdit extends React.Component {
   static async fetchData(match, search, showError) {
-    const query = `query issue($id: Int!) {
-      issue(id: $id) {
-        id title status owner
-        effort created due description
+    const query = `query contact($id: Int!) {
+      contact(id: $id) {
+        id name company title
+        contactFrequency email phone LinkedIn
+        priority familiarity contextSpace activeStatus
+        lastContactDate nextContactDate notes
       }
     }`;
 
@@ -30,10 +32,10 @@ class IssueEdit extends React.Component {
 
   constructor() {
     super();
-    const issue = store.initialData ? store.initialData.issue : null;
+    const contact = store.initialData ? store.initialData.contact : null;
     delete store.initialData;
     this.state = {
-      issue,
+      contact,
       invalidFields: {},
       showingValidation: false,
     };
@@ -45,8 +47,8 @@ class IssueEdit extends React.Component {
   }
 
   componentDidMount() {
-    const { issue } = this.state;
-    if (issue == null) this.loadData();
+    const { contact } = this.state;
+    if (contact == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -61,7 +63,7 @@ class IssueEdit extends React.Component {
     const { name, value: textValue } = event.target;
     const value = naturalValue === undefined ? textValue : naturalValue;
     this.setState(prevState => ({
-      issue: { ...prevState.issue, [name]: value },
+      contact: { ...prevState.contact, [name]: value },
     }));
   }
 
@@ -78,28 +80,31 @@ class IssueEdit extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     this.showValidation();
-    const { issue, invalidFields } = this.state;
+    const { contact, invalidFields } = this.state;
     if (Object.keys(invalidFields).length !== 0) return;
 
-    const query = `mutation issueUpdate(
+    const query = `mutation contactUpdate(
       $id: Int!
-      $changes: IssueUpdateInputs!
+      $changes: ContactUpdateInputs!
     ) {
-      issueUpdate(
+      contactUpdate(
         id: $id
         changes: $changes
       ) {
-        id title status owner
-        effort created due description
+        id name company title
+        contactFrequency email phone LinkedIn
+        priority familiarity contextSpace activeStatus
+        lastContactDate nextContactDate notes
       }
     }`;
 
-    const { id, created, ...changes } = issue;
+
+    const { id, ...changes } = contact;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
-      this.setState({ issue: data.issueUpdate });
-      showSuccess('Updated issue successfully');
+      this.setState({ contact: data.contactUpdate });
+      showSuccess('Updated contact successfully');
     }
   }
 
@@ -107,7 +112,7 @@ class IssueEdit extends React.Component {
     const { match, showError } = this.props;
     const data = await IssueEdit.fetchData(match, null, showError);
 
-    this.setState({ issue: data ? data.issue : {}, invalidFields: {} });
+    this.setState({ contact: data ? data.contact : {}, invalidFields: {} });
   }
 
   showValidation() {
@@ -119,14 +124,14 @@ class IssueEdit extends React.Component {
   }
 
   render() {
-    const { issue } = this.state;
-    if (issue == null) return null;
+    const { contact } = this.state;
+    if (contact == null) return null;
 
-    const { issue: { id } } = this.state;
+    const { contact: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;
     if (id == null) {
       if (propsId != null) {
-        return <h3>{`Issue with ID ${propsId} not found.`}</h3>;
+        return <h3>{`Contact with ID ${propsId} not found.`}</h3>;
       }
       return null;
     }
@@ -141,82 +146,41 @@ class IssueEdit extends React.Component {
       );
     }
 
-
-    const { issue: { title, status } } = this.state;
-    const { issue: { owner, effort, description } } = this.state;
-    const { issue: { created, due } } = this.state;
+    const { contact: { name, company, title, contactFrequency, email, phone, LinkedIn } } = this.state;
+    const { contact: { priority, familiarity, contextSpace, activeStatus } } = this.state;
+    const { contact: { lastContactDate, nextContactDate, notes } } = this.state;
 
     const user = this.context;
 
     return (
       <Panel>
         <Panel.Heading>
-          <Panel.Title>{`Editing issue: ${id}`}</Panel.Title>
+          <Panel.Title>{`Editing Contact: ${id}`}</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <Form horizontal onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Created</Col>
-              <Col sm={9}>
-                <FormControl.Static>
-                  {created.toDateString()}
-                </FormControl.Static>
-              </Col>
-            </FormGroup>
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Status</Col>
-              <Col sm={9}>
-                <FormControl
-                  componentClass="select"
-                  name="status"
-                  value={status}
-                  onChange={this.onChange}
-                >
-                  <option value="New">New</option>
-                  <option value="Assigned">Assigned</option>
-                  <option value="Fixed">Fixed</option>
-                  <option value="Closed">Closed</option>
-                </FormControl>
-              </Col>
-            </FormGroup>
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Owner</Col>
+              <Col componentClass={ControlLabel} sm={3}>Name</Col>
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  name="owner"
-                  value={owner}
+                  name="name"
+                  value={name}
                   onChange={this.onChange}
                   key={id}
                 />
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Effort</Col>
+              <Col componentClass={ControlLabel} sm={3}>Company</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={NumInput}
-                  name="effort"
-                  value={effort}
-                  onChange={this.onChange}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup validationState={
-              invalidFields.due ? 'error' : null
-            }
-            >
-              <Col componentClass={ControlLabel} sm={3}>Due</Col>
-              <Col sm={9}>
-                <FormControl
-                  componentClass={DateInput}
-                  onValidityChange={this.onValidityChange}
-                  name="due"
-                  value={due}
+                  componentClass={TextInput}
+                  name="company"
+                  value={company}
                   onChange={this.onChange}
                   key={id}
                 />
-                <FormControl.Feedback />
               </Col>
             </FormGroup>
             <FormGroup>
@@ -224,7 +188,6 @@ class IssueEdit extends React.Component {
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
-                  size={50}
                   name="title"
                   value={title}
                   onChange={this.onChange}
@@ -233,15 +196,162 @@ class IssueEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={3}>Description</Col>
+              <Col componentClass={ControlLabel} sm={3}>Contact Frequency</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass="select"
+                  name="contactFrequency"
+                  value={contactFrequency}
+                  onChange={this.onChange}
+                >
+                  <option value="Weekly">Weekly</option>
+                  <option value="Biweekly">BiWeekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Quarterly">Quarterly</option>
+                  <option value="Quarterly">Quarterly</option>
+                  <option value="Quarterly">Biannual</option>
+                  <option value="Quarterly">Yearly</option>
+                  <option value="Quarterly">None</option>
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Email</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  name="email"
+                  value={email}
+                  onChange={this.onChange}
+                  key={id}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Phone</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  name="phone"
+                  value={phone}
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>LinkedIn</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  name="LinkedIn"
+                  value={LinkedIn}
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup>
+            {/* TO DO: ADD OTHER CONTACT INFO FIELD?? */}
+            {/* <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Other Contact Info</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  name="Other"
+                  value={otherContactInfo}
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup> */}
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Priority</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass="select"
+                  name="priority"
+                  value={priority}
+                  onChange={this.onChange}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Familiarity</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass="select"
+                  name="familiarity"
+                  value={familiarity}
+                  onChange={this.onChange}
+                >
+                  <option value="familiar">Familiar</option>
+                  <option value="unfamiliar">Unfamiliar</option>
+                  <option value="intimate">Intimate</option>
+                  <option value="meaningful">Meaningful</option>
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Context Space</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={TextInput}
+                  name="contextSpace"
+                  value={contextSpace}
+                  onChange={this.onChange}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Active Contact</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass="select"
+                  name="activeStatus"
+                  value={activeStatus}
+                  onChange={this.onChange}
+                >
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Last Contact Date</Col>
+              <Col sm={9}>
+                <FormControl.Static>
+                  {lastContactDate.toDateString()}
+                </FormControl.Static>
+              </Col>
+            </FormGroup>
+            <FormGroup validationState={
+              invalidFields.due ? 'error' : null
+            }
+            >
+              <Col componentClass={ControlLabel} sm={3}>Next Contact Date</Col>
+              <Col sm={9}>
+                <FormControl
+                  componentClass={DateInput}
+                  onValidityChange={this.onValidityChange}
+                  name="nextContactDate"
+                  value={nextContactDate}
+                  onChange={this.onChange}
+                  key={id}
+                />
+                <FormControl.Feedback />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={3}>Notes</Col>
               <Col sm={9}>
                 <FormControl
                   componentClass={TextInput}
                   tag="textarea"
                   rows={4}
                   cols={50}
-                  name="description"
-                  value={description}
+                  name="notes"
+                  value={notes}
                   onChange={this.onChange}
                   key={id}
                 />
