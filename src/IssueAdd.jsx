@@ -13,18 +13,18 @@ export default class IssueAdd extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const form = document.forms.issueAdd;
-    const issue = {
+    const contact = {
       name: form.name.value,
       email: form.email.value,
       phone: form.phone.value,
-      Linkedin: form.linkedin.value,
+      LinkedIn: form.LinkedIn.value,
       // owner: form.owner.value,
       // title: form.title.value,
       // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
     const { createIssue } = this.props;
-    createIssue(issue);
-    form.owner.value = ''; form.title.value = '';
+    createIssue(contact);
+    form.name.value = ''; form.email.value = ''; form.phone.value = ''; form.LinkedIn.value = '';
   }
 
   render() {
@@ -51,7 +51,7 @@ export default class IssueAdd extends React.Component {
         <FormGroup>
           <ControlLabel>LinkedIn:</ControlLabel>
           {' '}
-          <FormControl type="text" name="Linkedin" />
+          <FormControl type="text" name="LinkedIn" />
         </FormGroup>
         {' '}
         <Button bsStyle="primary" type="submit">Add</Button>
