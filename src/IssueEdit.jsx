@@ -214,9 +214,9 @@ class IssueEdit extends React.Component {
                   <option value="Monthly">Monthly</option>
                   {/* why are the values all quartely below? */}
                   <option value="Quarterly">Quarterly</option>
-                  <option value="Quarterly">Biannual</option>
-                  <option value="Quarterly">Yearly</option>
-                  <option value="Quarterly">None</option>
+                  <option value="Biannual">Biannual</option>
+                  <option value="Yearly">Yearly</option>
+                  <option value="None">None</option>
                 </FormControl>
               </Col>
             </FormGroup>
