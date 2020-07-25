@@ -37,7 +37,7 @@ class IssueAddNavItem extends React.Component {
       email: form.email.value,
       phone: form.phone.value,
       LinkedIn: form.LinkedIn.value,
-      // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      lastContactDate: new Date(),
     };
     /* TO DO: the add form needs to handle submit, the query string has been updated with the mutation api call to contactAdd. 
     // It is just not adding the contact to the DB upon submit click.
@@ -45,7 +45,7 @@ class IssueAddNavItem extends React.Component {
 
    const query = `mutation contactAdd($contact: ContactInputs!) {
     contactAdd(contact: $contact) {
-      id name email phone LinkedIn
+      id name email phone LinkedIn lastContactDate
     }
   }`;
 
