@@ -167,18 +167,39 @@ class IssueList extends React.Component {
     }
   }
 
-  // Implemented OFF status TODO: Implement On/Off in the same button?
+  // Implemented OFF status DONE: Implemented On/Off in the same button with success message
   // ^ agreed, toggle button may need some more work, as we may need to pass on props
   // to IssueTable to keep track of the activeStatus and call deactivateContact or reactivateContact 
   // depending on the value of activeStatus
+  /*{TODO: there is a weird behavior with the on/off button when clicking, this behavior
+     disappears after clicking on any other part of the screen or closing the success message }*/
   async deactivateContact(index) {
-    const query = `mutation contactDeactivate($id: Int!) {
-      contactUpdate(id: $id, changes: { activeStatus: false }) {
-        id name activeStatus
-      }
-    }`;
+    const { showSuccess, showError } = this.props;
     const { contacts } = this.state;
-    const { showError } = this.props;
+    let query;
+    let action;
+    if(contacts[index].activeStatus) {
+      query = `mutation contactDeactivate($id: Int!) {
+        contactUpdate(id: $id,
+          changes: { activeStatus: false nextContactDate: null }) {
+          id name company title
+          contactFrequency email phone LinkedIn
+          priority familiarity contextSpace activeStatus
+          lastContactDate nextContactDate notes
+        }
+      }`;
+      action = "Deactivated";
+    } else {
+      query = `mutation contactDeactivate($id: Int!) {
+        contactUpdate(id: $id, changes: { activeStatus: true nextContactDate: null }) {
+          id name company title
+          contactFrequency email phone LinkedIn
+          priority familiarity contextSpace activeStatus
+          lastContactDate nextContactDate notes
+        }
+      }`;
+      action = "Activated";
+    }
     const data = await graphQLFetch(query, { id: contacts[index].id },
       showError);
     if (data) {
@@ -187,6 +208,12 @@ class IssueList extends React.Component {
         newList[index] = data.contactUpdate;
         return { contacts: newList };
       });
+      const actionMessage = (
+        <span>
+          {`${action} contact ${contacts[index].name} successfully.`}
+        </span>
+      );
+      showSuccess(actionMessage);
     } else {
       this.loadData();
     }
