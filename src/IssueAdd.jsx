@@ -14,9 +14,13 @@ export default class IssueAdd extends React.Component {
     e.preventDefault();
     const form = document.forms.issueAdd;
     const issue = {
-      owner: form.owner.value,
-      title: form.title.value,
-      due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      Linkedin: form.linkedin.value,
+      // owner: form.owner.value,
+      // title: form.title.value,
+      // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
     const { createIssue } = this.props;
     createIssue(issue);
@@ -27,15 +31,27 @@ export default class IssueAdd extends React.Component {
     return (
       <Form inline name="issueAdd" onSubmit={this.handleSubmit}>
         <FormGroup>
-          <ControlLabel>Owner:</ControlLabel>
+          <ControlLabel>Name:</ControlLabel>
           {' '}
-          <FormControl type="text" name="owner" />
+          <FormControl type="text" name="name" />
         </FormGroup>
         {' '}
         <FormGroup>
-          <ControlLabel>Title:</ControlLabel>
+          <ControlLabel>Email:</ControlLabel>
           {' '}
-          <FormControl type="text" name="title" />
+          <FormControl type="text" name="email" />
+        </FormGroup>
+        {' '}
+        <FormGroup>
+          <ControlLabel>Phone Number:</ControlLabel>
+          {' '}
+          <FormControl type="text" name="phone" />
+        </FormGroup>
+        {' '}
+        <FormGroup>
+          <ControlLabel>LinkedIn:</ControlLabel>
+          {' '}
+          <FormControl type="text" name="Linkedin" />
         </FormGroup>
         {' '}
         <Button bsStyle="primary" type="submit">Add</Button>

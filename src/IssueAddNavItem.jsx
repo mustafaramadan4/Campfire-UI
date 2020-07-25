@@ -32,9 +32,12 @@ class IssueAddNavItem extends React.Component {
     this.hideModal();
     const form = document.forms.issueAdd;
     const issue = {
-      owner: form.owner.value,
-      title: form.title.value,
-      due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      // Updated the names of the issue variables. Still need the specific contact information fields..i.e. phone, email..
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      Linkedin: form.linkedin.value,
+      // due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
     };
     const query = `mutation issueAdd($issue: IssueInputs!) {
       issueAdd(issue: $issue) {
@@ -59,24 +62,32 @@ class IssueAddNavItem extends React.Component {
           <OverlayTrigger
             placement="left"
             delayShow={1000}
-            overlay={<Tooltip id="create-issue">Create Issue</Tooltip>}
+            overlay={<Tooltip id="create-issue">Add Contact</Tooltip>}
           >
             <Glyphicon glyph="plus" />
           </OverlayTrigger>
         </NavItem>
         <Modal keyboard show={showing} onHide={this.hideModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Create Issue</Modal.Title>
+            <Modal.Title>Add Contact (min. 1 contact information field required)</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form name="issueAdd">
               <FormGroup>
-                <ControlLabel>Title</ControlLabel>
-                <FormControl name="title" autoFocus />
+                <ControlLabel>Name</ControlLabel>
+                <FormControl name="name" autoFocus />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Owner</ControlLabel>
-                <FormControl name="owner" />
+                <ControlLabel>Email*</ControlLabel>
+                <FormControl name="email" />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Phone Number*</ControlLabel>
+                <FormControl name="phonenumber" />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>LinkedIn*</ControlLabel>
+                <FormControl name="Linkedin" />
               </FormGroup>
             </Form>
           </Modal.Body>
