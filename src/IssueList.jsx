@@ -168,6 +168,9 @@ class IssueList extends React.Component {
   }
 
   // Implemented OFF status TODO: Implement On/Off in the same button?
+  // ^ agreed, toggle button may need some more work, as we may need to pass on props
+  // to IssueTable to keep track of the activeStatus and call deactivateContact or reactivateContact 
+  // depending on the value of activeStatus
   async deactivateContact(index) {
     const query = `mutation contactDeactivate($id: Int!) {
       contactUpdate(id: $id, changes: { activeStatus: false }) {

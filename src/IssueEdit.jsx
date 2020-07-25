@@ -100,10 +100,11 @@ class IssueEdit extends React.Component {
 
     const { id, ...changes } = contact;
     const { showSuccess, showError } = this.props;
-    console.log(changes);
-    /* TO DO: edit form has an error upon submit, `Variable $chagne got invalid value "true" at "changes.activationStatus",
+    changes.activeStatus = JSON.parse(changes.activeStatus);
+    /* TO DO: edit form has an error upon submit, `Variable $change got invalid value "true" at "changes.activationStatus",
     * expected type Boolean. $changes is passing on a string value of true,
     * which I think a parse function like we did line 29 can be used
+    * FIXED WITH LINE 103
     */
     const data = await graphQLFetch(query, { changes, id }, showError);
     if (data) {
