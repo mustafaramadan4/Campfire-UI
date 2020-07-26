@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Navbar, Nav, NavItem, NavDropdown,
   MenuItem, Glyphicon,
-  Grid, Col,
+  Grid, Col, Image
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Contents from './Contents.jsx';
@@ -12,12 +12,19 @@ import Search from './Search.jsx';
 import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
+import logo from './logo.png';
+// import './Page.css';
+
+// TO DO: import styled components
 
 function NavBar({ user, onUserChange }) {
   return (
+    // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
+    // <Image src={logo} width={"50"} height={"50"}/>
     <Navbar fluid>
       <Navbar.Header>
-        <Navbar.Brand>CampFire</Navbar.Brand>
+        {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
+        <Navbar.Brand><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Navbar.Brand>
       </Navbar.Header>
       <Nav>
         <LinkContainer exact to="/">
