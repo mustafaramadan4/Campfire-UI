@@ -14,6 +14,13 @@ import withToast from './withToast.jsx';
 import store from './store.js';
 import UserContext from './UserContext.js';
 
+// TO DO: Figure out implementation of phone-number-react component.
+// Can't figure out css loaders webpack config to work properly :(
+//https://www.npmjs.com/package/react-phone-number-input
+//https://catamphetamine.gitlab.io/react-phone-number-input/
+// import 'react-phone-number-input/style.css'
+// import PhoneInput from 'react-phone-number-input'
+
 class IssueEdit extends React.Component {
   static async fetchData(match, search, showError) {
     const query = `query contact($id: Int!) {
