@@ -32,15 +32,13 @@ class IssueAddNavItem extends React.Component {
     this.hideModal();
     const form = document.forms.issueAdd;
     const contact = {
-      // Updated the names of the issue variables. Still need the specific contact information fields..i.e. phone, email..
       name: form.name.value,
       email: form.email.value,
       phone: form.phone.value,
       LinkedIn: form.LinkedIn.value,
       lastContactDate: new Date(),
     };
-    /* TO DO: the add form needs to handle submit, the query string has been updated with the mutation api call to contactAdd. 
-    // It is just not adding the contact to the DB upon submit click.
+    /* DONE: the add form handles submit, the query string has been updated with the mutation api call to contactAdd. 
     */
 
    const query = `mutation contactAdd($contact: ContactInputs!) {
