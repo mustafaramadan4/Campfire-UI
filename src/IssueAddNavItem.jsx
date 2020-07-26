@@ -30,7 +30,7 @@ class IssueAddNavItem extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     this.hideModal();
-    const form = document.forms.issueAdd;
+    const form = document.forms.contactAdd;
     const contact = {
       name: form.name.value,
       email: form.email.value,

@@ -12,7 +12,7 @@ export default class IssueAdd extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const form = document.forms.issueAdd;
+    const form = document.forms.contactAdd;
     const contact = {
       name: form.name.value,
       email: form.email.value,
@@ -28,7 +28,7 @@ export default class IssueAdd extends React.Component {
 
   render() {
     return (
-      <Form inline name="issueAdd" onSubmit={this.handleSubmit}>
+      <Form inline name="contactAdd" onSubmit={this.handleSubmit}>
         <FormGroup>
           <ControlLabel>Name:</ControlLabel>
           {' '}
