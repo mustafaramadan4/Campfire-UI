@@ -24,7 +24,7 @@ class IssueRowPlain extends React.Component {
       <Tooltip id="close-tooltip" placement="top">Edit Contact</Tooltip>
     );
     const closeTooltip = (
-      <Tooltip id="close-tooltip" placement="top">Deactivate Contact</Tooltip>
+      <Tooltip id="close-tooltip" placement="top">Active/Inactive Contact Toggle</Tooltip>
     );
     const deleteTooltip = (
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>

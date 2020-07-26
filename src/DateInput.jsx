@@ -9,8 +9,9 @@ function editFormat(date) {
 }
 
 function unformat(str) {
-  const val = new Date(str);
-  return Number.isNaN(val.getTime()) ? null : val;
+  // This works for all browsers.
+  const isDate = str.match(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/);
+  return isDate ? new Date(str) : null;
 }
 
 export default class DateInput extends React.Component {

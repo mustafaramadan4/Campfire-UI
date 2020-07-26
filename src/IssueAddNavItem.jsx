@@ -71,7 +71,7 @@ class IssueAddNavItem extends React.Component {
           <OverlayTrigger
             placement="left"
             delayShow={1000}
-            overlay={<Tooltip id="create-issue">Add Contact</Tooltip>}
+            overlay={<Tooltip id="create-contact">Add Contact</Tooltip>}
           >
             <Glyphicon glyph="plus" />
           </OverlayTrigger>
@@ -81,7 +81,7 @@ class IssueAddNavItem extends React.Component {
             <Modal.Title>Add Contact (min. 1 contact information field required)</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form name="issueAdd">
+            <Form name="contactAdd">
               <FormGroup>
                 <ControlLabel>Name</ControlLabel>
                 <FormControl name="name" autoFocus />

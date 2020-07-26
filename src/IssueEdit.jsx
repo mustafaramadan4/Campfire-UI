@@ -212,7 +212,6 @@ class IssueEdit extends React.Component {
                   <option value="Weekly">Weekly</option>
                   <option value="Biweekly">BiWeekly</option>
                   <option value="Monthly">Monthly</option>
-                  {/* why are the values all quartely below? */}
                   <option value="Quarterly">Quarterly</option>
                   <option value="Biannual">Biannual</option>
                   <option value="Yearly">Yearly</option>
@@ -220,7 +219,9 @@ class IssueEdit extends React.Component {
                 </FormControl>
               </Col>
             </FormGroup>
-            <FormGroup>
+            <FormGroup  validationState={
+              invalidFields.email ? 'error' : null
+            }>
               <Col componentClass={ControlLabel} sm={3}>Email</Col>
               <Col sm={9}>
                 <FormControl
@@ -236,7 +237,7 @@ class IssueEdit extends React.Component {
               <Col componentClass={ControlLabel} sm={3}>Phone</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={TextInput}
+                  componentClass={NumInput}
                   name="phone"
                   value={phone}
                   onChange={this.onChange}
@@ -331,7 +332,7 @@ class IssueEdit extends React.Component {
               </Col>
             </FormGroup>
             <FormGroup validationState={
-              invalidFields.due ? 'error' : null
+              invalidFields.nextContactDate ? 'error' : null
             }
             >
               <Col componentClass={ControlLabel} sm={3}>Next Contact Date</Col>
