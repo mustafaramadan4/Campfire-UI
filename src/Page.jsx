@@ -13,9 +13,9 @@ import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import logo from './logo.png';
-// import './Page.css';
+// import './Page.css'; TO DO: Figure out why CSS loader not working.
 
-// TO DO: import styled components
+// TO DO: import styled components??
 
 function NavBar({ user, onUserChange }) {
   return (
