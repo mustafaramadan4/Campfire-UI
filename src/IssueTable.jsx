@@ -77,7 +77,7 @@ class IssueRowPlain extends React.Component {
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
               <Toggle
                 id='close-tooltip'
-                defaultChecked={this.toggleActiveStatus}
+                defaultChecked={contact.activeStatus}
                 onChange={onToggle} />
             {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
               <Glyphicon glyph="off" />
