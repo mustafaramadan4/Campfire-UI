@@ -75,12 +75,21 @@ class IssueList extends React.Component {
     }`;
 
     const contactListQuery = `query contactList(
+      $contactFrequency: frequency
+      $priority: priority
+      $familiarity: familiarity
       $activeStatus: Boolean
       $page: Int
       $hasSelection: Boolean!
       $selectedId: Int!
       ) {
-      contactList(page:$page, activeStatus: $activeStatus) {
+      contactList(
+        page: $page
+        activeStatus: $activeStatus
+        familiarity: $familiarity
+        priority: $priority
+        contactFrequency: $contactFrequency
+        ) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
