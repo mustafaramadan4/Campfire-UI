@@ -26,14 +26,6 @@ class IssueRowPlain extends React.Component {
     );
     const closeTooltip = (
       <Tooltip id="close-tooltip" placement="top">Active/Inactive Contact Toggle</Tooltip>
-// TODO: Determine why toggleActiveStatus is of null.
-      // <Fragment>
-      //   <Toggle
-      //     id='close-tooltip'
-      //     defaultChecked={this.state.toggleActiveStatus}
-      //     onChange={this.onToggle} />
-      //   <label htmlFor='close-tooltip'>Active/Inactive Contact Toggle</label>
-      // </Fragment>
     );
     
     const deleteTooltip = (
@@ -83,9 +75,13 @@ class IssueRowPlain extends React.Component {
           </LinkContainer>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
-            <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
+              <Toggle
+                id='close-tooltip'
+                defaultChecked={this.toggleActiveStatus}
+                onChange={onToggle} />
+            {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
               <Glyphicon glyph="off" />
-            </Button>
+            </Button> */}
           </OverlayTrigger>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
