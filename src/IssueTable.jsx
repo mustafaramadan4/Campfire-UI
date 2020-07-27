@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 
 import UserContext from './UserContext.js';
+import Toggle from 'react-toggle'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class IssueRowPlain extends React.Component {
@@ -25,7 +26,14 @@ class IssueRowPlain extends React.Component {
     );
     const closeTooltip = (
       <Tooltip id="close-tooltip" placement="top">Active/Inactive Contact Toggle</Tooltip>
+// TODO: Where to implement toggle?
+      // <Toggle
+      //   id='close-tooltip'
+      //   defaultChecked={this.state.activeStatus}
+      //   onChange={this.activeStatus} />
+      // <label htmlFor='close-tooltip'>Active/Inactive Contact Toggle</label>
     );
+    
     const deleteTooltip = (
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
