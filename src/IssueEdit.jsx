@@ -244,7 +244,11 @@ class IssueEdit extends React.Component {
               <Col componentClass={ControlLabel} sm={3}>Phone</Col>
               <Col sm={9}>
                 <FormControl
-                  componentClass={NumInput}
+                  // TODO: hey sorry I temporarily changed this to textInput from NumInput cos it gave an error
+                  // when trying to update the existing phone numbers in the db like:
+                  // 1. Variable "$changes" got invalid value 1212341234 at "changes.phone"; Expected type String. String cannot represent a non string value: 1212341234
+                  // 2. Wouldn't let us edit the phone number in the database that's already in the format of 000-000-0000
+                  componentClass={TextInput}
                   name="phone"
                   value={phone}
                   onChange={this.onChange}

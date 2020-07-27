@@ -10,19 +10,19 @@ class IssueFilter extends React.Component {
   constructor({ location: { search } }) {
     super();
     const params = new URLSearchParams(search);
-    // TODO: add state variables for familiarity and frequency filters
+    // DONE: add state variables for familiarity and frequency filters
     this.state = {
       activeStatus: params.get('activeStatus') || '',
       priority: params.get('priority') || '',
-      // effortMin: params.get('effortMin') || '',
-      // effortMax: params.get('effortMax') || '',
+      contactFrequency: params.get('contactFrequency') || '',
+      familiarity: params.get('familiarity') || '',
       changed: false,
     };
-    // TODO: Bind functions for familiarity and frequency filters
+    // DONE: Bind functions for familiarity and frequency filters
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangePriority = this.onChangePriority.bind(this);
-    // this.onChangeEffortMin = this.onChangeEffortMin.bind(this);
-    // this.onChangeEffortMax = this.onChangeEffortMax.bind(this);
+    this.onChangeFrequency = this.onChangeFrequency.bind(this);
+    this.onChangeFamiliarity = this.onChangeFamiliarity.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
     this.showOriginalFilter = this.showOriginalFilter.bind(this);
   }
@@ -44,7 +44,14 @@ class IssueFilter extends React.Component {
     this.setState({ priority: e.target.value, changed: true });
   }
 
-  // TODO: Create onChange functions for familiarity and frequency filters
+  // DONE: Create onChange functions for familiarity and frequency filters
+  onChangeFrequency(e) {
+    this.setState({ contactFrequency: e.target.value, changed: true });
+  }
+
+  onChangeFamiliarity(e) {
+    thiss.setState({ familiarity: e.target.value, chagned: true });
+  }
 
   onChangeEffortMin(e) {
     const effortString = e.target.value;
@@ -65,36 +72,36 @@ class IssueFilter extends React.Component {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
     this.setState({
-      // TODO: reset state variables for familiarity and frequency filters
+      // DONE: reset state variables for familiarity and frequency filters
       activeStatus: params.get('activeStatus') || '',
       priority: params.get('priority') || '',
-      // effortMin: params.get('effortMin') || '',
-      // effortMax: params.get('effortMax') || '',
+      contactFrequency: params.get('contactFrequency') || '',
+      familiarity: params.get('familiarity') || '',
       changed: false,
     });
   }
 
   applyFilter() {
     // const { status, effortMin, effortMax } = this.state;
-    const { activeStatus, priority } = this.state;
+    const { activeStatus, priority, contactFrequency, familiarity } = this.state;
     const { history, urlBase } = this.props;
     const params = new URLSearchParams();
     if (activeStatus) params.set('activeStatus', activeStatus);
     if (priority) params.set('priority', priority);
-    // TODO: Set params for familiarity and frequency filters
-    // if (effortMin) params.set('effortMin', effortMin);
-    // if (effortMax) params.set('effortMax', effortMax);
+    // DONE: Set params for familiarity and frequency filters
+    if (contactFrequency) params.set('contactFrequency', contactFrequency);
+    if (familiarity) params.set('familiarity', familiarity);
 
     const search = params.toString() ? `?${params.toString()}` : '';
     history.push({ pathname: urlBase, search });
   }
 
   render() {
-    const { activeStatus, priority, changed } = this.state;
+    const { activeStatus, priority, contactFrequency, familiarity, changed } = this.state;
     // const { effortMin, effortMax } = this.state;
     return (
       <Row>
-        <Col xs={6} sm={4} md={3} lg={2}>
+        <Col xs={6} sm={3} md={2} lg={2}>
           <FormGroup>
             <ControlLabel>Active Status:</ControlLabel>
             <FormControl
@@ -110,7 +117,7 @@ class IssueFilter extends React.Component {
             </FormControl>
           </FormGroup>
         </Col>
-        <Col xs={6} sm={4} md={3} lg={2}>
+        <Col xs={6} sm={3} md={2} lg={2}>
           <FormGroup>
             <ControlLabel>Priority:</ControlLabel>
             <FormControl
@@ -127,7 +134,41 @@ class IssueFilter extends React.Component {
             </FormControl>
           </FormGroup>
         </Col>
-        {/* TODO: add Col/Form for familiarity and frequency filters */}
+        <Col xs={6} sm={3} md={2} lg={2}>
+          <FormGroup>
+            <ControlLabel>Frequency:</ControlLabel>
+            <FormControl
+              componentClass="select"
+              value={contactFrequency}
+              onChange={this.onChangeFrequency}
+            >
+              <option value="">(All)</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Biweekly">BiWeekly</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Biannual">Biannual</option>
+              <option value="Yearly">Yearly</option>
+              <option value="None">None</option>
+            </FormControl>
+          </FormGroup>
+        </Col>
+        <Col xs={6} sm={3} md={2} lg={2}>
+          <FormGroup>
+            <ControlLabel>Familiarity:</ControlLabel>
+            <FormControl
+              componentClass="select"
+              value={familiarity}
+              onChange={this.onChangeFamiliarity}
+            >
+              <option value="">(All)</option>
+              <option value="familiar">familiar</option>
+              <option value="unfamiliar">unfamiliar</option>
+              <option value="intimate">intimate</option>
+              <option value="meaningful">meaningful</option>
+            </FormControl>
+          </FormGroup>
+        </Col>
         {/* <Col xs={6} sm={4} md={3} lg={2}>
           <FormGroup>
             <ControlLabel>Effort between:</ControlLabel>
@@ -138,7 +179,7 @@ class IssueFilter extends React.Component {
             </InputGroup>
           </FormGroup>
         </Col> */}
-        <Col xs={6} sm={4} md={3} lg={2}>
+        <Col xs={6} sm={4} md={2} lg={2}>
           <FormGroup>
             <ControlLabel>&nbsp;</ControlLabel>
             <ButtonToolbar>

@@ -15,7 +15,7 @@ class IssueRowPlain extends React.Component {
     //   issue, location: { search }, closeIssue, deleteIssue, index,
     // } = this.props;
     const {
-      contact, location: { search }, deactivateContact, deleteContact, index,
+      contact, location: { search }, toggleActiveStatus, deleteContact, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
@@ -38,18 +38,13 @@ class IssueRowPlain extends React.Component {
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
 
-    function onDeactivate(e) {
+    function onToggle(e) {
       /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
       * and further develop as a toggle button. DONE: Implemented on/off on same button with success message.
       * FIXED weird behavior with data in the table.
       */
-      if (contact.activeStatus === true) {
-        console.log("activeStatus is: " + contact.activeStatus);
-      } else {
-        console.log("activeStatus is: " + contact.activeStatus);
-      }
       e.preventDefault();
-      deactivateContact(index);
+      toggleActiveStatus(index);
     }
 
 
@@ -86,7 +81,7 @@ class IssueRowPlain extends React.Component {
           </LinkContainer>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
-            <Button disabled={disabled} bsSize="xsmall" onClick={onDeactivate}>
+            <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
               <Glyphicon glyph="off" />
             </Button>
           </OverlayTrigger>
@@ -111,12 +106,12 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ contacts, deactivateContact, deleteContact }) {
+export default function IssueTable({ contacts, toggleActiveStatus, deleteContact }) {
   const issueRows = contacts.map((contact, index) => (
     <IssueRow
       key={contact.id}
       contact={contact}
-      deactivateContact={deactivateContact}
+      toggleActiveStatus={toggleActiveStatus}
       deleteContact={deleteContact}
       index={index}
     />
