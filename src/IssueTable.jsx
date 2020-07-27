@@ -65,12 +65,12 @@ class IssueRowPlain extends React.Component {
         <td>{contact.name}</td>
         <td>{contact.company}</td>
         <td>{contact.title}</td>
-        <td>{contact.frequency}</td>
+        <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
         <td>{contact.Linkedin}</td>
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
-        <td>{contact.context}</td>
+        <td>{contact.contextSpace}</td>
         <td>
           <LinkContainer to={`/edit/${contact.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
