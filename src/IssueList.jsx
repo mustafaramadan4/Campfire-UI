@@ -31,12 +31,16 @@ class IssueList extends React.Component {
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
-    if (params.get('status')) vars.status = params.get('status');
+    // TODO: Implement vars for familiarity and frequency filters
+    if (params.get('activeStatus')) {
+      vars.activeStatus = JSON.parse(params.get('activeStatus'));
+    }
+    if (params.get('priority')) vars.priority = params.get('priority');
 
-    const effortMin = parseInt(params.get('effortMin'), 10);
-    if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    const effortMax = parseInt(params.get('effortMax'), 10);
-    if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
+    // const effortMin = parseInt(params.get('effortMin'), 10);
+    // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
+    // const effortMax = parseInt(params.get('effortMax'), 10);
+    // if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -84,11 +88,11 @@ class IssueList extends React.Component {
       $selectedId: Int!
       ) {
       contactList(
-        page: $page
         activeStatus: $activeStatus
         familiarity: $familiarity
         priority: $priority
         contactFrequency: $contactFrequency
+        page: $page
         ) {
         contacts {
           id name company title contactFrequency email
