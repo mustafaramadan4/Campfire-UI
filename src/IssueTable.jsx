@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { withRouter } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
@@ -15,7 +15,7 @@ class IssueRowPlain extends React.Component {
     //   issue, location: { search }, closeIssue, deleteIssue, index,
     // } = this.props;
     const {
-      contact, location: { search }, deactivateContact, deleteContact, index,
+      contact, location: { search }, toggleActiveStatus, deleteContact, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
@@ -26,30 +26,19 @@ class IssueRowPlain extends React.Component {
     );
     const closeTooltip = (
       <Tooltip id="close-tooltip" placement="top">Active/Inactive Contact Toggle</Tooltip>
-// TODO: Where to implement toggle?
-      // <Toggle
-      //   id='close-tooltip'
-      //   defaultChecked={this.state.activeStatus}
-      //   onChange={this.activeStatus} />
-      // <label htmlFor='close-tooltip'>Active/Inactive Contact Toggle</label>
     );
     
     const deleteTooltip = (
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
 
-    function onDeactivate(e) {
+    function onToggle(e) {
       /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
       * and further develop as a toggle button. DONE: Implemented on/off on same button with success message.
       * FIXED weird behavior with data in the table.
       */
-      if (contact.activeStatus === true) {
-        console.log("activeStatus is: " + contact.activeStatus);
-      } else {
-        console.log("activeStatus is: " + contact.activeStatus);
-      }
       e.preventDefault();
-      deactivateContact(index);
+      toggleActiveStatus(index);
     }
 
 
@@ -70,12 +59,12 @@ class IssueRowPlain extends React.Component {
         <td>{contact.name}</td>
         <td>{contact.company}</td>
         <td>{contact.title}</td>
-        <td>{contact.frequency}</td>
+        <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
         <td>{contact.Linkedin}</td>
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
-        <td>{contact.context}</td>
+        <td>{contact.contextSpace}</td>
         <td>
           <LinkContainer to={`/edit/${contact.id}`}>
             <OverlayTrigger delayShow={1000} overlay={editTooltip}>
@@ -86,9 +75,13 @@ class IssueRowPlain extends React.Component {
           </LinkContainer>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
-            <Button disabled={disabled} bsSize="xsmall" onClick={onDeactivate}>
+              <Toggle
+                id='close-tooltip'
+                defaultChecked={contact.activeStatus}
+                onChange={onToggle} />
+            {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
               <Glyphicon glyph="off" />
-            </Button>
+            </Button> */}
           </OverlayTrigger>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
@@ -111,12 +104,12 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ contacts, deactivateContact, deleteContact }) {
+export default function IssueTable({ contacts, toggleActiveStatus, deleteContact }) {
   const issueRows = contacts.map((contact, index) => (
     <IssueRow
       key={contact.id}
       contact={contact}
-      deactivateContact={deactivateContact}
+      toggleActiveStatus={toggleActiveStatus}
       deleteContact={deleteContact}
       index={index}
     />

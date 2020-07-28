@@ -29,13 +29,21 @@ function PageLink({
 
 class IssueList extends React.Component {
   static async fetchData(match, search, showError) {
+    /* The React Router supplies as part of props, an object called "location"
+    * that includes a query string (in the field "search"). The JavaScript API
+    * "URLSearchParams()" parses the provided query string.
+    */
     const params = new URLSearchParams(search);
     const vars = { hasSelection: false, selectedId: 0 };
-    // TODO: Implement vars for familiarity and frequency filters
+    // DONE: Implement vars for familiarity and frequency filters
+    // params.get() method returns null if the parameter is not present,
+    // so add a check before adding on to the vars defined above.
     if (params.get('activeStatus')) {
       vars.activeStatus = JSON.parse(params.get('activeStatus'));
     }
     if (params.get('priority')) vars.priority = params.get('priority');
+    if (params.get('familiarity')) vars.familiarity = params.get('familiarity');
+    if (params.get('contactFrequency')) vars.contactFrequency = params.get('contactFrequency');
 
     // const effortMin = parseInt(params.get('effortMin'), 10);
     // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
@@ -52,31 +60,6 @@ class IssueList extends React.Component {
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
-
-    const query = `query issueList(
-      $status: StatusType
-      $effortMin: Int
-      $effortMax: Int
-      $hasSelection: Boolean!
-      $selectedId: Int!
-      $page: Int
-    ) {
-      issueList(
-        status: $status
-        effortMin: $effortMin
-        effortMax: $effortMax
-        page: $page
-      ) {
-        issues {
-          id title status owner
-          created effort due
-        }
-        pages
-      }
-      issue(id: $selectedId) @include (if : $hasSelection) {
-        id description
-      }
-    }`;
 
     const contactListQuery = `query contactList(
       $contactFrequency: frequency
@@ -123,7 +106,7 @@ class IssueList extends React.Component {
       pages,
     };
     // this.closeIssue = this.closeIssue.bind(this);
-    this.deactivateContact = this.deactivateContact.bind(this);
+    this.toggleActiveStatus = this.toggleActiveStatus.bind(this);
     this.deleteContact = this.deleteContact.bind(this);
   }
 
@@ -182,17 +165,17 @@ class IssueList extends React.Component {
 
   // Implemented OFF status DONE: Implemented On/Off in the same button with success message
   // ^ agreed, toggle button may need some more work, as we may need to pass on props
-  // to IssueTable to keep track of the activeStatus and call deactivateContact or reactivateContact 
+  // to IssueTable to keep track of the activeStatus and call toggleActiveStatus or reactivateContact 
   // depending on the value of activeStatus
   /*{TODO: there is a weird behavior with the on/off button when clicking, this behavior
      disappears after clicking on any other part of the screen or closing the success message }*/
-  async deactivateContact(index) {
+  async toggleActiveStatus(index) {
     const { showSuccess, showError } = this.props;
     const { contacts } = this.state;
     let query;
     let action;
-    if(contacts[index].activeStatus) {
-      query = `mutation contactDeactivate($id: Int!) {
+    if (contacts[index].activeStatus) {
+      query = `mutation toggleActiveStatus($id: Int!) {
         contactUpdate(id: $id,
           changes: { activeStatus: false nextContactDate: null }) {
           id name company title
@@ -203,7 +186,7 @@ class IssueList extends React.Component {
       }`;
       action = "Deactivated";
     } else {
-      query = `mutation contactDeactivate($id: Int!) {
+      query = `mutation toggleActiveStatus($id: Int!) {
         contactUpdate(id: $id, changes: { activeStatus: true nextContactDate: null }) {
           id name company title
           contactFrequency email phone LinkedIn
@@ -359,7 +342,7 @@ class IssueList extends React.Component {
         </Panel>
         <IssueTable
           contacts={contacts}
-          deactivateContact={this.deactivateContact}
+          toggleActiveStatus={this.toggleActiveStatus}
           deleteContact={this.deleteContact}
         />
         <IssueDetail issue={selectedContact} />
