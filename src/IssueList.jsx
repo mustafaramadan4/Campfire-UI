@@ -84,7 +84,7 @@ class IssueList extends React.Component {
         pages
       }
       contact(id: $selectedId) @include (if : $hasSelection) {
-        id notes
+        id name LinkedIn phone contextSpace activeStatus lastContactDate nextContactDate notes
       }
     }`;
 
@@ -345,7 +345,7 @@ class IssueList extends React.Component {
           toggleActiveStatus={this.toggleActiveStatus}
           deleteContact={this.deleteContact}
         />
-        <IssueDetail issue={selectedContact} />
+        <IssueDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
