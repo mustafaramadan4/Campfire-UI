@@ -222,6 +222,7 @@ class IssueEdit extends React.Component {
                   <option value="Quarterly">Quarterly</option>
                   <option value="Biannual">Biannual</option>
                   <option value="Yearly">Yearly</option>
+                  <option value="Custom">Custom</option>
                   <option value="None">None</option>
                 </FormControl>
               </Col>
@@ -355,6 +356,7 @@ class IssueEdit extends React.Component {
                   value={nextContactDate}
                   onChange={this.onChange}
                   key={id}
+                  disabled={contact.contactFrequency !== "Custom"}
                 />
                 <FormControl.Feedback />
               </Col>
