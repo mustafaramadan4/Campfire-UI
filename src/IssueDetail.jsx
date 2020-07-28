@@ -43,6 +43,7 @@ class IssueDetail extends React.Component {
     if (contact) {
       return (
         <div>
+        <h3>Contact Details</h3>
         <Table condensed responsive>
           <thead>
             <tr>
@@ -60,7 +61,6 @@ class IssueDetail extends React.Component {
               <td>{contact.phone}</td>
               <td>{contact.LinkedIn}</td>
               <td>{contact.contextSpace}</td>
-              {console.log(contact.activeStatus)}
               <td>{contact.lastContactDate ? contact.lastContactDate.toDateString() : ''}</td>
               <td>{contact.nextContactDate ? contact.nextContactDate.toDateString() : ''}</td>
             </tr>
