@@ -3,7 +3,6 @@ import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-// import { PageLink } from './IssueList.jsx';
 import IssueFilter from './IssueFilter.jsx';
 // import IssueTable from './IssueTable.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
@@ -113,6 +112,7 @@ class Dashboard extends React.Component {
       selectedContact,
       pages,
     };
+    this.reconnectContact = this.reconnectContact.bind(this);
     // this.closeIssue = this.closeIssue.bind(this);
     // this.deleteIssue = this.deleteIssue.bind(this);
   }
@@ -148,6 +148,47 @@ class Dashboard extends React.Component {
     }
   }
 
+
+  async reconnectContact(index) {
+    // e.preventDefault();
+    // this.showValidation();
+    // const { contact, invalidFields } = this.state;
+    // if (Object.keys(invalidFields).length !== 0) return;
+
+
+    const query = `mutation contactReconnect($id: Int!) {
+      contactUpdate( id: $id, changes: {lastContactDate: "${new Date().toISOString()}"}) {
+        id name company title
+        contactFrequency email phone LinkedIn
+        priority familiarity contextSpace activeStatus
+        lastContactDate nextContactDate notes
+      }
+    }`;
+
+    // {lastContactDate: ${new Date().toISOString()}}
+
+    const {contacts} = this.state;
+    // const { id, ...changes } = contact;
+    const { showError } = this.props;
+    console.log("HELLOOOOOOOOOO")
+    const data = await graphQLFetch(query, {id: contacts[index].id}, showError);
+    // if (data) {
+    //   this.setState({ contact: data.contactUpdate });
+    //   showSuccess('Updated contact successfully');
+    // }
+    if (data) {
+      this.setState((prevState) => {
+        const newList = [...prevState.contacts];
+        newList[index] = data.contactUpdate;
+        return { contacts: newList };
+      });
+    } else {
+      this.loadData();
+    }
+  }
+
+
+  
   // async closeIssue(index) {
   //   const query = `mutation issueClose($id: Int!) {
   //     issueUpdate(id: $id, changes: { status: Closed }) {
@@ -255,7 +296,7 @@ class Dashboard extends React.Component {
         </h1>
         <ReconnectTable
           issues={contacts}
-          // closeIssue={this.closeIssue}
+          reconnectContact={this.reconnectContact}
           // deleteIssue={this.deleteIssue}
         />
         <IssueDetail issue={selectedContact} />
@@ -277,17 +318,3 @@ const DashListWithToast = withToast(Dashboard);
 DashListWithToast.fetchData = Dashboard.fetchData;
 
 export default DashListWithToast;
-
-
-
-////////////////////////
-// class Dashboard extends React.Component {
-//   render() {
-//     return(
-//     "Placeholder for Dashboard!:)"
-//     );
-//   }
-// }
-
-
-// export default Dashboard;
