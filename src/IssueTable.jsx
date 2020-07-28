@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 
 import UserContext from './UserContext.js';
-import Toggle from 'react-toggle'
+import Toggle from 'react-toggle';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class IssueRowPlain extends React.Component {
@@ -77,7 +77,8 @@ class IssueRowPlain extends React.Component {
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
               <Toggle
                 id='close-tooltip'
-                defaultChecked={contact.activeStatus}
+                disabled={disabled}
+                checked={contact.activeStatus}
                 onChange={onToggle} />
             {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
               <Glyphicon glyph="off" />
