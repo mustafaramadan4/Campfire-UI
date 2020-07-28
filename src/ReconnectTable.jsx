@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
   Button, Glyphicon, Tooltip, OverlayTrigger, Table,
@@ -11,12 +11,13 @@ import UserContext from './UserContext.js';
 class IssueRowPlain extends React.Component {
   render() {
     const {
-      issue, location: { search }, closeIssue, deleteIssue, index,
+      issue, location: { search }, reconnectContact, deleteIssue, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
 
     const selectLocation = { pathname: `/dashboard/${issue.id}`, search };
+    //TOOLTIP NOT NEEDED
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Re-Connect</Tooltip>
     );
@@ -27,11 +28,25 @@ class IssueRowPlain extends React.Component {
     //   <Tooltip id="delete-tooltip" placement="top">Delete Issue</Tooltip>
     // );
 
+  
+
+
     // function onClose(e) {
     //   e.preventDefault();
-    //   closeIssue(index);
+    //   reconnect(index);
     // }
 
+    function onReconnectClick(e) {
+      e.preventDefault();
+      reconnectContact(index);
+      <Redirect to={`/edit/${issue.id}`}/>
+    }
+
+    // onReconnectClick = () => {
+    //   e.preventDefault();
+    //   reconnectContact(index);
+    //   this.props.history.push('/report')
+    // }
 
     // function onDelete(e) {
     //   e.preventDefault();
@@ -58,16 +73,18 @@ class IssueRowPlain extends React.Component {
         {/* <td>{issue.familiarity}</td> */}
         <td>{issue.context}</td>
         <td>
-          <LinkContainer to={`/edit/${issue.id}`}>
+          {/* <LinkContainer to={`/edit/${issue.id}`} > */}
             {/* TO DO: (suggestion) I think we might need an onclick handler on the button, so that we can differentiate the behavior
             between just clicking an edit and being redirected to the edit page via clicking this button
             - to set the lastContactDate to the current Date()*/}
-            <OverlayTrigger delayShow={1000} overlay={editTooltip}>
-              <Button bsStyle="primary">
+            {/* TO DO: figure out how to make onClick work with link. Now correct graphql mutation,
+             but the button does not redirect. I tried with with and without link container*/}
+            <OverlayTrigger delayShow={1000} overlay={editTooltip} >
+              <Button bsStyle="primary" onClick={onReconnectClick}>
                 Reconnect!
               </Button>
             </OverlayTrigger>
-          </LinkContainer>
+          {/* </LinkContainer> */}
           {' '}
           {/* <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
             <Button disabled={disabled} bsSize="xsmall" onClick={onClose}>
@@ -95,12 +112,12 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ issues, closeIssue, deleteIssue }) {
+export default function IssueTable({ issues, reconnectContact, deleteIssue }) {
   const issueRows = issues.map((issue, index) => (
     <IssueRow
       key={issue.id}
       issue={issue}
-      // closeIssue={closeIssue}
+      reconnectContact={reconnectContact}
       // deleteIssue={deleteIssue}
       index={index}
     />

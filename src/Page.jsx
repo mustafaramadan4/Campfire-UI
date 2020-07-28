@@ -5,6 +5,7 @@ import {
   Grid, Col, Image
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 import Contents from './Contents.jsx';
 import IssueAddNavItem from './IssueAddNavItem.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
@@ -24,7 +25,7 @@ function NavBar({ user, onUserChange }) {
     <Navbar fluid>
       <Navbar.Header>
         {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
-        <Navbar.Brand><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Navbar.Brand>
+          <Navbar.Brand><Link to="/"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
       </Navbar.Header>
       <Nav>
         <LinkContainer exact to="/">
