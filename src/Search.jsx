@@ -20,16 +20,24 @@ class Search extends React.Component {
 
   async loadOptions(term) {
     if (term.length < 3) return [];
-    const query = `query issueList($search: String) {
-      issueList(search: $search) {
-        issues {id title}
+    // const query = `query issueList($search: String) {
+    //   issueList(search: $search) {
+    //     issues {id title}
+    //   }
+    // }`;
+
+    // Implemented Query to search contact list
+    // The indexed fields are name and company
+    const query = `query contactList($search: String) {
+      contactList(search: $search) {
+        contacts {id name company title}
       }
     }`;
 
     const { showError } = this.props;
     const data = await graphQLFetch(query, { search: term }, showError);
-    return data.issueList.issues.map(issue => ({
-      label: `#${issue.id}: ${issue.title}`, value: issue.id,
+    return data.contactList.contacts.map(contact => ({
+      label: `#${contact.id}: ${contact.name}`, value: contact.id,
     }));
   }
 
