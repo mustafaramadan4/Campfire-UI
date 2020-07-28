@@ -223,7 +223,8 @@ class IssueEdit extends React.Component {
                   <option value="Biannual">Biannual</option>
                   <option value="Yearly">Yearly</option>
                   <option value="Custom">Custom</option>
-                  <option value="None">None</option>
+                  {/* TODO: Remove None from the Schema */}
+                  {/* <option value="None">None</option> */}
                 </FormControl>
               </Col>
             </FormGroup>
