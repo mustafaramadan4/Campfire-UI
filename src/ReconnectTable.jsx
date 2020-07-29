@@ -115,13 +115,12 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function IssueTable({ issues, reconnectContact, deleteIssue }) {
+export default function ReconnectTable({ issues, reconnectContact }) {
   const issueRows = issues.map((issue, index) => (
     <IssueRow
       key={issue.id}
       issue={issue}
       reconnectContact={reconnectContact}
-      // deleteIssue={deleteIssue}
       index={index}
     />
   ));
