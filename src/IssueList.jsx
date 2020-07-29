@@ -202,6 +202,7 @@ class IssueList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
         newList[index] = data.contactUpdate;
+        this.loadData()
         return { contacts: newList };
       });
       const actionMessage = (
