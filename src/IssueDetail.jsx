@@ -27,45 +27,45 @@ import { Table } from 'react-bootstrap';
 */
 
 class IssueDetail extends React.Component {
-  static async fetchData(match, search, showError) {
-    const query = `query contact($id: Int!) {
-      contact(id: $id) {
-        id name company title
-        contactFrequency email phone LinkedIn
-        priority familiarity contextSpace activeStatus
-        lastContactDate nextContactDate notes
-      }
-    }`;
+  // static async fetchData(match, search, showError) {
+  //   const query = `query contact($id: Int!) {
+  //     contact(id: $id) {
+  //       id name company title
+  //       contactFrequency email phone LinkedIn
+  //       priority familiarity contextSpace activeStatus
+  //       lastContactDate nextContactDate notes
+  //     }
+  //   }`;
 
-    const { params: { id } } = match;
-    const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-    console.log("hello", result)
-    return result;
-  }
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { contact: this.props}
+  //   const { params: { id } } = match;
+  //   const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
+  //   console.log("hello", result)
+  //   return result;
   // }
 
-  // constructor() {
-  //   super();
+  // // constructor() {
+  // //   super();
+  // //   this.props
+  // // }
+
+  // // constructor() {
+  // //   super();
     
+  // // }
+
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.nextContactDate !== prevProps.nextContactDate) {
+  //     this.loadData();
+  //   }
   // }
 
-
-  componentDidUpdate(prevProps) {
-    if (this.props.nextContactDate !== prevProps.nextContactDate) {
-      this.loadData();
-    }
-  }
-
-  async loadData() {
-    const { match, showError } = this.props;
-    const data = await IssueDetail.fetchData(match, null, showError);
-    console.log(data)
-    this.setState({ contact: data ? contact.issue : {}});
-  }
+  // async loadData() {
+  //   const { match, showError } = this.props;
+  //   const data = await IssueDetail.fetchData(match, null, showError);
+  //   console.log(data)
+  //   this.setState({ contact: data ? contact.issue : {}});
+  // }
 
   // componentDidMount() {
   //   const { contacts } = this.state;

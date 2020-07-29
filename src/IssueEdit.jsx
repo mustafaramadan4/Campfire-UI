@@ -336,12 +336,21 @@ class IssueEdit extends React.Component {
                 </FormControl>
               </Col>
             </FormGroup>
-            <FormGroup>
+            <FormGroup validationState={
+              invalidFields.nextContactDate ? 'error' : null
+            }
+            >
               <Col componentClass={ControlLabel} sm={3}>Last Contact Date</Col>
               <Col sm={9}>
-                <FormControl.Static>
-                  {lastContactDate.toDateString()}
-                </FormControl.Static>
+                <FormControl
+                  componentClass={DateInput}
+                  onValidityChange={this.onValidityChange}
+                  name="lastContactDate"
+                  value={lastContactDate}
+                  onChange={this.onChange}
+                  key={id}
+                />
+                <FormControl.Feedback />
               </Col>
             </FormGroup>
             <FormGroup validationState={
