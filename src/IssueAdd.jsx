@@ -23,7 +23,7 @@ export default class IssueAdd extends React.Component {
     };
     const { createIssue } = this.props;
     createIssue(contact);
-    form.name.value = ''; form.email.value = ''; form.phone.value = ''; form.LinkedIn.value = '';
+    form.name.value = null; form.email.value = null; form.phone.value = null; form.LinkedIn.value = null;
   }
 
   render() {
