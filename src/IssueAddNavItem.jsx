@@ -55,6 +55,7 @@ class IssueAddNavItem extends React.Component {
 
     const { showError } = this.props;
     const data = await graphQLFetch(query, { contact }, showError);
+    form.name.value = ''; form.email.value = ''; form.phone.value = ''; form.LinkedIn.value = '';
     // updated graphQL var pass from issue to contact
     if (data) {
       const { history } = this.props;
