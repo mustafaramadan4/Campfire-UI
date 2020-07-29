@@ -20,6 +20,7 @@ class IssueRowPlain extends React.Component {
     const user = this.context;
     const disabled = !user.signedIn;
 
+
     const selectLocation = { pathname: `/issues/${contact.id}`, search };
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Edit Contact</Tooltip>
@@ -61,7 +62,7 @@ class IssueRowPlain extends React.Component {
         <td>{contact.title}</td>
         <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
-        <td>{contact.Linkedin}</td>
+        <td>{contact.LinkedIn}</td>
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
         <td>{contact.contextSpace}</td>
