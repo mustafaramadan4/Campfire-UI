@@ -46,6 +46,7 @@ class IssueEdit extends React.Component {
       invalidFields: {},
       showingValidation: false,
     };
+    this.onDateChange = this.onDateChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
@@ -69,6 +70,14 @@ class IssueEdit extends React.Component {
   onChange(event, naturalValue) {
     const { name, value: textValue } = event.target;
     naturalValue = naturalValue === null ? '' : naturalValue;
+    const value = naturalValue === undefined ? textValue : naturalValue;
+    this.setState(prevState => ({
+      contact: { ...prevState.contact, [name]: value },
+    }));
+  }
+
+  onDateChange(event, naturalValue) {
+    const { name, value: textValue } = event.target;
     const value = naturalValue === undefined ? textValue : naturalValue;
     this.setState(prevState => ({
       contact: { ...prevState.contact, [name]: value },
@@ -348,7 +357,7 @@ class IssueEdit extends React.Component {
                   onValidityChange={this.onValidityChange}
                   name="lastContactDate"
                   value={lastContactDate}
-                  onChange={this.onChange}
+                  onChange={this.onDateChange}
                   key={id}
                 />
                 <FormControl.Feedback />
@@ -365,7 +374,7 @@ class IssueEdit extends React.Component {
                   onValidityChange={this.onValidityChange}
                   name="nextContactDate"
                   value={nextContactDate}
-                  onChange={this.onChange}
+                  onChange={this.onDateChange}
                   key={id}
                   disabled={contact.contactFrequency !== "Custom"}
                 />
