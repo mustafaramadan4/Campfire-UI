@@ -61,7 +61,7 @@ class IssueRowPlain extends React.Component {
         <td>{contact.title}</td>
         <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
-        <td>{contact.Linkedin}</td>
+        {/*<td>{contact.Linkedin}</td>*/}
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
         <td>{contact.contextSpace}</td>
@@ -134,7 +134,7 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
           <th>Title</th>
           <th>Frequency</th>
           <th>Email</th>
-          <th>Linkedin</th>
+          {/* <th>Linkedin</th> */}
           <th>Priority</th>
           <th>Familiarity</th>
           <th>Context</th>
