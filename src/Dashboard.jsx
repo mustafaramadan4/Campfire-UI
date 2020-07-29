@@ -150,12 +150,6 @@ class Dashboard extends React.Component {
 
 
   async reconnectContact(index) {
-    // e.preventDefault();
-    // this.showValidation();
-    // const { contact, invalidFields } = this.state;
-    // if (Object.keys(invalidFields).length !== 0) return;
-
-
     const query = `mutation contactReconnect($id: Int!) {
       contactUpdate( id: $id, changes: {lastContactDate: "${new Date().toISOString()}"}) {
         id name company title
@@ -164,18 +158,9 @@ class Dashboard extends React.Component {
         lastContactDate nextContactDate notes
       }
     }`;
-
-    // {lastContactDate: ${new Date().toISOString()}}
-
     const {contacts} = this.state;
-    // const { id, ...changes } = contact;
     const { showError } = this.props;
-    console.log("HELLOOOOOOOOOO")
     const data = await graphQLFetch(query, {id: contacts[index].id}, showError);
-    // if (data) {
-    //   this.setState({ contact: data.contactUpdate });
-    //   showSuccess('Updated contact successfully');
-    // }
     if (data) {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];

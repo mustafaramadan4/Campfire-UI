@@ -8,18 +8,16 @@ import {
 import UserContext from './UserContext.js';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class IssueRowPlain extends React.Component {
+class ContactRowPlain extends React.Component {
   render() {
-    const {
-      issue, location: { search }, reconnectContact, deleteIssue, index,
-    } = this.props;
+    const { contact, location: { search }, reconnectContact, index } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
 
-    const selectLocation = { pathname: `/dashboard/${issue.id}`, search };
+    const selectLocation = { pathname: `/dashboard/${contact.id}`, search };
     //TOOLTIP NOT NEEDED
     const editTooltip = (
-      <Tooltip id="close-tooltip" placement="top">Re-Connect</Tooltip>
+      <Tooltip id="close-tooltip" placement="top">ReConnect</Tooltip>
     );
     // const closeTooltip = (
     //   <Tooltip id="close-tooltip" placement="top">Close Issue</Tooltip>
@@ -65,16 +63,16 @@ class IssueRowPlain extends React.Component {
         <td>{issue.effort}</td>
         <td>{issue.due ? issue.due.toDateString() : ''}</td>
         <td>{issue.title}</td> */}
-        <td>{issue.name}</td>
+        <td>{contact.name}</td>
         {/* <td>{issue.company}</td>
         <td>{issue.title}</td>
         <td>{issue.frequency}</td>
         <td>{issue.email}</td>
         <td>{issue.Linkedin}</td> */}
-        <td>{issue.priority}</td>
+        <td>{contact.priority}</td>
         {/* Added Placeholders for  Familiarity and Context */}
         {/* <td>{issue.familiarity}</td> */}
-        <td>{issue.context}</td>
+        <td>{contact.contextSpace}</td>
         <td>
           {/* <Link to={`/edit/${issue.id}`} > */}
             {/* TO DO: (suggestion) I think we might need an onclick handler on the button, so that we can differentiate the behavior
@@ -83,7 +81,7 @@ class IssueRowPlain extends React.Component {
             {/* TO DO: figure out how to make onClick work with link. Now correct graphql mutation,
              but the button does not redirect. I tried with with and without link container*/}
             <OverlayTrigger delayShow={1000} overlay={editTooltip} >
-              <Button bsStyle="primary" onClick={(e)=>onReconnectClick(e, issue.id)}>
+              <Button bsStyle="primary" onClick={(e)=>onReconnectClick(e, contact.id)}>
                 Reconnect!
               </Button>
             </OverlayTrigger>
@@ -111,15 +109,15 @@ class IssueRowPlain extends React.Component {
   }
 }
 
-IssueRowPlain.contextType = UserContext;
-const IssueRow = withRouter(IssueRowPlain);
-delete IssueRow.contextType;
+ContactRowPlain.contextType = UserContext;
+const ContactRow = withRouter(ContactRowPlain);
+delete ContactRow.contextType;
 
-export default function IssueTable({ issues, reconnectContact, deleteIssue }) {
-  const issueRows = issues.map((issue, index) => (
-    <IssueRow
-      key={issue.id}
-      issue={issue}
+export default function IssueTable({ contacts, reconnectContact }) {
+  const contactRows = contacts.map((contact, index) => (
+    <ContactRow
+      key={contact.id}
+      contact={contact}
       reconnectContact={reconnectContact}
       // deleteIssue={deleteIssue}
       index={index}
@@ -152,7 +150,7 @@ export default function IssueTable({ issues, reconnectContact, deleteIssue }) {
         </tr>
       </thead>
       <tbody>
-        {issueRows}
+        {contactRows}
       </tbody>
     </Table>
   );
