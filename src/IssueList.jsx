@@ -141,28 +141,6 @@ class IssueList extends React.Component {
     }
   }
 
-  async closeIssue(index) {
-    const query = `mutation issueClose($id: Int!) {
-      issueUpdate(id: $id, changes: { status: Closed }) {
-        id title status owner
-        effort created due description
-      }
-    }`;
-    const { issues } = this.state;
-    const { showError } = this.props;
-    const data = await graphQLFetch(query, { id: issues[index].id },
-      showError);
-    if (data) {
-      this.setState((prevState) => {
-        const newList = [...prevState.issues];
-        newList[index] = data.issueUpdate;
-        return { issues: newList };
-      });
-    } else {
-      this.loadData();
-    }
-  }
-
   // Implemented OFF status DONE: Implemented On/Off in the same button with success message
   // ^ agreed, toggle button may need some more work, as we may need to pass on props
   // to IssueTable to keep track of the activeStatus and call toggleActiveStatus or reactivateContact 
@@ -216,38 +194,6 @@ class IssueList extends React.Component {
     }
   }
 
-  async deleteIssue(index) {
-    const query = `mutation issueDelete($id: Int!) {
-      issueDelete(id: $id)
-    }`;
-    const { issues } = this.state;
-    const { location: { pathname, search }, history } = this.props;
-    const { showSuccess, showError } = this.props;
-    const { id } = issues[index];
-    const data = await graphQLFetch(query, { id }, showError);
-    if (data && data.issueDelete) {
-      this.setState((prevState) => {
-        const newList = [...prevState.issues];
-        if (pathname === `/issues/${id}`) {
-          history.push({ pathname: '/issues', search });
-        }
-        newList.splice(index, 1);
-        return { issues: newList };
-      });
-      const undoMessage = (
-        <span>
-          {`Deleted issue ${id} successfully.`}
-          <Button bsStyle="link" onClick={() => this.restoreIssue(id)}>
-            UNDO
-          </Button>
-        </span>
-      );
-      showSuccess(undoMessage);
-    } else {
-      this.loadData();
-    }
-  }
-
   // Implemented Delete Contact
   async deleteContact(index) {
     const query = `mutation contactDelete($id: Int!) {
@@ -290,18 +236,6 @@ class IssueList extends React.Component {
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
       showSuccess(`Contact ${id} restored successfully.`);
-      this.loadData();
-    }
-  }
-
-  async restoreIssue(id) {
-    const query = `mutation issueRestore($id: Int!) {
-      issueRestore(id: $id)
-    }`;
-    const { showSuccess, showError } = this.props;
-    const data = await graphQLFetch(query, { id }, showError);
-    if (data) {
-      showSuccess(`Issue ${id} restored successfully.`);
       this.loadData();
     }
   }
