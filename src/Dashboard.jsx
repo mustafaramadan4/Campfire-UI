@@ -87,7 +87,7 @@ class Dashboard extends React.Component {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
-          activeStatus}
+          activeStatus lastContactDate nextContactDate notes }
         pages
       }
       contact(id: $selectedId) @include (if : $hasSelection) {

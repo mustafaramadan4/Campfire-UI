@@ -116,7 +116,22 @@ const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
 export default function ReconnectTable({ issues, reconnectContact }) {
-  const issueRows = issues.map((issue, index) => (
+  // TO DO: only show issues that are due "today"
+  // FIXED: The contact's any date object field shows up as undefined - idk what's causing that issue.
+  // Othe fields are recognized okay. so the passed on issues object don't have the notes and the Dates as fields. Is this a problem in Dashboard?
+  // It was a problem in Dashboard, the query wasn't returning the dates.
+  const testissues = issues.filter((issue) => (
+    // TO DO: comparing the nextContactDate and current time to see if the difference is less than 10 days.
+    // looks like it's working.
+    issue.nextContactDate !== null && ((issue.nextContactDate.getTime() - Date.now())/(1000 * 60 * 60 * 24) < 10)
+    ));
+  
+  function print(item) {
+    console.log(item.name + "'s nextContactDate is: " + item.nextContactDate);
+  }
+  testissues.forEach(print);
+
+  const issueRows = testissues.map((issue, index) => (
     <IssueRow
       key={issue.id}
       issue={issue}
