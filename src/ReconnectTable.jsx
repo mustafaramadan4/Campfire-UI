@@ -21,50 +21,22 @@ class IssueRowPlain extends React.Component {
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Re-Connect</Tooltip>
     );
-    // const closeTooltip = (
-    //   <Tooltip id="close-tooltip" placement="top">Close Issue</Tooltip>
-    // );
-    // const deleteTooltip = (
-    //   <Tooltip id="delete-tooltip" placement="top">Delete Issue</Tooltip>
-    // );
-
-  
-
-
-    // function onClose(e) {
-    //   e.preventDefault();
-    //   reconnect(index);
-    // }
-
+   
+    // TO DO: Hey I found like a really weird behavior, setting the lastDate onReconnectClick only works when it wants..LMAO
+    // it works sometimes but not other times and I think it's because of the index vs id? I see that the index captures the order in the table shown,
+    // and the id is just the id associated with the contact..but hmm
     function onReconnectClick(e, id) {
       e.preventDefault();
       reconnectContact(index);
-      console.log(id);
+      console.log("id is: " + id);
+      console.log("wait why is the date not changing for: " + index);
       //Redirect should work?!?!? wtf?
       // return <Redirect to={`/edit/${id}`}/>
-      window.location.href='/edit/' + id;
+      //window.location.href='/edit/' + id;
     }
-
-    // onReconnectClick = () => {
-    //   e.preventDefault();
-    //   reconnectContact(index);
-    //   this.props.history.push('/report')
-    // }
-
-    // function onDelete(e) {
-    //   e.preventDefault();
-    //   deleteIssue(index);
-    // }
 
     const tableRow = (
       <tr>
-        {/* <td>{issue.id}</td>
-        <td>{issue.status}</td>
-        <td>{issue.owner}</td>
-        <td>{issue.created.toDateString()}</td>
-        <td>{issue.effort}</td>
-        <td>{issue.due ? issue.due.toDateString() : ''}</td>
-        <td>{issue.title}</td> */}
         <td>{issue.name}</td>
         {/* <td>{issue.company}</td>
         <td>{issue.title}</td>
@@ -115,15 +87,17 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function ReconnectTable({ issues, reconnectContact }) {
+export default function ReconnectTable({ issues, reconnectContact, daysAhead }) {
+  console.log("daysAhead passsed on as props: " + daysAhead);
   // TO DO: only show issues that are due "today"
   // FIXED: The contact's any date object field shows up as undefined - idk what's causing that issue.
   // Othe fields are recognized okay. so the passed on issues object don't have the notes and the Dates as fields. Is this a problem in Dashboard?
   // It was a problem in Dashboard, the query wasn't returning the dates.
   const testissues = issues.filter((issue) => (
     // TO DO: comparing the nextContactDate and current time to see if the difference is less than 10 days.
-    // looks like it's working.
-    issue.nextContactDate !== null && ((issue.nextContactDate.getTime() - Date.now())/(1000 * 60 * 60 * 24) < 10)
+    // MORE: I let the Dashboard.jsx pass another props called daysAhead, so we can craete different instances of ReconnectTable with different days criteria,
+    // for example the first Table would render people to connect within the next 7 days, and the next one 15 days, or to whatever we will define.
+    issue.nextContactDate !== null && ((issue.nextContactDate.getTime() - Date.now())/(1000 * 60 * 60 * 24) < daysAhead)
     ));
   
   function print(item) {

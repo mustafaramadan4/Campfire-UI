@@ -220,7 +220,13 @@ class Dashboard extends React.Component {
         <ReconnectTable
           issues={contacts}
           reconnectContact={this.reconnectContact}
-          // deleteIssue={this.deleteIssue}
+          daysAhead={7}
+        />
+        <h2>More Upcoming contacts...</h2>
+        <ReconnectTable
+          issues={contacts}
+          reconnectContact={this.reconnectContact}
+          daysAhead={15}
         />
         <IssueDetail contact={selectedContact} />
         <Pagination>
