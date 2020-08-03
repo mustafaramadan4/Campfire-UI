@@ -134,6 +134,9 @@ class Dashboard extends React.Component {
   }
 
   async loadData() {
+    // TODO: loadData doesn't define data.contact so that we can set it to selectedContact,
+    // so it's just returing undefined causing the IssueDetail not to render.
+    // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
     const data = await Dashboard.fetchData(match, search, showError);
     if (data) {
