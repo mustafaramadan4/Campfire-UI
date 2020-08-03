@@ -101,7 +101,7 @@ export default function ReconnectTable({ issues, reconnectContact, daysAhead }) 
     ));
   
   function print(item) {
-    console.log(item.name + "'s nextContactDate is: " + item.nextContactDate);
+    console.log(item.name + "'s lastContactDate was: " + item.lastContactDate + " and nextContactDate is: " + item.nextContactDate);
   }
   testissues.forEach(print);
 
