@@ -36,13 +36,13 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date()};
+    const vars = { nextContactDate: new Date() };
     if (params.get('status')) vars.status = params.get('status');
 
-    const effortMin = parseInt(params.get('effortMin'), 10);
-    if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    const effortMax = parseInt(params.get('effortMax'), 10);
-    if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
+    // const effortMin = parseInt(params.get('effortMin'), 10);
+    // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
+    // const effortMax = parseInt(params.get('effortMax'), 10);
+    // if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
