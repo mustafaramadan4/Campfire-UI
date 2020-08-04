@@ -12,15 +12,18 @@ async function render(req, res) {
     route => matchPath(req.path, route),
   );
 
+  // Getting user Data to pass to initial Data in IssueList (first render)
+  const userData = await Page.fetchData(req.headers.cookie);
+
   let initialData;
   if (activeRoute && activeRoute.component.fetchData) {
     const match = matchPath(req.path, activeRoute);
     const index = req.url.indexOf('?');
     const search = index !== -1 ? req.url.substr(index) : null;
     initialData = await activeRoute.component
-      .fetchData(match, search, req.headers.cookie);
+      .fetchData(match, search, req.headers.cookie, userData.user);
   }
-  const userData = await Page.fetchData(req.headers.cookie);
+  // const userData = await Page.fetchData(req.headers.cookie);
 
   store.initialData = initialData;
   store.userData = userData;

@@ -2,6 +2,7 @@ import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import UserContext from './UserContext.js';
 
 import IssueFilter from './IssueFilter.jsx';
 import IssueTable from './IssueTable.jsx';
@@ -28,13 +29,16 @@ function PageLink({
 }
 
 class IssueList extends React.Component {
-  static async fetchData(match, search, showError) {
+  static async fetchData(match, search, showError, user) {
     /* The React Router supplies as part of props, an object called "location"
     * that includes a query string (in the field "search"). The JavaScript API
     * "URLSearchParams()" parses the provided query string.
     */
     const params = new URLSearchParams(search);
-    const vars = { hasSelection: false, selectedId: 0 };
+    // this takes the user data to extract the email ans use it to "filter"
+    const email = user.email;
+    // const vars = { ownerEmail: email, hasSelection: false, selectedId: 0 };
+    const vars = {ownerEmail: email, hasSelection: false, selectedId: 0 };
     // DONE: Implement vars for familiarity and frequency filters
     // params.get() method returns null if the parameter is not present,
     // so add a check before adding on to the vars defined above.
@@ -62,6 +66,7 @@ class IssueList extends React.Component {
     vars.page = page;
 
     const contactListQuery = `query contactList(
+      $ownerEmail: String
       $contactFrequency: frequency
       $priority: priority
       $familiarity: familiarity
@@ -71,6 +76,7 @@ class IssueList extends React.Component {
       $selectedId: Int!
       ) {
       contactList(
+        ownerEmail: $ownerEmail
         activeStatus: $activeStatus
         familiarity: $familiarity
         priority: $priority
@@ -127,8 +133,11 @@ class IssueList extends React.Component {
   }
 
   async loadData() {
+    // Getting user data from the context and passing to FetchData function
+    const user = this.context;
+    console.log(user);
     const { location: { search }, match, showError } = this.props;
-    const data = await IssueList.fetchData(match, search, showError);
+    const data = await IssueList.fetchData(match, search, showError, user);
     if (data) {
       this.setState({
         // changed to contactList query and contacts
@@ -242,6 +251,8 @@ class IssueList extends React.Component {
 
   render() {
     const { contacts } = this.state;
+    // const user = this.context;
+    // console.log(user);
     if (contacts == null) return null;
 
     const { selectedContact, pages } = this.state;
@@ -294,6 +305,8 @@ class IssueList extends React.Component {
     );
   }
 }
+
+IssueList.contextType = UserContext;
 
 const IssueListWithToast = withToast(IssueList);
 IssueListWithToast.fetchData = IssueList.fetchData;
