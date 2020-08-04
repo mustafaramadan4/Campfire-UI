@@ -50,7 +50,7 @@ class IssueFilter extends React.Component {
   }
 
   onChangeFamiliarity(e) {
-    this.setState({ familiarity: e.target.value, chagned: true });
+    this.setState({ familiarity: e.target.value, changned: true });
   }
 
   onChangeEffortMin(e) {
