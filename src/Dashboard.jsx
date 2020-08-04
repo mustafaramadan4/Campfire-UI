@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date() }; //, daysAhead: 30
+    const vars = { nextContactDate: new Date(), daysAhead: 30 };
     if (params.get('status')) vars.status = params.get('status');
     console.log("vars is: " + JSON.stringify(vars));
 
@@ -51,13 +51,13 @@ class Dashboard extends React.Component {
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
 
-    // SHHH: added nextcontacDate $daysAhead: Int daysAhead: $daysAhead
+    // SHHH: added nextcontacDate
     const contactListQuery = `query contactList(
       $page: Int
       $nextContactDate: GraphQLDate
-      
+      $daysAhead: Int
       ) {
-      contactList(page: $page, nextContactDate: $nextContactDate ) {
+      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
@@ -133,11 +133,14 @@ class Dashboard extends React.Component {
       }
     }`;
     const {contacts} = this.state;
-    const { showSuccess, showError } = this.props;
-    console.log("index is: " + index)
-    const data = await graphQLFetch(query, {id: index}, showError);
+    const { showError } = this.props;
+    const data = await graphQLFetch(query, {id: contacts[index].id}, showError);
     if (data) {
-      showSuccess(`Contact ${index} reconnected successfully.`)
+      this.setState((prevState) => {
+        const newList = [...prevState.contacts];
+        newList[index] = data.contactUpdate;
+        return { contacts: newList };
+      });
     } else {
       this.loadData();
     }
@@ -185,14 +188,14 @@ class Dashboard extends React.Component {
         <ReconnectTable
           issues={contacts}
           reconnectContact={this.reconnectContact}
-          daysAhead={15}
+          daysAhead={7}
         />
-        <h2>More Upcoming contacts...</h2>
+        {/* <h2>More Upcoming contacts...</h2>
         <ReconnectTable
           issues={contacts}
           reconnectContact={this.reconnectContact}
-          daysAhead={30}
-        />
+          daysAhead={15}
+        /> */}
         <IssueDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
