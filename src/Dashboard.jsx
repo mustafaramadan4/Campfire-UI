@@ -36,13 +36,9 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date() };
+    const vars = { nextContactDate: new Date(), daysAhead: 30 };
     if (params.get('status')) vars.status = params.get('status');
-
-    // const effortMin = parseInt(params.get('effortMin'), 10);
-    // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    // const effortMax = parseInt(params.get('effortMax'), 10);
-    // if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
+    console.log("vars is: " + JSON.stringify(vars));
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -55,37 +51,13 @@ class Dashboard extends React.Component {
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
 
-    // const query = `query issueList(
-    //   $status: StatusType
-    //   $effortMin: Int
-    //   $effortMax: Int
-    //   $hasSelection: Boolean!
-    //   $selectedId: Int!
-    //   $page: Int
-    // ) {
-    //   issueList(
-    //     status: $status
-    //     effortMin: $effortMin
-    //     effortMax: $effortMax
-    //     page: $page
-    //   ) {
-    //     issues {
-    //       id title status owner
-    //       created effort due
-    //     }
-    //     pages
-    //   }
-    //   issue(id: $selectedId) @include (if : $hasSelection) {
-    //     id description
-    //   }
-    // }`;
-
     // SHHH: added nextcontacDate
     const contactListQuery = `query contactList(
       $page: Int
       $nextContactDate: GraphQLDate
+      $daysAhead: Int
       ) {
-      contactList(page: $page, nextContactDate: $nextContactDate) {
+      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
@@ -173,9 +145,6 @@ class Dashboard extends React.Component {
       this.loadData();
     }
   }
-
-
-
 
   render() {
     const { contacts } = this.state;
