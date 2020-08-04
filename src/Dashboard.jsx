@@ -33,7 +33,10 @@ function PageLink({
 class Dashboard extends React.Component {
   static async fetchData(match, search, showError) {
     const params = new URLSearchParams(search);
-    const vars = { hasSelection: false, selectedId: 0 };
+    //SHH
+    // const vars = { hasSelection: false, selectedId: 0 };
+    // Upcoming date less than or equal to today
+    const vars = { nextContactDate: new Date()};
     if (params.get('status')) vars.status = params.get('status');
 
     const effortMin = parseInt(params.get('effortMin'), 10);
@@ -77,21 +80,17 @@ class Dashboard extends React.Component {
     //   }
     // }`;
 
+    // SHHH: added nextcontacDate
     const contactListQuery = `query contactList(
-      $activeStatus: Boolean
       $page: Int
-      $hasSelection: Boolean!
-      $selectedId: Int!
+      $nextContactDate: GraphQLDate
       ) {
-      contactList(page:$page, activeStatus: $activeStatus) {
+      contactList(page: $page, nextContactDate: $nextContactDate) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
           activeStatus lastContactDate nextContactDate notes }
         pages
-      }
-      contact(id: $selectedId) @include (if : $hasSelection) {
-        id notes
       }
     }`;
 
@@ -222,12 +221,12 @@ class Dashboard extends React.Component {
           reconnectContact={this.reconnectContact}
           daysAhead={7}
         />
-        <h2>More Upcoming contacts...</h2>
+        {/* <h2>More Upcoming contacts...</h2>
         <ReconnectTable
           issues={contacts}
           reconnectContact={this.reconnectContact}
           daysAhead={15}
-        />
+        /> */}
         <IssueDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
