@@ -1,3 +1,4 @@
+import Welcome from  './Welcome.jsx';
 import Dashboard from './Dashboard.jsx';
 import IssueList from './IssueList.jsx';
 import IssueReport from './IssueReport.jsx';
@@ -7,6 +8,7 @@ import NotFound from './NotFound.jsx';
 import UserContext from './UserContext.js';
 
 const routes = [
+  { path: '/welcome', component: Welcome },
   { path: '/dashboard', component: Dashboard },
   { path: '/issues/:id?', component: IssueList },
   { path: '/edit/:id', component: IssueEdit },
