@@ -7,7 +7,7 @@ export default function Contents() {
   return (
     <Switch>
       {/* Changed redirect to "/dashboard" for now, maybe change to "/login" later*/}
-      <Redirect exact from="/" to="/dashboard" />
+      <Redirect exact from="/" to="/welcome" />
       {routes.map(attrs => <Route {...attrs} key={attrs.path} />)}
     </Switch>
   );
