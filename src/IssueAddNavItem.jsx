@@ -37,6 +37,7 @@ class IssueAddNavItem extends React.Component {
       phone: form.phone.value,
       LinkedIn: form.LinkedIn.value,
       lastContactDate: new Date(),
+      ownerEmail: this.props.user.email,
     };
     /* DONE: the add form handles submit, the query string has been updated with the mutation api call to contactAdd. 
     */
@@ -46,12 +47,6 @@ class IssueAddNavItem extends React.Component {
       id name email phone LinkedIn lastContactDate
     }
   }`;
-
-    // const query = `mutation issueAdd($issue: IssueInputs!) {
-    //   issueAdd(issue: $issue) {
-    //     id
-    //   }
-    // }`;
 
     const { showError } = this.props;
     const data = await graphQLFetch(query, { contact }, showError);
