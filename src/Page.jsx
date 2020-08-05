@@ -35,7 +35,7 @@ function NavBar({ user, onUserChange }) {
           <NavItem>Dashboard</NavItem>
         </LinkContainer>
         <LinkContainer to="/issues">
-          <NavItem>Contacts</NavItem>
+          <NavItem >Contacts</NavItem>
         </LinkContainer>
         <LinkContainer to="/report">
           <NavItem>Report</NavItem>
@@ -118,7 +118,7 @@ export default class Page extends React.Component {
         <NavBar user={user} onUserChange={this.onUserChange} />
         <Grid fluid>
           <UserContext.Provider value={user}>
-            <Contents />
+            <Contents user={user}/>
           </UserContext.Provider>
         </Grid>
         <Footer />

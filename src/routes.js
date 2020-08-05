@@ -5,7 +5,6 @@ import IssueReport from './IssueReport.jsx';
 import IssueEdit from './IssueEdit.jsx';
 import About from './About.jsx';
 import NotFound from './NotFound.jsx';
-import UserContext from './UserContext.js';
 
 const routes = [
   { path: '/welcome', component: Welcome },
