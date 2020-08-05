@@ -107,6 +107,7 @@ const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
 export default function IssueTable({ contacts, toggleActiveStatus, deleteContact }) {
+  console.log(contacts);
   const issueRows = contacts.map((contact, index) => (
     <IssueRow
       key={contact.id}

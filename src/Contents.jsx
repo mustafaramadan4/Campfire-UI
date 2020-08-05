@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './routes.js';
 
-export default function Contents() {
+export default function Contents({user}) {
   return (
     <Switch>
       {/* Changed redirect to "/dashboard" for now, maybe change to "/login" later*/}

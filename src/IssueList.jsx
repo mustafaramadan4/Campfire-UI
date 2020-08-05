@@ -99,17 +99,19 @@ class IssueList extends React.Component {
     return data;
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const initialData = store.initialData || { contactList: {} };
     const {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
     delete store.initialData;
+    const user = this.context;
     this.state = {
       contacts,
       selectedContact,
       pages,
+      user,
     };
     // this.closeIssue = this.closeIssue.bind(this);
     this.toggleActiveStatus = this.toggleActiveStatus.bind(this);
@@ -121,13 +123,18 @@ class IssueList extends React.Component {
     if (contacts == null) this.loadData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const {user} = prevState;
+    const newContext = this.context;
+    // if(user !== newContext) {
+    //   this.loadData();
+    // }
     const {
       location: { search: prevSearch },
       match: { params: { id: prevId } },
     } = prevProps;
     const { location: { search }, match: { params: { id } } } = this.props;
-    if (prevSearch !== search || prevId !== id) {
+    if (prevSearch !== search || prevId !== id || user !== newContext ) {
       this.loadData();
     }
   }
@@ -135,7 +142,7 @@ class IssueList extends React.Component {
   async loadData() {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
-    console.log(user);
+    console.log("CALLING FROM LOAD DATA" , user);
     const { location: { search }, match, showError } = this.props;
     const data = await IssueList.fetchData(match, search, showError, user);
     if (data) {
@@ -146,6 +153,7 @@ class IssueList extends React.Component {
         selectedContact: data.contact,
         // changed to contactList query and contacts
         pages: data.contactList.pages,
+        user: user,
       });
     }
   }
@@ -249,11 +257,33 @@ class IssueList extends React.Component {
     }
   }
 
+  changeContext(oldContext){
+    console.log("CALLING FROM CHANGE CONTEXT OLD: ", oldContext);
+    const newContext = this.context;
+    console.log("CALLLING FROM CHANGE CONTEXT NEW: :", newContext);
+    if(newContext !== oldContext) {
+      this.loadData();
+    }
+  }
+
   render() {
+    // const {user} = this.state;
+    const user = this.context;
+    const disabled = !user.signedIn;
+
+    // this.changeContext(user);
+
+    // if(email !== null){
+    //   this.loadData();
+    // }
+
     const { contacts } = this.state;
-    // const user = this.context;
-    // console.log(user);
-    if (contacts == null) return null;
+
+    if (contacts == null || disabled) {
+      return null;
+    }
+
+    // if (disabled) return null;
 
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
@@ -308,7 +338,7 @@ class IssueList extends React.Component {
 
 IssueList.contextType = UserContext;
 
-const IssueListWithToast = withToast(IssueList);
+const IssueListWithToast = withToast(IssueList, UserContext);
 IssueListWithToast.fetchData = IssueList.fetchData;
 
 export default IssueListWithToast;
