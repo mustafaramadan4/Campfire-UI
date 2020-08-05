@@ -233,7 +233,8 @@ class Dashboard extends React.Component {
   }
 }
 
-const DashListWithToast = withToast(Dashboard);
+Dashboard.contextType = UserContext;
+const DashListWithToast = withToast(Dashboard, UserContext);
 DashListWithToast.fetchData = Dashboard.fetchData;
 
 export default DashListWithToast;
