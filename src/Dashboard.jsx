@@ -2,6 +2,7 @@ import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import UserContext from './UserContext.js';
 
 import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
@@ -30,8 +31,9 @@ function PageLink({
 
 
 class Dashboard extends React.Component {
-  static async fetchData(match, search, showError) {
+  static async fetchData(match, search, showError, user) {
     const params = new URLSearchParams(search);
+    const email = user.email;
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
@@ -90,10 +92,12 @@ class Dashboard extends React.Component {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
     delete store.initialData;
+    const user = this.context;
     this.state = {
       contacts,
       selectedContact,
       pages,
+      user,
     };
     this.reconnectContact = this.reconnectContact.bind(this);
   }
