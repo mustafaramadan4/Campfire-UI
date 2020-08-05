@@ -166,8 +166,12 @@ class Dashboard extends React.Component {
 
   render() {
     const { contacts } = this.state;
-    if (contacts == null) return null;
-
+    const user = this.context;
+    const disabled = !user.signedIn;
+    if (contacts == null || disabled) {
+      return null;
+    }
+  
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
