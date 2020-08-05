@@ -55,7 +55,11 @@ class DateFilter extends React.Component {
     if (dateRange) {
       console.log("dateRange selected from dropdown: ", dateRange);
       params.set('dateRange', dateRange);
-    }
+    } 
+    // else {
+    //   console.log("default dateRange(should be empty): ", dateRange);
+    //   params.set('dateRange', "today");
+    // }
 
     const search = params.toString() ? `?${params.toString()}` : '';
     history.push({ pathname: urlBase, search });
@@ -76,7 +80,8 @@ class DateFilter extends React.Component {
             >
               <option value="">Today</option>
               <option value="thisWeek">This Week</option>
-              <option value="nextWeek">Next Week</option>
+              <option value="twoWeek">2 Weeks</option>
+              <option value="fourWeek">30 days</option>
             </FormControl>
           </FormGroup>
         </Col>

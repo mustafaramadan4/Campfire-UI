@@ -35,8 +35,21 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date(), daysAhead: 30 };
-    if (params.get('status')) vars.status = params.get('status');
+    const vars = { nextContactDate: new Date(), daysAhead: 3 };
+    // set the "default" daysAhead as whatever we define above,
+    // which will be the case when there's no dateRange params passed on,
+    // and change the value if there's urlParams defined by applying the filter
+    // in applyFilter() in DateFilter.jsx
+    if (params.get('dateRange')) {
+      const dateRange = params.get('dateRange');
+      if (dateRange === "thisWeek") {
+        vars.daysAhead = 7;
+      } else if (dateRange === "twoWeek") {
+        vars.daysAhead = 14;
+      } else if (dateRange === "fourWeek") {
+        vars.daysAhead = 30;
+      }
+    }
     console.log("vars is: " + JSON.stringify(vars));
 
     const { params: { id } } = match;
@@ -83,8 +96,6 @@ class Dashboard extends React.Component {
       pages,
     };
     this.reconnectContact = this.reconnectContact.bind(this);
-    // this.closeIssue = this.closeIssue.bind(this);
-    // this.deleteIssue = this.deleteIssue.bind(this);
   }
 
   componentDidMount() {
@@ -120,7 +131,6 @@ class Dashboard extends React.Component {
       });
     }
   }
-
 
   async reconnectContact(index) {
     const query = `mutation contactReconnect($id: Int!) {
