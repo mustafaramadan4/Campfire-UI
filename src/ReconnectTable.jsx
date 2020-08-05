@@ -86,7 +86,7 @@ const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
 export default function ReconnectTable({ issues, reconnectContact, daysAhead }) {
-  console.log("daysAhead passsed on as props: " + daysAhead);
+  // console.log("daysAhead passsed on as props: " + daysAhead);
   // TO DO: only show issues that are due "today"
   // FIXED: The contact's any date object field shows up as undefined - idk what's causing that issue.
   // Othe fields are recognized okay. so the passed on issues object don't have the notes and the Dates as fields. Is this a problem in Dashboard?

@@ -3,8 +3,7 @@ import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import IssueFilter from './IssueFilter.jsx';
-// import IssueTable from './IssueTable.jsx';
+import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
 import IssueDetail from './IssueDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -36,8 +35,21 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date(), daysAhead: 30 };
-    if (params.get('status')) vars.status = params.get('status');
+    const vars = { nextContactDate: new Date(), daysAhead: 3 };
+    // set the "default" daysAhead as whatever we define above,
+    // which will be the case when there's no dateRange params passed on,
+    // and change the value if there's urlParams defined by applying the filter
+    // in applyFilter() in DateFilter.jsx
+    if (params.get('dateRange')) {
+      const dateRange = params.get('dateRange');
+      if (dateRange === "thisWeek") {
+        vars.daysAhead = 7;
+      } else if (dateRange === "twoWeek") {
+        vars.daysAhead = 14;
+      } else if (dateRange === "fourWeek") {
+        vars.daysAhead = 30;
+      }
+    }
     console.log("vars is: " + JSON.stringify(vars));
 
     const { params: { id } } = match;
@@ -84,8 +96,6 @@ class Dashboard extends React.Component {
       pages,
     };
     this.reconnectContact = this.reconnectContact.bind(this);
-    // this.closeIssue = this.closeIssue.bind(this);
-    // this.deleteIssue = this.deleteIssue.bind(this);
   }
 
   componentDidMount() {
@@ -121,7 +131,6 @@ class Dashboard extends React.Component {
       });
     }
   }
-
 
   async reconnectContact(index) {
     const query = `mutation contactReconnect($id: Int!) {
@@ -174,14 +183,14 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         {/* TO DO: DECIDE IF WE WILL HAVE FILTER ON DASHBOARD */}
-        {/* <Panel>
+        <Panel>
           <Panel.Heading>
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
-          <Panel.Body collapsible>
-            <IssueFilter urlBase="/issues" />
+          <Panel.Body>
+            <DateFilter urlBase="/dashboard" />
           </Panel.Body>
-        </Panel> */}
+        </Panel>
         <h1>
           Reconnect with these people next!
         </h1>
