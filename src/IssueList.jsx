@@ -105,7 +105,10 @@ class IssueList extends React.Component {
     const {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
+    console.log("CONTACT LIST FROM CONSTRUCTOR: ", contacts);
     delete store.initialData;
+    const _isMounted = false;
+    console.log("CONTEXT FROM CONSTRUCTOR: ", this.context);
     const user = this.context;
     this.state = {
       contacts,
@@ -119,23 +122,44 @@ class IssueList extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     const { contacts } = this.state;
-    if (contacts == null) this.loadData();
+    if (this._isMounted) {
+      console.log("CALLING LOAD DATA FROM COMPONENT DID MOUNT");
+      console.log("CONTACTS FROM DID MOUNT:", contacts);
+      if (contacts == null) this.loadData();
+    }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {user} = prevState;
-    const newContext = this.context;
-    // if(user !== newContext) {
-    //   this.loadData();
-    // }
-    const {
-      location: { search: prevSearch },
-      match: { params: { id: prevId } },
-    } = prevProps;
-    const { location: { search }, match: { params: { id } } } = this.props;
-    if (prevSearch !== search || prevId !== id || user !== newContext ) {
-      this.loadData();
+  componentWillUnmount() {
+    console.log("COMPONENT WILL UNMOUNT");
+    this._isMounted = false;
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log("_Mounted: ", this._isMounted);
+    if (this._isMounted) {
+      console.log("STILL MOUNTED");
+      const {user} = this.state;
+      const newContext = this.context;
+      // if(user !== newContext) {
+      //   this.loadData();
+      // }
+      const {
+        location: { search: prevSearch },
+        match: { params: { id: prevId } },
+      } = prevProps;
+      const { location: { search }, match: { params: { id } } } = this.props;
+      if (prevSearch !== search || prevId !== id || user !== newContext ) {
+        console.log("CALLING LOAD DATA FROM COMPONENT DID UPDATE");
+        console.log("FROM LOAD DATA OLD SEARCH: ", prevSearch);
+        console.log("FROM LOAD DATA NEW SEARCH: ", search);
+        console.log("FROM LOAD DATA OLD PREV ID: ", prevId);
+        console.log("FROM LOAD DATA OLD NEW ID: ", id);
+        console.log("FROM LOAD DATA OLD USER: ", user);
+        console.log("FROM LOAD DATA NEW USER: ", newContext);
+        this.loadData();
+      }
     }
   }
 
@@ -145,7 +169,8 @@ class IssueList extends React.Component {
     console.log("CALLING FROM LOAD DATA" , user);
     const { location: { search }, match, showError } = this.props;
     const data = await IssueList.fetchData(match, search, showError, user);
-    if (data) {
+    console.log("FETCHED DATA: ", data);
+    if (this._isMounted && data) {
       this.setState({
         // changed to contactList query and contacts
         contacts: data.contactList.contacts,
@@ -197,6 +222,7 @@ class IssueList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
         newList[index] = data.contactUpdate;
+        console.log("CALLING LOAD DATA FROM TOGGLE SUCCESS");
         this.loadData()
         return { contacts: newList };
       });
@@ -207,6 +233,7 @@ class IssueList extends React.Component {
       );
       showSuccess(actionMessage);
     } else {
+      console.log("CALLING LOAD DATA FROM TOGGLE NO DATA");
       this.loadData();
     }
   }
@@ -240,6 +267,7 @@ class IssueList extends React.Component {
       );
       showSuccess(undoMessage);
     } else {
+      console.log("CALLING LOAD DATA FROM DELETE CONTACT");
       this.loadData();
     }
   }
@@ -253,18 +281,19 @@ class IssueList extends React.Component {
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
       showSuccess(`Contact ${id} restored successfully.`);
+      console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
       this.loadData();
     }
   }
 
-  changeContext(oldContext){
-    console.log("CALLING FROM CHANGE CONTEXT OLD: ", oldContext);
-    const newContext = this.context;
-    console.log("CALLLING FROM CHANGE CONTEXT NEW: :", newContext);
-    if(newContext !== oldContext) {
-      this.loadData();
-    }
-  }
+  // changeContext(oldContext){
+  //   console.log("CALLING FROM CHANGE CONTEXT OLD: ", oldContext);
+  //   const newContext = this.context;
+  //   console.log("CALLLING FROM CHANGE CONTEXT NEW: :", newContext);
+  //   if(newContext !== oldContext) {
+  //     this.loadData();
+  //   }
+  // }
 
   render() {
     // const {user} = this.state;
@@ -338,7 +367,7 @@ class IssueList extends React.Component {
 
 IssueList.contextType = UserContext;
 
-const IssueListWithToast = withToast(IssueList, UserContext);
+const IssueListWithToast = withToast(IssueList);
 IssueListWithToast.fetchData = IssueList.fetchData;
 
 export default IssueListWithToast;

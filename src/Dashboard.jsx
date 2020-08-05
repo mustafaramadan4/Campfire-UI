@@ -2,6 +2,7 @@ import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import UserContext from './UserContext.js';
 
 import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
@@ -30,8 +31,9 @@ function PageLink({
 
 
 class Dashboard extends React.Component {
-  static async fetchData(match, search, showError) {
+  static async fetchData(match, search, showError, user) {
     const params = new URLSearchParams(search);
+    const email = user.email;
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
@@ -90,10 +92,12 @@ class Dashboard extends React.Component {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
     delete store.initialData;
+    const user = this.context;
     this.state = {
       contacts,
       selectedContact,
       pages,
+      user,
     };
     this.reconnectContact = this.reconnectContact.bind(this);
   }
@@ -103,13 +107,16 @@ class Dashboard extends React.Component {
     if (contacts == null) this.loadData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const {user} = prevState;
+    const newContext = this.context;
+
     const {
       location: { search: prevSearch },
       match: { params: { id: prevId } },
     } = prevProps;
     const { location: { search }, match: { params: { id } } } = this.props;
-    if (prevSearch !== search || prevId !== id) {
+    if (prevSearch !== search || prevId !== id || user !== newContext ) {
       this.loadData();
     }
   }
@@ -119,7 +126,8 @@ class Dashboard extends React.Component {
     // so it's just returing undefined causing the IssueDetail not to render.
     // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
-    const data = await Dashboard.fetchData(match, search, showError);
+    const user= this.context;
+    const data = await Dashboard.fetchData(match, search, showError, user);
     if (data) {
       this.setState({
         // changed to contactList query and contacts
@@ -128,6 +136,7 @@ class Dashboard extends React.Component {
         selectedContact: data.contact,
         // changed to contactList query and contacts
         pages: data.contactList.pages,
+        user: user,
       });
     }
   }
@@ -157,8 +166,12 @@ class Dashboard extends React.Component {
 
   render() {
     const { contacts } = this.state;
-    if (contacts == null) return null;
-
+    const user = this.context;
+    const disabled = !user.signedIn;
+    if (contacts == null || disabled) {
+      return null;
+    }
+  
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
@@ -220,7 +233,8 @@ class Dashboard extends React.Component {
   }
 }
 
-const DashListWithToast = withToast(Dashboard);
+Dashboard.contextType = UserContext;
+const DashListWithToast = withToast(Dashboard, UserContext);
 DashListWithToast.fetchData = Dashboard.fetchData;
 
 export default DashListWithToast;
