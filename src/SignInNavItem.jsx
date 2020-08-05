@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 
 import withToast from './withToast.jsx';
+import { withRouter } from 'react-router-dom';
 
 class SigninNavItem extends React.Component {
   constructor(props) {
@@ -54,7 +55,10 @@ class SigninNavItem extends React.Component {
       const { signedIn, givenName, email } = result;
 
       const { onUserChange } = this.props;
-      onUserChange({ signedIn, givenName, email });
+      await onUserChange({ signedIn, givenName, email });
+      const {history, user} = this.props;
+      if(user.signedIn) history.push('/Dashboard');
+      // history.push({pathname: '/Dashboard', state:{result}});
     } catch (error) {
       showError(`Error signing into the app: ${error}`);
     }
@@ -71,7 +75,10 @@ class SigninNavItem extends React.Component {
       const auth2 = window.gapi.auth2.getAuthInstance();
       await auth2.signOut();
       const { onUserChange } = this.props;
-      onUserChange({ signedIn: false, givenName: '', email: '' });
+      await onUserChange({ signedIn: false, givenName: '', email: '' });
+      const {history, user} = this.props;
+      console.log(user);
+      if(!user.signedIn) history.push('/welcome');
     } catch (error) {
       showError(`Error signing out: ${error}`);
     }
@@ -129,4 +136,4 @@ class SigninNavItem extends React.Component {
     );
   }
 }
-export default withToast(SigninNavItem);
+export default withRouter(withToast(SigninNavItem));
