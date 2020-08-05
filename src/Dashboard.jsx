@@ -3,8 +3,7 @@ import URLSearchParams from 'url-search-params';
 import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import IssueFilter from './IssueFilter.jsx';
-// import IssueTable from './IssueTable.jsx';
+import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
 import IssueDetail from './IssueDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -174,14 +173,14 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         {/* TO DO: DECIDE IF WE WILL HAVE FILTER ON DASHBOARD */}
-        {/* <Panel>
+        <Panel>
           <Panel.Heading>
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
-          <Panel.Body collapsible>
-            <IssueFilter urlBase="/issues" />
+          <Panel.Body>
+            <DateFilter urlBase="/dashboard" />
           </Panel.Body>
-        </Panel> */}
+        </Panel>
         <h1>
           Reconnect with these people next!
         </h1>
