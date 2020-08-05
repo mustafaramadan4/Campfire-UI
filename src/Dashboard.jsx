@@ -126,7 +126,8 @@ class Dashboard extends React.Component {
     // so it's just returing undefined causing the IssueDetail not to render.
     // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
-    const data = await Dashboard.fetchData(match, search, showError);
+    const user= this.context;
+    const data = await Dashboard.fetchData(match, search, showError, user);
     if (data) {
       this.setState({
         // changed to contactList query and contacts
@@ -135,6 +136,7 @@ class Dashboard extends React.Component {
         selectedContact: data.contact,
         // changed to contactList query and contacts
         pages: data.contactList.pages,
+        user: user,
       });
     }
   }
