@@ -107,13 +107,16 @@ class Dashboard extends React.Component {
     if (contacts == null) this.loadData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const {user} = prevState;
+    const newContext = this.context;
+
     const {
       location: { search: prevSearch },
       match: { params: { id: prevId } },
     } = prevProps;
     const { location: { search }, match: { params: { id } } } = this.props;
-    if (prevSearch !== search || prevId !== id) {
+    if (prevSearch !== search || prevId !== id || user !== newContext ) {
       this.loadData();
     }
   }
