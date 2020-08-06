@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
     //SHH
     // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date(), daysAhead: 3 };
+    const vars = { nextContactDate: new Date(), daysAhead: 3, ownerEmail :email };
     // set the "default" daysAhead as whatever we define above,
     // which will be the case when there's no dateRange params passed on,
     // and change the value if there's urlParams defined by applying the filter
@@ -70,8 +70,9 @@ class Dashboard extends React.Component {
       $page: Int
       $nextContactDate: GraphQLDate
       $daysAhead: Int
+      $ownerEmail: String
       ) {
-      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead) {
+      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead, ownerEmail: $ownerEmail) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
