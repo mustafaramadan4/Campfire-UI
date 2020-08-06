@@ -37,9 +37,9 @@ function NavBar({ user, onUserChange }) {
         <LinkContainer to="/issues">
           <NavItem >Contacts</NavItem>
         </LinkContainer>
-        <LinkContainer to="/report">
+        {/* <LinkContainer to="/report">
           <NavItem>Report</NavItem>
-        </LinkContainer>
+        </LinkContainer> */}
       </Nav>
       <Col sm={5}>
         <Navbar.Form>

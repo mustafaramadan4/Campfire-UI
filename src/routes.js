@@ -11,7 +11,7 @@ const routes = [
   { path: '/dashboard', component: Dashboard },
   { path: '/issues/:id?', component: IssueList },
   { path: '/edit/:id', component: IssueEdit },
-  { path: '/report', component: IssueReport },
+  // { path: '/report', component: IssueReport },
   { path: '/about', component: About },
   { path: '*', component: NotFound },
 ];
