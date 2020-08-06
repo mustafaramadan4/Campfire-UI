@@ -25,12 +25,12 @@ function NavBar({ user, onUserChange }) {
     <Navbar fluid>
       <Navbar.Header>
         {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
-          <Navbar.Brand><Link to="/"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
+          <Navbar.Brand><Link to="/dashboard"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
       </Navbar.Header>
       <Nav>
-        <LinkContainer exact to="/">
+        {/* <LinkContainer exact to="/">
           <NavItem>Home</NavItem>
-        </LinkContainer>
+        </LinkContainer> */}
         <LinkContainer to="/dashboard">
           <NavItem>Dashboard</NavItem>
         </LinkContainer>
@@ -43,7 +43,7 @@ function NavBar({ user, onUserChange }) {
       </Nav>
       <Col sm={5}>
         <Navbar.Form>
-          <Search />
+          <Search user={user}/>
         </Navbar.Form>
       </Col>
       <Nav pullRight>
