@@ -34,10 +34,14 @@ class Dashboard extends React.Component {
   static async fetchData(match, search, showError, user) {
     const params = new URLSearchParams(search);
     const email = user.email;
-    //SHH
-    // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date(), daysAhead: 3, ownerEmail :email };
+    const vars = {
+      hasSelection: false, 
+      selectedId: 0,
+      nextContactDate: new Date(),
+      daysAhead: 3,
+      ownerEmail: email
+    };
     // set the "default" daysAhead as whatever we define above,
     // which will be the case when there's no dateRange params passed on,
     // and change the value if there's urlParams defined by applying the filter
@@ -71,23 +75,34 @@ class Dashboard extends React.Component {
       $nextContactDate: GraphQLDate
       $daysAhead: Int
       $ownerEmail: String
+      $hasSelection: Boolean!
+      $selectedId: Int!
       ) {
-      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead, ownerEmail: $ownerEmail) {
+      contactList(
+        page: $page
+        nextContactDate: $nextContactDate
+        daysAhead: $daysAhead
+        ownerEmail: $ownerEmail
+        ) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
           activeStatus lastContactDate nextContactDate notes }
         pages
       }
+      contact(id: $selectedId) @include (if : $hasSelection) {
+        id name LinkedIn phone contextSpace activeStatus lastContactDate nextContactDate notes
+      }
     }`;
 
     // modified to contact list query
     const data = await graphQLFetch(contactListQuery, vars, showError);
+    console.log("[Dashboard]FETCHDATA:", data);
     return data;
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const initialData = store.initialData || { contactList: {} };
     const {
       contactList: { contacts, pages }, contact: selectedContact,
@@ -100,6 +115,7 @@ class Dashboard extends React.Component {
       pages,
       user,
     };
+    console.log("Dashboard selectedcontact CONSTRUCTOR: ", selectedContact);
     this.reconnectContact = this.reconnectContact.bind(this);
   }
 
@@ -127,6 +143,7 @@ class Dashboard extends React.Component {
     // so it's just returing undefined causing the IssueDetail not to render.
     // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
+    console.log("[loadData()] match:", match);
     const user= this.context;
     const data = await Dashboard.fetchData(match, search, showError, user);
     if (data) {
@@ -139,6 +156,7 @@ class Dashboard extends React.Component {
         pages: data.contactList.pages,
         user: user,
       });
+      console.log("LOAD DATA, data.contact", data.contact);
     }
   }
 
@@ -176,6 +194,8 @@ class Dashboard extends React.Component {
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
+    console.log("[Render()] Selected Contact:", selectedContact);
+
     const params = new URLSearchParams(search);
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
@@ -209,7 +229,7 @@ class Dashboard extends React.Component {
           Reconnect with these people next!
         </h1>
         <ReconnectTable
-          issues={contacts}
+          contacts={contacts}
           reconnectContact={this.reconnectContact}
           daysAhead={7}
         />
