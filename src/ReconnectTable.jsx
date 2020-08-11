@@ -11,12 +11,12 @@ import UserContext from './UserContext.js';
 class IssueRowPlain extends React.Component {
   render() {
     const {
-      issue, location: { search }, reconnectContact, index,
+      contact, location: { search }, reconnectContact, index,
     } = this.props;
     const user = this.context;
     const disabled = !user.signedIn;
 
-    const selectLocation = { pathname: `/dashboard/${issue.id}`, search };
+    const selectLocation = { pathname: `/dashboard/${contact.id}`, search };
     //TOOLTIP NOT NEEDED
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Re-Connect</Tooltip>
@@ -35,16 +35,16 @@ class IssueRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
-        <td>{issue.name}</td>
+        <td>{contact.name}</td>
         {/* <td>{issue.company}</td>
         <td>{issue.title}</td>
         <td>{issue.frequency}</td>
         <td>{issue.email}</td>
         <td>{issue.Linkedin}</td> */}
-        <td>{issue.priority}</td>
+        <td>{contact.priority}</td>
         {/* Added Placeholders for  Familiarity and Context */}
         {/* <td>{issue.familiarity}</td> */}
-        <td>{issue.contextSpace}</td>
+        <td>{contact.contextSpace}</td>
         <td>
           {/* <Link to={`/edit/${issue.id}`} > */}
             {/* TO DO: (suggestion) I think we might need an onclick handler on the button, so that we can differentiate the behavior
@@ -85,7 +85,7 @@ IssueRowPlain.contextType = UserContext;
 const IssueRow = withRouter(IssueRowPlain);
 delete IssueRow.contextType;
 
-export default function ReconnectTable({ issues, reconnectContact, daysAhead }) {
+export default function ReconnectTable({ contacts, reconnectContact, daysAhead }) {
   // console.log("daysAhead passsed on as props: " + daysAhead);
   // TO DO: only show issues that are due "today"
   // FIXED: The contact's any date object field shows up as undefined - idk what's causing that issue.
@@ -103,10 +103,10 @@ export default function ReconnectTable({ issues, reconnectContact, daysAhead }) 
   // }
   // testissues.forEach(print);
 
-  const issueRows = issues.map((issue, index) => (
+  const issueRows = contacts.map((contact, index) => (
     <IssueRow
-      key={issue.id}
-      issue={issue}
+      key={contact.id}
+      contact={contact}
       reconnectContact={reconnectContact}
       index={index}
     />
