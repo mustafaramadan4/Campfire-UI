@@ -12,6 +12,7 @@ export default class Welcome extends React.Component {
         <Jumbotron>
           <h2>Welcome to CampFire.</h2>
           <p>The (camp)site to help you cultivate better relationships and keep your contacts warm!</p>
+          <p>Note: Must sign in to access your CampFire contacts.</p>
         </Jumbotron>
         <Row className="show-grid text-center">
           <Col xs={12} sm={4} className="person-wrapper">
