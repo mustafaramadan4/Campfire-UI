@@ -33,6 +33,10 @@ class IssueRowPlain extends React.Component {
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
 
+    const linkedinTooltip = (
+      <Tooltip id="linkedin-tooltip" placement="top">Open LinkedIn</Tooltip>
+    );
+
     function onToggle(e) {
       /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
       * and further develop as a toggle button. DONE: Implemented on/off on same button with success message.
@@ -46,6 +50,11 @@ class IssueRowPlain extends React.Component {
     function onDelete(e) {
       e.preventDefault();
       deleteContact(index);
+    }
+
+    function openLinkedIn(e, LinkedIn) {
+      e.preventDefault();
+      location.href= LinkedIn;
     }
 
     const tableRow = (
@@ -62,7 +71,13 @@ class IssueRowPlain extends React.Component {
         <td>{contact.title}</td>
         <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
-        {/*<td>{contact.Linkedin}</td>*/}
+        <td>
+        <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
+          <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
+              <Glyphicon glyph="new-window" />
+          </Button>
+        </OverlayTrigger>
+        </td>
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
         <td>{contact.contextSpace}</td>
@@ -136,7 +151,7 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
           <th>Title</th>
           <th>Frequency</th>
           <th>Email</th>
-          {/* <th>Linkedin</th> */}
+          <th>Linkedin</th>
           <th>Priority</th>
           <th>Familiarity</th>
           <th>Context</th>
