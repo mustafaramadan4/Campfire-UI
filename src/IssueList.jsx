@@ -246,7 +246,7 @@ class IssueList extends React.Component {
     const { contacts } = this.state;
     const { location: { pathname, search }, history } = this.props;
     const { showSuccess, showError } = this.props;
-    const { id } = contacts[index];
+    const { id, name } = contacts[index];
     const data = await graphQLFetch(query, { id }, showError);
     if (data && data.contactDelete) {
       this.setState((prevState) => {
@@ -259,8 +259,8 @@ class IssueList extends React.Component {
       });
       const undoMessage = (
         <span>
-          {`Deleted contact ${id} successfully.`}
-          <Button bsStyle="link" onClick={() => this.restoreContact(id)}>
+          {`Deleted contact ${name} successfully.`}
+          <Button bsStyle="link" onClick={() => this.restoreContact(id, name)}>
             UNDO
           </Button>
         </span>
@@ -273,14 +273,14 @@ class IssueList extends React.Component {
   }
 
   // Implemented Restore Contact
-  async restoreContact(id) {
+  async restoreContact(id, name) {
     const query = `mutation contactRestore($id: Int!) {
       contactRestore(id: $id)
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
-      showSuccess(`Contact ${id} restored successfully.`);
+      showSuccess(`Contact ${name} restored successfully.`);
       console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
       this.loadData();
     }
