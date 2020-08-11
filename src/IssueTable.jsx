@@ -54,7 +54,7 @@ class IssueRowPlain extends React.Component {
 
     function openLinkedIn(e, LinkedIn) {
       e.preventDefault();
-      location.href= LinkedIn;
+      window.open(LinkedIn, '_blank');
     }
 
     const tableRow = (
