@@ -7,7 +7,7 @@ import {
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import Contents from './Contents.jsx';
-import IssueAddNavItem from './IssueAddNavItem.jsx';
+import ContactAddNavItem from './ContactAddNavItem.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
 import Search from './Search.jsx';
 import UserContext from './UserContext.js';
@@ -81,7 +81,7 @@ class NavBar extends React.Component {
             </Navbar.Form>
           </Col>
           <Nav pullRight>
-            <IssueAddNavItem user={user} />
+            <ContactAddNavItem user={user} />
             <SignInNavItem user={user} onUserChange={onUserChange} />
             <NavDropdown
               id="user-dropdown"

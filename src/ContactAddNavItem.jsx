@@ -9,9 +9,9 @@ import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import PhoneInput, {
   formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber
-} from 'react-phone-number-input'
+} from 'react-phone-number-input';
 
-class IssueAddNavItem extends React.Component {
+class ContactAddNavItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -150,4 +150,4 @@ class IssueAddNavItem extends React.Component {
   }
 }
 
-export default withToast(withRouter(IssueAddNavItem));
+export default withToast(withRouter(ContactAddNavItem));
