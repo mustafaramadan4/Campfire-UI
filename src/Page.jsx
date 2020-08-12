@@ -64,7 +64,7 @@ class NavBar extends React.Component {
                   Dashboard
               </NavItem>
             </LinkContainer>
-            <LinkContainer to="/issues">
+            <LinkContainer to="/contacts">
               <NavItem
                 onClick = {(e)=>this.verifySignIn(e, user)}
                 >
@@ -122,8 +122,7 @@ function Footer() {
       <p className="text-center">
         Full source code available at this
         {' '}
-        {/*TO DO: Change Repo address*/}
-        <a href="https://github.com/vasansr/pro-mern-stack-2">
+        <a href="https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_jsonStatham_API">
           GitHub repository
         </a>
       </p>

@@ -21,7 +21,7 @@ class IssueRowPlain extends React.Component {
     const disabled = !user.signedIn;
 
 
-    const selectLocation = { pathname: `/issues/${contact.id}`, search };
+    const selectLocation = { pathname: `/contacts/${contact.id}`, search };
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Edit Contact</Tooltip>
     );

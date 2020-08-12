@@ -7,7 +7,7 @@ import NotFound from './NotFound.jsx';
 
 const routes = [
   { path: '/welcome', component: Welcome },
-  { path: '/issues/:id?', component: IssueList },
+  { path: '/contacts/:id?', component: IssueList },
   { path: '/dashboard/:id?', component: Dashboard },
   { path: '/edit/:id', component: IssueEdit },
   // { path: '/report', component: IssueReport },
