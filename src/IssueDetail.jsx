@@ -13,7 +13,7 @@
 // }
 
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 /*
 * TODO: 
@@ -76,7 +76,17 @@ class IssueDetail extends React.Component {
   // const { contact: { LinkedIn, contextSpace, notes } } = this.state;
   // const { contact: { lastContactDate, nextContactDate } } = this.state;
 
+  
   render() {
+    function openLinkedIn(e, LinkedIn) {
+      e.preventDefault();
+      window.open(LinkedIn, '_blank');
+    }
+
+    const linkedinTooltip = (
+      <Tooltip id="linkedin-tooltip" placement="top">Open LinkedIn</Tooltip>
+    );
+
     const { contact } = this.props;
     if (contact) {
       return (
@@ -97,7 +107,13 @@ class IssueDetail extends React.Component {
             <tr>
               <td>{contact.name}</td>
               <td>{contact.phone}</td>
-              <td>{contact.LinkedIn}</td>
+              <td>
+              <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
+                <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
+                  <Glyphicon glyph="new-window" />
+                </Button>
+              </OverlayTrigger>
+              </td>
               <td>{contact.contextSpace}</td>
               <td>{contact.lastContactDate ? contact.lastContactDate.toDateString() : ''}</td>
               <td>{contact.nextContactDate ? contact.nextContactDate.toDateString() : ''}</td>

@@ -57,6 +57,7 @@ class IssueList extends React.Component {
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
     if (!Number.isNaN(idInt)) {
+
       vars.hasSelection = true;
       vars.selectedId = idInt;
     }
@@ -96,6 +97,7 @@ class IssueList extends React.Component {
 
     // modified to contact list query
     const data = await graphQLFetch(contactListQuery, vars, showError);
+    console.log("[IssueList]FETCHDATA:", data);
     return data;
   }
 
@@ -105,10 +107,10 @@ class IssueList extends React.Component {
     const {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
-    console.log("CONTACT LIST FROM CONSTRUCTOR: ", contacts);
+    // console.log("CONTACT LIST FROM CONSTRUCTOR: ", contacts);
     delete store.initialData;
     const _isMounted = false;
-    console.log("CONTEXT FROM CONSTRUCTOR: ", this.context);
+    // console.log("CONTEXT FROM CONSTRUCTOR: ", this.context);
     const user = this.context;
     this.state = {
       contacts,
@@ -116,6 +118,7 @@ class IssueList extends React.Component {
       pages,
       user,
     };
+    console.log("IssueList selectedcontact CONSTRUCTOR: ", selectedContact);
     // this.closeIssue = this.closeIssue.bind(this);
     this.toggleActiveStatus = this.toggleActiveStatus.bind(this);
     this.deleteContact = this.deleteContact.bind(this);
@@ -125,21 +128,21 @@ class IssueList extends React.Component {
     this._isMounted = true;
     const { contacts } = this.state;
     if (this._isMounted) {
-      console.log("CALLING LOAD DATA FROM COMPONENT DID MOUNT");
-      console.log("CONTACTS FROM DID MOUNT:", contacts);
+      // console.log("CALLING LOAD DATA FROM COMPONENT DID MOUNT");
+      // console.log("CONTACTS FROM DID MOUNT:", contacts);
       if (contacts == null) this.loadData();
     }
   }
 
   componentWillUnmount() {
-    console.log("COMPONENT WILL UNMOUNT");
+    // console.log("COMPONENT WILL UNMOUNT");
     this._isMounted = false;
   }
 
   componentDidUpdate(prevProps) {
-    console.log("_Mounted: ", this._isMounted);
+    // console.log("_Mounted: ", this._isMounted);
     if (this._isMounted) {
-      console.log("STILL MOUNTED");
+      // console.log("STILL MOUNTED");
       const {user} = this.state;
       const newContext = this.context;
       // if(user !== newContext) {
@@ -151,13 +154,13 @@ class IssueList extends React.Component {
       } = prevProps;
       const { location: { search }, match: { params: { id } } } = this.props;
       if (prevSearch !== search || prevId !== id || user !== newContext ) {
-        console.log("CALLING LOAD DATA FROM COMPONENT DID UPDATE");
-        console.log("FROM LOAD DATA OLD SEARCH: ", prevSearch);
-        console.log("FROM LOAD DATA NEW SEARCH: ", search);
-        console.log("FROM LOAD DATA OLD PREV ID: ", prevId);
-        console.log("FROM LOAD DATA OLD NEW ID: ", id);
-        console.log("FROM LOAD DATA OLD USER: ", user);
-        console.log("FROM LOAD DATA NEW USER: ", newContext);
+        // console.log("CALLING LOAD DATA FROM COMPONENT DID UPDATE");
+        // console.log("FROM LOAD DATA OLD SEARCH: ", prevSearch);
+        // console.log("FROM LOAD DATA NEW SEARCH: ", search);
+        // console.log("FROM LOAD DATA OLD PREV ID: ", prevId);
+        // console.log("FROM LOAD DATA OLD NEW ID: ", id);
+        // console.log("FROM LOAD DATA OLD USER: ", user);
+        // console.log("FROM LOAD DATA NEW USER: ", newContext);
         this.loadData();
       }
     }
@@ -166,10 +169,11 @@ class IssueList extends React.Component {
   async loadData() {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
-    console.log("CALLING FROM LOAD DATA" , user);
+    // console.log("CALLING FROM LOAD DATA" , user);
     const { location: { search }, match, showError } = this.props;
+    console.log("[loadData()] match:", match);
     const data = await IssueList.fetchData(match, search, showError, user);
-    console.log("FETCHED DATA: ", data);
+    // console.log("FETCHED DATA: ", data);
     if (this._isMounted && data) {
       this.setState({
         // changed to contactList query and contacts
@@ -180,6 +184,7 @@ class IssueList extends React.Component {
         pages: data.contactList.pages,
         user: user,
       });
+      // console.log("LOAD DATA, data.contact", data.contact);
     }
   }
 
@@ -222,7 +227,7 @@ class IssueList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
         newList[index] = data.contactUpdate;
-        console.log("CALLING LOAD DATA FROM TOGGLE SUCCESS");
+        // console.log("CALLING LOAD DATA FROM TOGGLE SUCCESS");
         this.loadData()
         return { contacts: newList };
       });
@@ -233,7 +238,7 @@ class IssueList extends React.Component {
       );
       showSuccess(actionMessage);
     } else {
-      console.log("CALLING LOAD DATA FROM TOGGLE NO DATA");
+      // console.log("CALLING LOAD DATA FROM TOGGLE NO DATA");
       this.loadData();
     }
   }
@@ -246,7 +251,7 @@ class IssueList extends React.Component {
     const { contacts } = this.state;
     const { location: { pathname, search }, history } = this.props;
     const { showSuccess, showError } = this.props;
-    const { id } = contacts[index];
+    const { id, name } = contacts[index];
     const data = await graphQLFetch(query, { id }, showError);
     if (data && data.contactDelete) {
       this.setState((prevState) => {
@@ -259,29 +264,29 @@ class IssueList extends React.Component {
       });
       const undoMessage = (
         <span>
-          {`Deleted contact ${id} successfully.`}
-          <Button bsStyle="link" onClick={() => this.restoreContact(id)}>
+          {`Deleted contact ${name} successfully.`}
+          <Button bsStyle="link" onClick={() => this.restoreContact(id, name)}>
             UNDO
           </Button>
         </span>
       );
       showSuccess(undoMessage);
     } else {
-      console.log("CALLING LOAD DATA FROM DELETE CONTACT");
+      // console.log("CALLING LOAD DATA FROM DELETE CONTACT");
       this.loadData();
     }
   }
 
   // Implemented Restore Contact
-  async restoreContact(id) {
+  async restoreContact(id, name) {
     const query = `mutation contactRestore($id: Int!) {
       contactRestore(id: $id)
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
-      showSuccess(`Contact ${id} restored successfully.`);
-      console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
+      showSuccess(`Contact ${name} restored successfully.`);
+      // console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
       this.loadData();
     }
   }
@@ -316,6 +321,8 @@ class IssueList extends React.Component {
 
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
+
+    console.log("[Render()] Selected Contact:", selectedContact);
 
     const params = new URLSearchParams(search);
     let page = parseInt(params.get('page'), 10);
