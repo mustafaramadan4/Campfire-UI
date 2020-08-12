@@ -3,3 +3,19 @@
     height: 55px;
     padding: 0px;
 }
+/* Button link targeted
+for contrast in contrast in
+Toast messasge for "UNDO" when
+restoring contact */
+.btn-link:hover,
+.btn-link:focus {
+  color: #ffffff;
+  text-decoration: underline;
+  background-color: transparent;
+}
+
+.btn-link {
+    font-weight: 400;
+    color: #ffffff;
+    border-radius: 0;
+  }
