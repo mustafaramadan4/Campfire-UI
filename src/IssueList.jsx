@@ -4,7 +4,7 @@ import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
-import IssueFilter from './IssueFilter.jsx';
+import ContactFilter from './ContactFilter.jsx';
 import IssueTable from './IssueTable.jsx';
 import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -284,7 +284,7 @@ class IssueList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <IssueFilter urlBase="/contacts" />
+            <ContactFilter urlBase="/contacts" />
           </Panel.Body>
         </Panel>
         <IssueTable

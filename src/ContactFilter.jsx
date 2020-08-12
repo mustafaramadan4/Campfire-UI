@@ -6,7 +6,7 @@ import {
   Row, Col,
 } from 'react-bootstrap';
 
-class IssueFilter extends React.Component {
+class ContactFilter extends React.Component {
   constructor({ location: { search } }) {
     super();
     const params = new URLSearchParams(search);
@@ -163,4 +163,4 @@ class IssueFilter extends React.Component {
     );
   }
 }
-export default withRouter(IssueFilter);
+export default withRouter(ContactFilter);
