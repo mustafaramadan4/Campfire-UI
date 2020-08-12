@@ -1,10 +1,6 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
-<<<<<<< HEAD
 import { Panel, Pagination, Button, Jumbotron } from 'react-bootstrap';
-=======
-import { Panel, Pagination } from 'react-bootstrap';
->>>>>>> 9335657481908660723b29fab58d9132d29892b5
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
