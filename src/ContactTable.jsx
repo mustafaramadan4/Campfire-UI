@@ -35,10 +35,6 @@ class ContactRowPlain extends React.Component {
     );
 
     function onToggle(e) {
-      /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
-      * and further develop as a toggle button. DONE: Implemented on/off on same button with success message.
-      * FIXED weird behavior with data in the table.
-      */
       e.preventDefault();
       toggleActiveStatus(index);
     }

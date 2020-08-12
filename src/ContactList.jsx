@@ -28,7 +28,7 @@ function PageLink({
   );
 }
 
-class IssueList extends React.Component {
+class ContactList extends React.Component {
   static async fetchData(match, search, showError, user) {
     /* The React Router supplies as part of props, an object called "location"
     * that includes a query string (in the field "search"). The JavaScript API
@@ -140,7 +140,7 @@ class IssueList extends React.Component {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
     const { location: { search }, match, showError } = this.props;
-    const data = await IssueList.fetchData(match, search, showError, user);
+    const data = await ContactList.fetchData(match, search, showError, user);
     if (this._isMounted && data) {
       this.setState({
         // changed to contactList query and contacts
@@ -307,9 +307,9 @@ class IssueList extends React.Component {
   }
 }
 
-IssueList.contextType = UserContext;
+ContactList.contextType = UserContext;
 
-const IssueListWithToast = withToast(IssueList);
-IssueListWithToast.fetchData = IssueList.fetchData;
+const ContactListWithToast = withToast(ContactList);
+ContactListWithToast.fetchData = ContactList.fetchData;
 
-export default IssueListWithToast;
+export default ContactListWithToast;
