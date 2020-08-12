@@ -4,6 +4,7 @@ export default function template(body, initialData, userData) {
   return `<!DOCTYPE HTML>
 <html>
 <head>
+  <link rel="icon" href="/assets/logo.png"/>
   <meta charset="utf-8">
   <title>CampFire</title>
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" >
