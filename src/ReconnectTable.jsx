@@ -1,8 +1,8 @@
 import React from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
-import { LinkContainer, Link } from 'react-router-bootstrap';
+import { withRouter } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import {
-  Button, Glyphicon, Tooltip, OverlayTrigger, Table,
+  Button, Table,
 } from 'react-bootstrap';
 
 import UserContext from './UserContext.js';
@@ -49,7 +49,7 @@ ContactRowPlain.contextType = UserContext;
 const ContactRow = withRouter(ContactRowPlain);
 delete ContactRow.contextType;
 
-export default function ReconnectTable({ contacts, reconnectContact, daysAhead }) {
+export default function ReconnectTable({ contacts, reconnectContact }) {
   const contacRows = contacts.map((contact, index) => (
     <ContactRow
       key={contact.id}

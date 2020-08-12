@@ -5,7 +5,6 @@ import {
   Grid, Col
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
 import Contents from './Contents.jsx';
 import ContactAddNavItem from './ContactAddNavItem.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
@@ -42,21 +41,14 @@ class NavBar extends React.Component {
     const {user, onUserChange} = this.props;
     const { toastType, toastVisible, toastMessage } = this.state;
     return (
-      // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
-      // <Image src={logo} width={"50"} height={"50"}/>
     <React.Fragment>
       <Navbar fluid collapseOnSelect>
         <Navbar.Header>
-          {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
           <img id="brand-image" src={logo} />
-          {/* <Navbar.Brand><Link to="/dashboard"><img id="brand-image" src={logo} /></Link></Navbar.Brand> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         </Navbar.Header>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
-            {/* <LinkContainer exact to="/">
-              <NavItem>Home</NavItem>
-            </LinkContainer> */}
             <LinkContainer to="/dashboard">
               <NavItem
                 onClick = {(e)=>this.verifySignIn(e, user)}
@@ -71,9 +63,6 @@ class NavBar extends React.Component {
                   Contacts
               </NavItem>
             </LinkContainer>
-            {/* <LinkContainer to="/report">
-              <NavItem>Report</NavItem>
-            </LinkContainer> */}
           </Nav>
           <Col sm={5}>
             <Navbar.Form>
@@ -111,10 +100,6 @@ class NavBar extends React.Component {
   }
 }
   
-// const EnhancedNavBar = withToast(NavBar);
-
-
-
 function Footer() {
   return (
     <small>
