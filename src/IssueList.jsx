@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
 import ContactFilter from './ContactFilter.jsx';
-import IssueTable from './IssueTable.jsx';
+import ContactTable from './ContactTable.jsx';
 import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
@@ -287,7 +287,7 @@ class IssueList extends React.Component {
             <ContactFilter urlBase="/contacts" />
           </Panel.Body>
         </Panel>
-        <IssueTable
+        <ContactTable
           contacts={contacts}
           toggleActiveStatus={this.toggleActiveStatus}
           deleteContact={this.deleteContact}

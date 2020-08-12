@@ -9,11 +9,8 @@ import UserContext from './UserContext.js';
 import Toggle from 'react-toggle';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class IssueRowPlain extends React.Component {
+class ContactRowPlain extends React.Component {
   render() {
-    // const {
-    //   issue, location: { search }, closeIssue, deleteIssue, index,
-    // } = this.props;
     const {
       contact, location: { search }, toggleActiveStatus, deleteContact, index,
     } = this.props;
@@ -59,13 +56,6 @@ class IssueRowPlain extends React.Component {
 
     const tableRow = (
       <tr>
-        {/* <td>{issue.id}</td>
-        <td>{issue.status}</td>
-        <td>{issue.owner}</td>
-        <td>{issue.created.toDateString()}</td>
-        <td>{issue.effort}</td>
-        <td>{issue.due ? issue.due.toDateString() : ''}</td>
-        <td>{issue.title}</td> */}
         <td>{contact.name}</td>
         <td>{contact.company}</td>
         <td>{contact.title}</td>
@@ -96,9 +86,6 @@ class IssueRowPlain extends React.Component {
                 disabled={disabled}
                 checked={contact.activeStatus}
                 onChange={onToggle} />
-            {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
-              <Glyphicon glyph="off" />
-            </Button> */}
           </OverlayTrigger>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
@@ -117,13 +104,13 @@ class IssueRowPlain extends React.Component {
   }
 }
 
-IssueRowPlain.contextType = UserContext;
-const IssueRow = withRouter(IssueRowPlain);
-delete IssueRow.contextType;
+ContactRowPlain.contextType = UserContext;
+const ContactRow = withRouter(ContactRowPlain);
+delete ContactRow.contextType;
 
-export default function IssueTable({ contacts, toggleActiveStatus, deleteContact }) {
-  const issueRows = contacts.map((contact, index) => (
-    <IssueRow
+export default function ContactTable({ contacts, toggleActiveStatus, deleteContact }) {
+  const contactRows = contacts.map((contact, index) => (
+    <ContactRow
       key={contact.id}
       contact={contact}
       toggleActiveStatus={toggleActiveStatus}
@@ -136,15 +123,6 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
     <Table bordered condensed hover responsive>
       <thead>
         <tr>
-          {/* <th>ID</th>
-          <th>Status</th>
-          <th>Owner</th>
-          <th>Created</th>
-          <th>Effort</th>
-          <th>Due Date</th>
-          <th>Title</th>
-          <th>Action</th> */}
-          {/* Modified for Campfire Contact object */}
           <th>Name</th>
           <th>Company</th>
           <th>Title</th>
@@ -158,7 +136,7 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
         </tr>
       </thead>
       <tbody>
-        {issueRows}
+        {contactRows}
       </tbody>
     </Table>
   );
