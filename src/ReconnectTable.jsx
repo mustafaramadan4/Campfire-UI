@@ -30,7 +30,7 @@ class ContactRowPlain extends React.Component {
         <td>{contact.priority}</td>
         <td>{contact.contextSpace}</td>
         <td>
-          <Button bsStyle="primary" onClick={(e)=>onReconnectClick(e, issue.id)}>
+          <Button bsStyle="primary" onClick={(e)=>onReconnectClick(e, contact.id)}>
             Reconnect!
           </Button>
           {' '}
