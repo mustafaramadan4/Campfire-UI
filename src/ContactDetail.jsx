@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table, Button, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
 class ContactDetail extends React.Component {
   render() {
@@ -35,7 +37,8 @@ class ContactDetail extends React.Component {
               <td>
               <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
                 <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
-                  <Glyphicon glyph="new-window" />
+                  {/* <Glyphicon glyph="new-window" /> */}
+                  <FontAwesomeIcon icon={faLinkedin} />
                 </Button>
               </OverlayTrigger>
               </td>
