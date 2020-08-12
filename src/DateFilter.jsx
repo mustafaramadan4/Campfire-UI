@@ -47,7 +47,6 @@ class DateFilter extends React.Component {
     // this allows for a capture of an drop down menu select event,
     // and set the URL param to e.g. dashboard?dateRange=thisWeek
     if (dateRange) {
-      console.log("dateRange selected from dropdown: ", dateRange);
       params.set('dateRange', dateRange);
     } 
 

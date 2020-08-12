@@ -77,7 +77,6 @@ class SigninNavItem extends React.Component {
       const { onUserChange } = this.props;
       await onUserChange({ signedIn: false, givenName: '', email: '' });
       const {history, user} = this.props;
-      console.log(user);
       if(!user.signedIn) history.push('/welcome');
     } catch (error) {
       showError(`Error signing out: ${error}`);

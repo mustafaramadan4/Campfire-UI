@@ -66,11 +66,9 @@ class IssueAddNavItem extends React.Component {
   onPhoneChange(new_phone) {
     let valid = true;
     const value = new_phone === undefined ? '' : new_phone;
-    console.log("VALUE =", value);
     if(value !== ''){
       valid = isValidPhoneNumber(value);
     }
-    console.log("VALID PHONE: ", valid);
     const { invalidFields } = this.state;
     
     if(!valid) {
@@ -86,13 +84,11 @@ class IssueAddNavItem extends React.Component {
         invalidFields: {}
       });
     }
-    console.log("INVALID FIELDS: ", invalidFields);
   }
 
   render() {
     const { showing, invalidFields } = this.state;
     const { user: { signedIn } } = this.props;
-    console.log("INVALID FIELDS FROM RENDER: ", invalidFields);
     return (
       <React.Fragment>
         <NavItem disabled={!signedIn} onClick={this.showModal}>

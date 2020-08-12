@@ -87,7 +87,6 @@ class IssueList extends React.Component {
 
     // modified to contact list query
     const data = await graphQLFetch(contactListQuery, vars, showError);
-    console.log("[IssueList]FETCHDATA:", data);
     return data;
   }
 
@@ -141,7 +140,6 @@ class IssueList extends React.Component {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
     const { location: { search }, match, showError } = this.props;
-    //console.log("[loadData()] match:", match);
     const data = await IssueList.fetchData(match, search, showError, user);
     if (this._isMounted && data) {
       this.setState({
@@ -260,8 +258,6 @@ class IssueList extends React.Component {
 
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
-
-    //console.log("[Render()] Selected Contact:", selectedContact);
 
     const params = new URLSearchParams(search);
     let page = parseInt(params.get('page'), 10);

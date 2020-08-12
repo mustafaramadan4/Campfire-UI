@@ -28,8 +28,6 @@ class IssueRowPlain extends React.Component {
     function onReconnectClick(e, id) {
       e.preventDefault();
       reconnectContact(index);
-      console.log("id is: " + id);
-      console.log("wait why is the date not changing for: " + index);
       window.location.href='/edit/' + id; // Redirects to Edit page of particular id
     }
 

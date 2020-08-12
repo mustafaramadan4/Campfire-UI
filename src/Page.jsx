@@ -32,10 +32,8 @@ class NavBar extends React.Component {
   }
 
   verifySignIn(e, user) {
-    console.log("User SignedIn status on Click", user.signedIn);
     const message = 'Please Sign In!';
     if (!user.signedIn) {
-      console.log("Inside", message);
       this.setState({ toastVisible: true, toastMessage: message});
     }
   }
