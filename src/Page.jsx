@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Navbar, Nav, NavItem, NavDropdown,
   MenuItem, Glyphicon,
-  Grid, Col, Image
+  Grid, Col
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
@@ -14,54 +14,104 @@ import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import logo from './logo.png';
-// import './Page.css'; TO DO: Figure out why CSS loader not working.
+import Toast from './Toast.jsx';
 
-// TO DO: import styled components??
 
-function NavBar({ user, onUserChange }) {
-  return (
-    // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
-    // <Image src={logo} width={"50"} height={"50"}/>
-    <Navbar fluid>
-      <Navbar.Header>
-        {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
-          <Navbar.Brand><Link to="/dashboard"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
-      </Navbar.Header>
-      <Nav>
-        {/* <LinkContainer exact to="/">
-          <NavItem>Home</NavItem>
-        </LinkContainer> */}
-        <LinkContainer to="/dashboard">
-          <NavItem>Dashboard</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/issues">
-          <NavItem >Contacts</NavItem>
-        </LinkContainer>
-        {/* <LinkContainer to="/report">
-          <NavItem>Report</NavItem>
-        </LinkContainer> */}
-      </Nav>
-      <Col sm={5}>
-        <Navbar.Form>
-          <Search user={user}/>
-        </Navbar.Form>
-      </Col>
-      <Nav pullRight>
-        <IssueAddNavItem user={user} />
-        <SignInNavItem user={user} onUserChange={onUserChange} />
-        <NavDropdown
-          id="user-dropdown"
-          title={<Glyphicon glyph="option-vertical" />}
-          noCaret
-        >
-          <LinkContainer to="/about">
-            <MenuItem>About</MenuItem>
+
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toastVisible: false, toastMessage: '', toastType: 'danger',
+    };
+    this.dismissToast = this.dismissToast.bind(this);
+  }
+
+  dismissToast() {
+    this.setState({ toastVisible: false });
+  }
+
+  verifySignIn(e, user) {
+    console.log("User SignedIn status on Click", user.signedIn);
+    const message = 'Please Sign In!';
+    if (!user.signedIn) {
+      console.log("Inside", message);
+      this.setState({ toastVisible: true, toastMessage: message});
+    }
+  }
+
+  render() {
+    const {user, onUserChange} = this.props;
+    const { toastType, toastVisible, toastMessage } = this.state;
+    return (
+      // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
+      // <Image src={logo} width={"50"} height={"50"}/>
+    <React.Fragment>
+      <Navbar fluid>
+        <Navbar.Header>
+          {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
+            <Navbar.Brand><Link to="/dashboard"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
+        </Navbar.Header>
+        <Nav>
+          {/* <LinkContainer exact to="/">
+            <NavItem>Home</NavItem>
+          </LinkContainer> */}
+          <LinkContainer to="/dashboard">
+            <NavItem
+              onClick = {(e)=>this.verifySignIn(e, user)}
+              >
+                Dashboard
+            </NavItem>
           </LinkContainer>
-        </NavDropdown>
-      </Nav>
-    </Navbar>
-  );
+          <LinkContainer to="/issues">
+            <NavItem
+              onClick = {(e)=>this.verifySignIn(e, user)}
+              >
+                Contacts
+            </NavItem>
+          </LinkContainer>
+          {/* <LinkContainer to="/report">
+            <NavItem>Report</NavItem>
+          </LinkContainer> */}
+        </Nav>
+        <Col sm={5}>
+          <Navbar.Form>
+            <Search user={user}/>
+          </Navbar.Form>
+        </Col>
+        <Nav pullRight>
+          <IssueAddNavItem user={user} />
+          <SignInNavItem user={user} onUserChange={onUserChange} />
+          <NavDropdown
+            id="user-dropdown"
+            title={<Glyphicon glyph="option-vertical" />}
+            noCaret
+          >
+            <LinkContainer to="/about">
+              <MenuItem
+                onClick = {(e)=>this.verifySignIn(e, user)}
+                >
+                  About
+              </MenuItem>
+            </LinkContainer>
+          </NavDropdown>
+        </Nav>
+      </Navbar>
+      <Toast
+        bsStyle={toastType}
+        showing={toastVisible}
+        onDismiss={this.dismissToast}
+      >
+        {toastMessage}
+      </Toast>
+    </React.Fragment>
+    );
+  }
 }
+  
+// const EnhancedNavBar = withToast(NavBar);
+
+
 
 function Footer() {
   return (
