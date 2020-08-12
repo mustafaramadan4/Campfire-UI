@@ -47,55 +47,59 @@ class NavBar extends React.Component {
       // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
       // <Image src={logo} width={"50"} height={"50"}/>
     <React.Fragment>
-      <Navbar fluid>
+      <Navbar fluid collapseOnSelect>
         <Navbar.Header>
           {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
-            <Navbar.Brand><Link to="/dashboard"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
+          <img id="brand-image" src={logo} />
+          {/* <Navbar.Brand><Link to="/dashboard"><img id="brand-image" src={logo} /></Link></Navbar.Brand> */}
+          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         </Navbar.Header>
-        <Nav>
-          {/* <LinkContainer exact to="/">
-            <NavItem>Home</NavItem>
-          </LinkContainer> */}
-          <LinkContainer to="/dashboard">
-            <NavItem
-              onClick = {(e)=>this.verifySignIn(e, user)}
-              >
-                Dashboard
-            </NavItem>
-          </LinkContainer>
-          <LinkContainer to="/issues">
-            <NavItem
-              onClick = {(e)=>this.verifySignIn(e, user)}
-              >
-                Contacts
-            </NavItem>
-          </LinkContainer>
-          {/* <LinkContainer to="/report">
-            <NavItem>Report</NavItem>
-          </LinkContainer> */}
-        </Nav>
-        <Col sm={5}>
-          <Navbar.Form>
-            <Search user={user}/>
-          </Navbar.Form>
-        </Col>
-        <Nav pullRight>
-          <IssueAddNavItem user={user} />
-          <SignInNavItem user={user} onUserChange={onUserChange} />
-          <NavDropdown
-            id="user-dropdown"
-            title={<Glyphicon glyph="option-vertical" />}
-            noCaret
-          >
-            <LinkContainer to="/about">
-              <MenuItem
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav>
+            {/* <LinkContainer exact to="/">
+              <NavItem>Home</NavItem>
+            </LinkContainer> */}
+            <LinkContainer to="/dashboard">
+              <NavItem
                 onClick = {(e)=>this.verifySignIn(e, user)}
                 >
-                  About
-              </MenuItem>
+                  Dashboard
+              </NavItem>
             </LinkContainer>
-          </NavDropdown>
-        </Nav>
+            <LinkContainer to="/issues">
+              <NavItem
+                onClick = {(e)=>this.verifySignIn(e, user)}
+                >
+                  Contacts
+              </NavItem>
+            </LinkContainer>
+            {/* <LinkContainer to="/report">
+              <NavItem>Report</NavItem>
+            </LinkContainer> */}
+          </Nav>
+          <Col sm={5}>
+            <Navbar.Form>
+              <Search user={user}/>
+            </Navbar.Form>
+          </Col>
+          <Nav pullRight>
+            <IssueAddNavItem user={user} />
+            <SignInNavItem user={user} onUserChange={onUserChange} />
+            <NavDropdown
+              id="user-dropdown"
+              title={<Glyphicon glyph="option-vertical" />}
+              noCaret
+            >
+              <LinkContainer to="/about">
+                <MenuItem
+                  onClick = {(e)=>this.verifySignIn(e, user)}
+                  >
+                    About
+                </MenuItem>
+              </LinkContainer>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
       <Toast
         bsStyle={toastType}
