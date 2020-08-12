@@ -6,7 +6,7 @@ import UserContext from './UserContext.js';
 
 import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
-import IssueDetail from './IssueDetail.jsx';
+import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -220,7 +220,7 @@ class Dashboard extends React.Component {
           reconnectContact={this.reconnectContact}
           daysAhead={7}
         />
-        <IssueDetail contact={selectedContact} />
+        <ContactDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>

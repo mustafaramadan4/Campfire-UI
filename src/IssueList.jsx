@@ -6,7 +6,7 @@ import UserContext from './UserContext.js';
 
 import IssueFilter from './IssueFilter.jsx';
 import IssueTable from './IssueTable.jsx';
-import IssueDetail from './IssueDetail.jsx';
+import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -292,7 +292,7 @@ class IssueList extends React.Component {
           toggleActiveStatus={this.toggleActiveStatus}
           deleteContact={this.deleteContact}
         />
-        <IssueDetail contact={selectedContact} />
+        <ContactDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>

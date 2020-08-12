@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
-class IssueDetail extends React.Component {
+class ContactDetail extends React.Component {
   render() {
     function openLinkedIn(e, LinkedIn) {
       e.preventDefault();
@@ -57,4 +57,4 @@ class IssueDetail extends React.Component {
   }
 }
 
-export default IssueDetail;
+export default ContactDetail;
