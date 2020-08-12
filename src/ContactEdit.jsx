@@ -17,14 +17,8 @@ import PhoneInput, {
   formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber
 } from 'react-phone-number-input'
 
-// TO DO: Figure out implementation of phone-number-react component.
-// Can't figure out css loaders webpack config to work properly :(
-//https://www.npmjs.com/package/react-phone-number-input
-//https://catamphetamine.gitlab.io/react-phone-number-input/
-// import 'react-phone-number-input/style.css'
-// import PhoneInput from 'react-phone-number-input'
 
-class IssueEdit extends React.Component {
+class ContactEdit extends React.Component {
   static async fetchData(match, search, showError) {
     const query = `query contact($id: Int!) {
       contact(id: $id) {
@@ -156,7 +150,7 @@ class IssueEdit extends React.Component {
 
   async loadData() {
     const { match, showError } = this.props;
-    const data = await IssueEdit.fetchData(match, null, showError);
+    const data = await ContactEdit.fetchData(match, null, showError);
 
     this.setState({ contact: data ? data.contact : {}, invalidFields: {} });
   }
@@ -454,9 +448,9 @@ class IssueEdit extends React.Component {
   }
 }
 
-IssueEdit.contextType = UserContext;
+ContactEdit.contextType = UserContext;
 
-const IssueEditWithToast = withToast(IssueEdit);
-IssueEditWithToast.fetchData = IssueEdit.fetchData;
+const ContactEditWithToast = withToast(ContactEdit);
+ContactEditWithToast.fetchData = ContactEdit.fetchData;
 
-export default IssueEditWithToast;
+export default ContactEditWithToast;
