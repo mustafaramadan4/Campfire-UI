@@ -13,6 +13,9 @@ import TextInput from './TextInput.jsx';
 import withToast from './withToast.jsx';
 import store from './store.js';
 import UserContext from './UserContext.js';
+import PhoneInput, {
+  formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber
+} from 'react-phone-number-input'
 
 // TO DO: Figure out implementation of phone-number-react component.
 // Can't figure out css loaders webpack config to work properly :(
@@ -47,6 +50,7 @@ class IssueEdit extends React.Component {
       showingValidation: false,
     };
     this.onDateChange = this.onDateChange.bind(this);
+    this.onPhoneChange = this.onPhoneChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
@@ -82,6 +86,28 @@ class IssueEdit extends React.Component {
     this.setState(prevState => ({
       contact: { ...prevState.contact, [name]: value },
     }));
+  }
+
+  onPhoneChange(new_phone) {
+    let valid = true;
+    const value = new_phone === undefined ? '' : new_phone;
+    console.log("PHONE: ", value);
+    if(value !== ''){
+      valid = isValidPhoneNumber(value);
+    }
+    console.log("VALID PHONE: ", valid);
+    const { invalidFields } = this.state;
+    if(!valid) {
+      this.setState((prevState) => {
+        const invalidFields = { ...prevState.invalidFields, ["phone"]: !valid };
+        return { invalidFields };
+      });
+    } else{
+      delete invalidFields["phone"];
+      this.setState(prevState => ({
+        contact: { ...prevState.contact, ["phone"]: value },
+      }));
+    }
   }
 
   onValidityChange(event, valid) {
@@ -252,7 +278,7 @@ class IssueEdit extends React.Component {
                 />
               </Col>
             </FormGroup>
-            <FormGroup>
+            <FormGroup validationState={invalidFields.phone ? 'error' : null}>
               <Col componentClass={ControlLabel} sm={3}>Phone</Col>
               <Col sm={9}>
                 <FormControl
@@ -260,11 +286,14 @@ class IssueEdit extends React.Component {
                   // when trying to update the existing phone numbers in the db like:
                   // 1. Variable "$changes" got invalid value 1212341234 at "changes.phone"; Expected type String. String cannot represent a non string value: 1212341234
                   // 2. Wouldn't let us edit the phone number in the database that's already in the format of 000-000-0000
-                  componentClass={TextInput}
+                  componentClass={PhoneInput}
+                  international
+                  defaultCountry="US"
                   name="phone"
                   value={phone}
-                  onChange={this.onChange}
+                  onChange={this.onPhoneChange}
                 />
+                <FormControl.Feedback />
               </Col>
             </FormGroup>
             <FormGroup>
