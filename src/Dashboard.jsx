@@ -1,12 +1,12 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
-import { Panel, Pagination, Button } from 'react-bootstrap';
+import { Panel, Pagination, Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
 import DateFilter from './DateFilter.jsx';
 import ReconnectTable from './ReconnectTable.jsx';
-import IssueDetail from './IssueDetail.jsx';
+import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -29,15 +29,18 @@ function PageLink({
   );
 }
 
-
 class Dashboard extends React.Component {
   static async fetchData(match, search, showError, user) {
     const params = new URLSearchParams(search);
     const email = user.email;
-    //SHH
-    // const vars = { hasSelection: false, selectedId: 0 };
     // Upcoming date less than or equal to today
-    const vars = { nextContactDate: new Date(), daysAhead: 3, ownerEmail :email };
+    const vars = {
+      hasSelection: false, 
+      selectedId: 0,
+      nextContactDate: new Date(),
+      daysAhead: 1,
+      ownerEmail: email
+    };
     // set the "default" daysAhead as whatever we define above,
     // which will be the case when there's no dateRange params passed on,
     // and change the value if there's urlParams defined by applying the filter
@@ -52,7 +55,6 @@ class Dashboard extends React.Component {
         vars.daysAhead = 30;
       }
     }
-    console.log("vars is: " + JSON.stringify(vars));
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -65,19 +67,28 @@ class Dashboard extends React.Component {
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
 
-    // SHHH: added nextcontacDate
     const contactListQuery = `query contactList(
       $page: Int
       $nextContactDate: GraphQLDate
       $daysAhead: Int
       $ownerEmail: String
+      $hasSelection: Boolean!
+      $selectedId: Int!
       ) {
-      contactList(page: $page, nextContactDate: $nextContactDate, daysAhead: $daysAhead, ownerEmail: $ownerEmail) {
+      contactList(
+        page: $page
+        nextContactDate: $nextContactDate
+        daysAhead: $daysAhead
+        ownerEmail: $ownerEmail
+        ) {
         contacts {
           id name company title contactFrequency email
           phone LinkedIn priority familiarity contextSpace
           activeStatus lastContactDate nextContactDate notes }
         pages
+      }
+      contact(id: $selectedId) @include (if : $hasSelection) {
+        id name LinkedIn phone contextSpace activeStatus lastContactDate nextContactDate notes
       }
     }`;
 
@@ -86,8 +97,8 @@ class Dashboard extends React.Component {
     return data;
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const initialData = store.initialData || { contactList: {} };
     const {
       contactList: { contacts, pages }, contact: selectedContact,
@@ -123,9 +134,6 @@ class Dashboard extends React.Component {
   }
 
   async loadData() {
-    // TODO: loadData doesn't define data.contact so that we can set it to selectedContact,
-    // so it's just returing undefined causing the IssueDetail not to render.
-    // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
     const user= this.context;
     const data = await Dashboard.fetchData(match, search, showError, user);
@@ -196,7 +204,6 @@ class Dashboard extends React.Component {
 
     return (
       <React.Fragment>
-        {/* TO DO: DECIDE IF WE WILL HAVE FILTER ON DASHBOARD */}
         <Panel>
           <Panel.Heading>
             <Panel.Title toggle>Filter</Panel.Title>
@@ -205,21 +212,15 @@ class Dashboard extends React.Component {
             <DateFilter urlBase="/dashboard" />
           </Panel.Body>
         </Panel>
-        <h1>
-          Reconnect with these people next!
-        </h1>
+        <Jumbotron>
+          <h2>Reconnect with these people next!</h2>
+        </Jumbotron>
         <ReconnectTable
-          issues={contacts}
+          contacts={contacts}
           reconnectContact={this.reconnectContact}
           daysAhead={7}
         />
-        {/* <h2>More Upcoming contacts...</h2>
-        <ReconnectTable
-          issues={contacts}
-          reconnectContact={this.reconnectContact}
-          daysAhead={15}
-        /> */}
-        <IssueDetail contact={selectedContact} />
+        <ContactDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>

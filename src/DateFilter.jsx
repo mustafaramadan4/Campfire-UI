@@ -35,31 +35,20 @@ class DateFilter extends React.Component {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
     this.setState({
-      // DONE: reset state variable
       dateRange: params.get('dateRange') || '',
       changed: false,
     });
   }
 
-  applyFilter() { // dateRange values can be: '', 'thisWeek', 'nextWeek'
+  applyFilter() {
     const { dateRange } = this.state;
     const { history, urlBase } = this.props;
     const params = new URLSearchParams();
-
     // this allows for a capture of an drop down menu select event,
     // and set the URL param to e.g. dashboard?dateRange=thisWeek
-    // TODO: I'm not sure whether to give "today" a param value or not,
-    // because we want it as a "default" behavior. will need to think more on this.
-    // but we need to "set" params here for Dashboard to "get" params,
-    // so maybe we do need to give it a value other than ''.
     if (dateRange) {
-      console.log("dateRange selected from dropdown: ", dateRange);
       params.set('dateRange', dateRange);
     } 
-    // else {
-    //   console.log("default dateRange(should be empty): ", dateRange);
-    //   params.set('dateRange', "today");
-    // }
 
     const search = params.toString() ? `?${params.toString()}` : '';
     history.push({ pathname: urlBase, search });
@@ -67,7 +56,6 @@ class DateFilter extends React.Component {
 
   render() {
     const { dateRange, changed } = this.state;
-    // const { effortMin, effortMax } = this.state;
     return (
       <Row>
         <Col xs={6} sm={4} md={3} lg={3}>

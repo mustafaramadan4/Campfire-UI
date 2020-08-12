@@ -7,16 +7,21 @@ import {
 
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
+import PhoneInput, {
+  formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber
+} from 'react-phone-number-input';
 
-class IssueAddNavItem extends React.Component {
+class ContactAddNavItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showing: false,
+      invalidFields: {},
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onPhoneChange = this.onPhoneChange.bind(this);
   }
 
   showModal() {
@@ -58,8 +63,31 @@ class IssueAddNavItem extends React.Component {
     }
   }
 
+  onPhoneChange(new_phone) {
+    let valid = true;
+    const value = new_phone === undefined ? '' : new_phone;
+    if(value !== ''){
+      valid = isValidPhoneNumber(value);
+    }
+    const { invalidFields } = this.state;
+    
+    if(!valid) {
+      this.setState((prevState) => {
+        const invalidFields = { ...prevState.invalidFields, ["phone"]: !valid };
+        return { invalidFields };
+      });
+    } else{
+      // delete invalidFields["phone"];
+      // const form = document.forms.contactAdd;
+      // form.phone.value = value;
+      this.setState({
+        invalidFields: {}
+      });
+    }
+  }
+
   render() {
-    const { showing } = this.state;
+    const { showing, invalidFields } = this.state;
     const { user: { signedIn } } = this.props;
     return (
       <React.Fragment>
@@ -86,9 +114,17 @@ class IssueAddNavItem extends React.Component {
                 <ControlLabel>Email*</ControlLabel>
                 <FormControl name="email" />
               </FormGroup>
-              <FormGroup>
+              <FormGroup validationState={invalidFields.phone ? 'error' : null}>
                 <ControlLabel>Phone Number*</ControlLabel>
-                <FormControl name="phone" />
+                <FormControl
+                componentClass={PhoneInput}
+                international
+                defaultCountry="US"
+                name="phone"
+                // value={phone}
+                onChange={this.onPhoneChange}
+                />
+                <FormControl.Feedback />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>LinkedIn*</ControlLabel>
@@ -114,4 +150,4 @@ class IssueAddNavItem extends React.Component {
   }
 }
 
-export default withToast(withRouter(IssueAddNavItem));
+export default withToast(withRouter(ContactAddNavItem));

@@ -2,66 +2,118 @@ import React from 'react';
 import {
   Navbar, Nav, NavItem, NavDropdown,
   MenuItem, Glyphicon,
-  Grid, Col, Image
+  Grid, Col
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import Contents from './Contents.jsx';
-import IssueAddNavItem from './IssueAddNavItem.jsx';
+import ContactAddNavItem from './ContactAddNavItem.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
 import Search from './Search.jsx';
 import UserContext from './UserContext.js';
 import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import logo from './logo.png';
-// import './Page.css'; TO DO: Figure out why CSS loader not working.
+import Toast from './Toast.jsx';
 
-// TO DO: import styled components??
 
-function NavBar({ user, onUserChange }) {
-  return (
-    // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
-    // <Image src={logo} width={"50"} height={"50"}/>
-    <Navbar fluid>
-      <Navbar.Header>
-        {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
-          <Navbar.Brand><Link to="/dashboard"><img src={logo} style={{width:'100px', height: '100px', padding: '0px', style: 'object-fit'}}/></Link></Navbar.Brand>
-      </Navbar.Header>
-      <Nav>
-        {/* <LinkContainer exact to="/">
-          <NavItem>Home</NavItem>
-        </LinkContainer> */}
-        <LinkContainer to="/dashboard">
-          <NavItem>Dashboard</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/issues">
-          <NavItem >Contacts</NavItem>
-        </LinkContainer>
-        {/* <LinkContainer to="/report">
-          <NavItem>Report</NavItem>
-        </LinkContainer> */}
-      </Nav>
-      <Col sm={5}>
-        <Navbar.Form>
-          <Search user={user}/>
-        </Navbar.Form>
-      </Col>
-      <Nav pullRight>
-        <IssueAddNavItem user={user} />
-        <SignInNavItem user={user} onUserChange={onUserChange} />
-        <NavDropdown
-          id="user-dropdown"
-          title={<Glyphicon glyph="option-vertical" />}
-          noCaret
-        >
-          <LinkContainer to="/about">
-            <MenuItem>About</MenuItem>
-          </LinkContainer>
-        </NavDropdown>
-      </Nav>
-    </Navbar>
-  );
+
+class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toastVisible: false, toastMessage: '', toastType: 'danger',
+    };
+    this.dismissToast = this.dismissToast.bind(this);
+  }
+
+  dismissToast() {
+    this.setState({ toastVisible: false });
+  }
+
+  verifySignIn(e, user) {
+    const message = 'Please Sign In!';
+    if (!user.signedIn) {
+      this.setState({ toastVisible: true, toastMessage: message});
+    }
+  }
+
+  render() {
+    const {user, onUserChange} = this.props;
+    const { toastType, toastVisible, toastMessage } = this.state;
+    return (
+      // TO DO: FIGURE OUT HOW TO SCALE LOGO & Orient Nav Bar
+      // <Image src={logo} width={"50"} height={"50"}/>
+    <React.Fragment>
+      <Navbar fluid collapseOnSelect>
+        <Navbar.Header>
+          {/* <Navbar.Brand>CampFire</Navbar.Brand> */}
+          <img id="brand-image" src={logo} />
+          {/* <Navbar.Brand><Link to="/dashboard"><img id="brand-image" src={logo} /></Link></Navbar.Brand> */}
+          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+        </Navbar.Header>
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav>
+            {/* <LinkContainer exact to="/">
+              <NavItem>Home</NavItem>
+            </LinkContainer> */}
+            <LinkContainer to="/dashboard">
+              <NavItem
+                onClick = {(e)=>this.verifySignIn(e, user)}
+                >
+                  Dashboard
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to="/contacts">
+              <NavItem
+                onClick = {(e)=>this.verifySignIn(e, user)}
+                >
+                  Contacts
+              </NavItem>
+            </LinkContainer>
+            {/* <LinkContainer to="/report">
+              <NavItem>Report</NavItem>
+            </LinkContainer> */}
+          </Nav>
+          <Col sm={5}>
+            <Navbar.Form>
+              <Search user={user}/>
+            </Navbar.Form>
+          </Col>
+          <Nav pullRight>
+            <ContactAddNavItem user={user} />
+            <SignInNavItem user={user} onUserChange={onUserChange} />
+            <NavDropdown
+              id="user-dropdown"
+              title={<Glyphicon glyph="option-vertical" />}
+              noCaret
+            >
+              <LinkContainer to="/about">
+                <MenuItem
+                  onClick = {(e)=>this.verifySignIn(e, user)}
+                  >
+                    About
+                </MenuItem>
+              </LinkContainer>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <Toast
+        bsStyle={toastType}
+        showing={toastVisible}
+        onDismiss={this.dismissToast}
+      >
+        {toastMessage}
+      </Toast>
+    </React.Fragment>
+    );
+  }
 }
+  
+// const EnhancedNavBar = withToast(NavBar);
+
+
 
 function Footer() {
   return (
@@ -70,8 +122,7 @@ function Footer() {
       <p className="text-center">
         Full source code available at this
         {' '}
-        {/*TO DO: Change Repo address*/}
-        <a href="https://github.com/vasansr/pro-mern-stack-2">
+        <a href="https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_jsonStatham_API">
           GitHub repository
         </a>
       </p>

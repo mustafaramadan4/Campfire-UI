@@ -25,7 +25,6 @@ class Search extends React.Component {
     }`;
     // Get user email for search query
     const {user} = this.props;
-    console.log("user from load options:", user);
     const { showError } = this.props;
     const data = await graphQLFetch(query, { search: term, ownerEmail: user.email}, showError);
     return data.contactList.contacts.map(contact => ({

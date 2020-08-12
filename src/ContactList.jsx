@@ -4,9 +4,9 @@ import { Panel, Pagination, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
-import IssueFilter from './IssueFilter.jsx';
-import IssueTable from './IssueTable.jsx';
-import IssueDetail from './IssueDetail.jsx';
+import ContactFilter from './ContactFilter.jsx';
+import ContactTable from './ContactTable.jsx';
+import ContactDetail from './ContactDetail.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import withToast from './withToast.jsx';
 import store from './store.js';
@@ -28,7 +28,7 @@ function PageLink({
   );
 }
 
-class IssueList extends React.Component {
+class ContactList extends React.Component {
   static async fetchData(match, search, showError, user) {
     /* The React Router supplies as part of props, an object called "location"
     * that includes a query string (in the field "search"). The JavaScript API
@@ -37,22 +37,13 @@ class IssueList extends React.Component {
     const params = new URLSearchParams(search);
     // this takes the user data to extract the email ans use it to "filter"
     const email = user.email;
-    // const vars = { ownerEmail: email, hasSelection: false, selectedId: 0 };
     const vars = {ownerEmail: email, hasSelection: false, selectedId: 0 };
-    // DONE: Implement vars for familiarity and frequency filters
-    // params.get() method returns null if the parameter is not present,
-    // so add a check before adding on to the vars defined above.
     if (params.get('activeStatus')) {
       vars.activeStatus = JSON.parse(params.get('activeStatus'));
     }
     if (params.get('priority')) vars.priority = params.get('priority');
     if (params.get('familiarity')) vars.familiarity = params.get('familiarity');
     if (params.get('contactFrequency')) vars.contactFrequency = params.get('contactFrequency');
-
-    // const effortMin = parseInt(params.get('effortMin'), 10);
-    // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    // const effortMax = parseInt(params.get('effortMax'), 10);
-    // if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -105,10 +96,8 @@ class IssueList extends React.Component {
     const {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
-    console.log("CONTACT LIST FROM CONSTRUCTOR: ", contacts);
     delete store.initialData;
     const _isMounted = false;
-    console.log("CONTEXT FROM CONSTRUCTOR: ", this.context);
     const user = this.context;
     this.state = {
       contacts,
@@ -116,7 +105,6 @@ class IssueList extends React.Component {
       pages,
       user,
     };
-    // this.closeIssue = this.closeIssue.bind(this);
     this.toggleActiveStatus = this.toggleActiveStatus.bind(this);
     this.deleteContact = this.deleteContact.bind(this);
   }
@@ -125,39 +113,24 @@ class IssueList extends React.Component {
     this._isMounted = true;
     const { contacts } = this.state;
     if (this._isMounted) {
-      console.log("CALLING LOAD DATA FROM COMPONENT DID MOUNT");
-      console.log("CONTACTS FROM DID MOUNT:", contacts);
       if (contacts == null) this.loadData();
     }
   }
 
   componentWillUnmount() {
-    console.log("COMPONENT WILL UNMOUNT");
     this._isMounted = false;
   }
 
   componentDidUpdate(prevProps) {
-    console.log("_Mounted: ", this._isMounted);
     if (this._isMounted) {
-      console.log("STILL MOUNTED");
       const {user} = this.state;
       const newContext = this.context;
-      // if(user !== newContext) {
-      //   this.loadData();
-      // }
       const {
         location: { search: prevSearch },
         match: { params: { id: prevId } },
       } = prevProps;
       const { location: { search }, match: { params: { id } } } = this.props;
       if (prevSearch !== search || prevId !== id || user !== newContext ) {
-        console.log("CALLING LOAD DATA FROM COMPONENT DID UPDATE");
-        console.log("FROM LOAD DATA OLD SEARCH: ", prevSearch);
-        console.log("FROM LOAD DATA NEW SEARCH: ", search);
-        console.log("FROM LOAD DATA OLD PREV ID: ", prevId);
-        console.log("FROM LOAD DATA OLD NEW ID: ", id);
-        console.log("FROM LOAD DATA OLD USER: ", user);
-        console.log("FROM LOAD DATA NEW USER: ", newContext);
         this.loadData();
       }
     }
@@ -166,10 +139,8 @@ class IssueList extends React.Component {
   async loadData() {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
-    console.log("CALLING FROM LOAD DATA" , user);
     const { location: { search }, match, showError } = this.props;
-    const data = await IssueList.fetchData(match, search, showError, user);
-    console.log("FETCHED DATA: ", data);
+    const data = await ContactList.fetchData(match, search, showError, user);
     if (this._isMounted && data) {
       this.setState({
         // changed to contactList query and contacts
@@ -183,12 +154,6 @@ class IssueList extends React.Component {
     }
   }
 
-  // Implemented OFF status DONE: Implemented On/Off in the same button with success message
-  // ^ agreed, toggle button may need some more work, as we may need to pass on props
-  // to IssueTable to keep track of the activeStatus and call toggleActiveStatus or reactivateContact 
-  // depending on the value of activeStatus
-  /*{TODO: there is a weird behavior with the on/off button when clicking, this behavior
-     disappears after clicking on any other part of the screen or closing the success message }*/
   async toggleActiveStatus(index) {
     const { showSuccess, showError } = this.props;
     const { contacts } = this.state;
@@ -222,7 +187,6 @@ class IssueList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
         newList[index] = data.contactUpdate;
-        console.log("CALLING LOAD DATA FROM TOGGLE SUCCESS");
         this.loadData()
         return { contacts: newList };
       });
@@ -233,7 +197,6 @@ class IssueList extends React.Component {
       );
       showSuccess(actionMessage);
     } else {
-      console.log("CALLING LOAD DATA FROM TOGGLE NO DATA");
       this.loadData();
     }
   }
@@ -246,73 +209,52 @@ class IssueList extends React.Component {
     const { contacts } = this.state;
     const { location: { pathname, search }, history } = this.props;
     const { showSuccess, showError } = this.props;
-    const { id } = contacts[index];
+    const { id, name } = contacts[index];
     const data = await graphQLFetch(query, { id }, showError);
     if (data && data.contactDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
-        if (pathname === `/issues/${id}`) {
-          history.push({ pathname: '/issues', search });
+        if (pathname === `/contacts/${id}`) {
+          history.push({ pathname: '/contacts', search });
         }
         newList.splice(index, 1);
         return { contacts: newList };
       });
       const undoMessage = (
         <span>
-          {`Deleted contact ${id} successfully.`}
-          <Button bsStyle="link" onClick={() => this.restoreContact(id)}>
+          {`Deleted contact ${name} successfully.`}
+          <Button bsStyle="link" onClick={() => this.restoreContact(id, name)}>
             UNDO
           </Button>
         </span>
       );
       showSuccess(undoMessage);
     } else {
-      console.log("CALLING LOAD DATA FROM DELETE CONTACT");
       this.loadData();
     }
   }
 
   // Implemented Restore Contact
-  async restoreContact(id) {
+  async restoreContact(id, name) {
     const query = `mutation contactRestore($id: Int!) {
       contactRestore(id: $id)
     }`;
     const { showSuccess, showError } = this.props;
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
-      showSuccess(`Contact ${id} restored successfully.`);
-      console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
+      showSuccess(`Contact ${name} restored successfully.`);
       this.loadData();
     }
   }
 
-  // changeContext(oldContext){
-  //   console.log("CALLING FROM CHANGE CONTEXT OLD: ", oldContext);
-  //   const newContext = this.context;
-  //   console.log("CALLLING FROM CHANGE CONTEXT NEW: :", newContext);
-  //   if(newContext !== oldContext) {
-  //     this.loadData();
-  //   }
-  // }
-
   render() {
-    // const {user} = this.state;
     const user = this.context;
     const disabled = !user.signedIn;
-
-    // this.changeContext(user);
-
-    // if(email !== null){
-    //   this.loadData();
-    // }
-
     const { contacts } = this.state;
 
     if (contacts == null || disabled) {
       return null;
     }
-
-    // if (disabled) return null;
 
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
@@ -342,15 +284,15 @@ class IssueList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <IssueFilter urlBase="/issues" />
+            <ContactFilter urlBase="/contacts" />
           </Panel.Body>
         </Panel>
-        <IssueTable
+        <ContactTable
           contacts={contacts}
           toggleActiveStatus={this.toggleActiveStatus}
           deleteContact={this.deleteContact}
         />
-        <IssueDetail contact={selectedContact} />
+        <ContactDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
             <Pagination.Item>{'<'}</Pagination.Item>
@@ -365,9 +307,9 @@ class IssueList extends React.Component {
   }
 }
 
-IssueList.contextType = UserContext;
+ContactList.contextType = UserContext;
 
-const IssueListWithToast = withToast(IssueList);
-IssueListWithToast.fetchData = IssueList.fetchData;
+const ContactListWithToast = withToast(ContactList);
+ContactListWithToast.fetchData = ContactList.fetchData;
 
-export default IssueListWithToast;
+export default ContactListWithToast;

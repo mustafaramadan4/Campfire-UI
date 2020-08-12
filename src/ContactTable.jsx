@@ -9,11 +9,8 @@ import UserContext from './UserContext.js';
 import Toggle from 'react-toggle';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class IssueRowPlain extends React.Component {
+class ContactRowPlain extends React.Component {
   render() {
-    // const {
-    //   issue, location: { search }, closeIssue, deleteIssue, index,
-    // } = this.props;
     const {
       contact, location: { search }, toggleActiveStatus, deleteContact, index,
     } = this.props;
@@ -21,7 +18,7 @@ class IssueRowPlain extends React.Component {
     const disabled = !user.signedIn;
 
 
-    const selectLocation = { pathname: `/issues/${contact.id}`, search };
+    const selectLocation = { pathname: `/contacts/${contact.id}`, search };
     const editTooltip = (
       <Tooltip id="close-tooltip" placement="top">Edit Contact</Tooltip>
     );
@@ -33,11 +30,11 @@ class IssueRowPlain extends React.Component {
       <Tooltip id="delete-tooltip" placement="top">Delete Contact</Tooltip>
     );
 
+    const linkedinTooltip = (
+      <Tooltip id="linkedin-tooltip" placement="top">Open LinkedIn</Tooltip>
+    );
+
     function onToggle(e) {
-      /* TODO: refer to IssueList.jsx line 170, we can use the props to access the activeStatus of a contact 
-      * and further develop as a toggle button. DONE: Implemented on/off on same button with success message.
-      * FIXED weird behavior with data in the table.
-      */
       e.preventDefault();
       toggleActiveStatus(index);
     }
@@ -48,21 +45,25 @@ class IssueRowPlain extends React.Component {
       deleteContact(index);
     }
 
+    function openLinkedIn(e, LinkedIn) {
+      e.preventDefault();
+      window.open(LinkedIn, '_blank');
+    }
+
     const tableRow = (
       <tr>
-        {/* <td>{issue.id}</td>
-        <td>{issue.status}</td>
-        <td>{issue.owner}</td>
-        <td>{issue.created.toDateString()}</td>
-        <td>{issue.effort}</td>
-        <td>{issue.due ? issue.due.toDateString() : ''}</td>
-        <td>{issue.title}</td> */}
         <td>{contact.name}</td>
         <td>{contact.company}</td>
         <td>{contact.title}</td>
         <td>{contact.contactFrequency}</td>
         <td>{contact.email}</td>
-        {/*<td>{contact.Linkedin}</td>*/}
+        <td>
+        <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
+          <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
+              <Glyphicon glyph="new-window" />
+          </Button>
+        </OverlayTrigger>
+        </td>
         <td>{contact.priority}</td>
         <td>{contact.familiarity}</td>
         <td>{contact.contextSpace}</td>
@@ -81,9 +82,6 @@ class IssueRowPlain extends React.Component {
                 disabled={disabled}
                 checked={contact.activeStatus}
                 onChange={onToggle} />
-            {/* <Button disabled={disabled} bsSize="xsmall" onClick={onToggle}>
-              <Glyphicon glyph="off" />
-            </Button> */}
           </OverlayTrigger>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
@@ -102,14 +100,13 @@ class IssueRowPlain extends React.Component {
   }
 }
 
-IssueRowPlain.contextType = UserContext;
-const IssueRow = withRouter(IssueRowPlain);
-delete IssueRow.contextType;
+ContactRowPlain.contextType = UserContext;
+const ContactRow = withRouter(ContactRowPlain);
+delete ContactRow.contextType;
 
-export default function IssueTable({ contacts, toggleActiveStatus, deleteContact }) {
-  console.log(contacts);
-  const issueRows = contacts.map((contact, index) => (
-    <IssueRow
+export default function ContactTable({ contacts, toggleActiveStatus, deleteContact }) {
+  const contactRows = contacts.map((contact, index) => (
+    <ContactRow
       key={contact.id}
       contact={contact}
       toggleActiveStatus={toggleActiveStatus}
@@ -122,21 +119,12 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
     <Table bordered condensed hover responsive>
       <thead>
         <tr>
-          {/* <th>ID</th>
-          <th>Status</th>
-          <th>Owner</th>
-          <th>Created</th>
-          <th>Effort</th>
-          <th>Due Date</th>
-          <th>Title</th>
-          <th>Action</th> */}
-          {/* Modified for Campfire Contact object */}
           <th>Name</th>
           <th>Company</th>
           <th>Title</th>
           <th>Frequency</th>
           <th>Email</th>
-          {/* <th>Linkedin</th> */}
+          <th>Linkedin</th>
           <th>Priority</th>
           <th>Familiarity</th>
           <th>Context</th>
@@ -144,7 +132,7 @@ export default function IssueTable({ contacts, toggleActiveStatus, deleteContact
         </tr>
       </thead>
       <tbody>
-        {issueRows}
+        {contactRows}
       </tbody>
     </Table>
   );

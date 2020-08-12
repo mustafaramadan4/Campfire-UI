@@ -13,15 +13,12 @@ import TextInput from './TextInput.jsx';
 import withToast from './withToast.jsx';
 import store from './store.js';
 import UserContext from './UserContext.js';
+import PhoneInput, {
+  formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber
+} from 'react-phone-number-input'
 
-// TO DO: Figure out implementation of phone-number-react component.
-// Can't figure out css loaders webpack config to work properly :(
-//https://www.npmjs.com/package/react-phone-number-input
-//https://catamphetamine.gitlab.io/react-phone-number-input/
-// import 'react-phone-number-input/style.css'
-// import PhoneInput from 'react-phone-number-input'
 
-class IssueEdit extends React.Component {
+class ContactEdit extends React.Component {
   static async fetchData(match, search, showError) {
     const query = `query contact($id: Int!) {
       contact(id: $id) {
@@ -47,6 +44,7 @@ class IssueEdit extends React.Component {
       showingValidation: false,
     };
     this.onDateChange = this.onDateChange.bind(this);
+    this.onPhoneChange = this.onPhoneChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
@@ -82,6 +80,26 @@ class IssueEdit extends React.Component {
     this.setState(prevState => ({
       contact: { ...prevState.contact, [name]: value },
     }));
+  }
+
+  onPhoneChange(new_phone) {
+    let valid = true;
+    const value = new_phone === undefined ? '' : new_phone;
+    if(value !== ''){
+      valid = isValidPhoneNumber(value);
+    }
+    const { invalidFields } = this.state;
+    if(!valid) {
+      this.setState((prevState) => {
+        const invalidFields = { ...prevState.invalidFields, ["phone"]: !valid };
+        return { invalidFields };
+      });
+    } else{
+      delete invalidFields["phone"];
+      this.setState(prevState => ({
+        contact: { ...prevState.contact, ["phone"]: value },
+      }));
+    }
   }
 
   onValidityChange(event, valid) {
@@ -132,7 +150,7 @@ class IssueEdit extends React.Component {
 
   async loadData() {
     const { match, showError } = this.props;
-    const data = await IssueEdit.fetchData(match, null, showError);
+    const data = await ContactEdit.fetchData(match, null, showError);
 
     this.setState({ contact: data ? data.contact : {}, invalidFields: {} });
   }
@@ -177,7 +195,7 @@ class IssueEdit extends React.Component {
     return (
       <Panel>
         <Panel.Heading>
-          <Panel.Title>{`Editing Contact: ${id}`}</Panel.Title>
+          <Panel.Title>{`Editing Contact: ${contact.name}`}</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <Form horizontal onSubmit={this.handleSubmit}>
@@ -252,7 +270,7 @@ class IssueEdit extends React.Component {
                 />
               </Col>
             </FormGroup>
-            <FormGroup>
+            <FormGroup validationState={invalidFields.phone ? 'error' : null}>
               <Col componentClass={ControlLabel} sm={3}>Phone</Col>
               <Col sm={9}>
                 <FormControl
@@ -260,11 +278,14 @@ class IssueEdit extends React.Component {
                   // when trying to update the existing phone numbers in the db like:
                   // 1. Variable "$changes" got invalid value 1212341234 at "changes.phone"; Expected type String. String cannot represent a non string value: 1212341234
                   // 2. Wouldn't let us edit the phone number in the database that's already in the format of 000-000-0000
-                  componentClass={TextInput}
+                  componentClass={PhoneInput}
+                  international
+                  defaultCountry="US"
                   name="phone"
                   value={phone}
-                  onChange={this.onChange}
+                  onChange={this.onPhoneChange}
                 />
+                <FormControl.Feedback />
               </Col>
             </FormGroup>
             <FormGroup>
@@ -406,7 +427,7 @@ class IssueEdit extends React.Component {
                   >
                     Submit
                   </Button>
-                  <LinkContainer to="/issues">
+                  <LinkContainer to="/contacts">
                     <Button bsStyle="link">Back</Button>
                   </LinkContainer>
                 </ButtonToolbar>
@@ -427,9 +448,9 @@ class IssueEdit extends React.Component {
   }
 }
 
-IssueEdit.contextType = UserContext;
+ContactEdit.contextType = UserContext;
 
-const IssueEditWithToast = withToast(IssueEdit);
-IssueEditWithToast.fetchData = IssueEdit.fetchData;
+const ContactEditWithToast = withToast(ContactEdit);
+ContactEditWithToast.fetchData = ContactEdit.fetchData;
 
-export default IssueEditWithToast;
+export default ContactEditWithToast;
