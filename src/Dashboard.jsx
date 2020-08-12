@@ -1,6 +1,6 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
-import { Panel, Pagination, Button } from 'react-bootstrap';
+import { Panel, Pagination, Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
@@ -225,9 +225,9 @@ class Dashboard extends React.Component {
             <DateFilter urlBase="/dashboard" />
           </Panel.Body>
         </Panel>
-        <h1>
-          Reconnect with these people next!
-        </h1>
+        <Jumbotron>
+          <h2>Reconnect with these people next!</h2>
+        </Jumbotron>
         <ReconnectTable
           contacts={contacts}
           reconnectContact={this.reconnectContact}
