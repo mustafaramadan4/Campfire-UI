@@ -55,7 +55,6 @@ class Dashboard extends React.Component {
         vars.daysAhead = 30;
       }
     }
-    console.log("vars is: " + JSON.stringify(vars));
 
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
@@ -68,7 +67,6 @@ class Dashboard extends React.Component {
     if (Number.isNaN(page)) page = 1;
     vars.page = page;
 
-    // SHHH: added nextcontacDate
     const contactListQuery = `query contactList(
       $page: Int
       $nextContactDate: GraphQLDate
@@ -137,7 +135,6 @@ class Dashboard extends React.Component {
 
   async loadData() {
     const { location: { search }, match, showError } = this.props;
-    console.log("[loadData()] match:", match);
     const user= this.context;
     const data = await Dashboard.fetchData(match, search, showError, user);
     if (data) {
