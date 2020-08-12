@@ -37,11 +37,7 @@ class IssueList extends React.Component {
     const params = new URLSearchParams(search);
     // this takes the user data to extract the email ans use it to "filter"
     const email = user.email;
-    // const vars = { ownerEmail: email, hasSelection: false, selectedId: 0 };
     const vars = {ownerEmail: email, hasSelection: false, selectedId: 0 };
-    // DONE: Implement vars for familiarity and frequency filters
-    // params.get() method returns null if the parameter is not present,
-    // so add a check before adding on to the vars defined above.
     if (params.get('activeStatus')) {
       vars.activeStatus = JSON.parse(params.get('activeStatus'));
     }
@@ -49,15 +45,9 @@ class IssueList extends React.Component {
     if (params.get('familiarity')) vars.familiarity = params.get('familiarity');
     if (params.get('contactFrequency')) vars.contactFrequency = params.get('contactFrequency');
 
-    // const effortMin = parseInt(params.get('effortMin'), 10);
-    // if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
-    // const effortMax = parseInt(params.get('effortMax'), 10);
-    // if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
-
     const { params: { id } } = match;
     const idInt = parseInt(id, 10);
     if (!Number.isNaN(idInt)) {
-
       vars.hasSelection = true;
       vars.selectedId = idInt;
     }
@@ -107,10 +97,8 @@ class IssueList extends React.Component {
     const {
       contactList: { contacts, pages }, contact: selectedContact,
     } = initialData;
-    // console.log("CONTACT LIST FROM CONSTRUCTOR: ", contacts);
     delete store.initialData;
     const _isMounted = false;
-    // console.log("CONTEXT FROM CONSTRUCTOR: ", this.context);
     const user = this.context;
     this.state = {
       contacts,
@@ -118,8 +106,6 @@ class IssueList extends React.Component {
       pages,
       user,
     };
-    console.log("IssueList selectedcontact CONSTRUCTOR: ", selectedContact);
-    // this.closeIssue = this.closeIssue.bind(this);
     this.toggleActiveStatus = this.toggleActiveStatus.bind(this);
     this.deleteContact = this.deleteContact.bind(this);
   }
@@ -128,39 +114,24 @@ class IssueList extends React.Component {
     this._isMounted = true;
     const { contacts } = this.state;
     if (this._isMounted) {
-      // console.log("CALLING LOAD DATA FROM COMPONENT DID MOUNT");
-      // console.log("CONTACTS FROM DID MOUNT:", contacts);
       if (contacts == null) this.loadData();
     }
   }
 
   componentWillUnmount() {
-    // console.log("COMPONENT WILL UNMOUNT");
     this._isMounted = false;
   }
 
   componentDidUpdate(prevProps) {
-    // console.log("_Mounted: ", this._isMounted);
     if (this._isMounted) {
-      // console.log("STILL MOUNTED");
       const {user} = this.state;
       const newContext = this.context;
-      // if(user !== newContext) {
-      //   this.loadData();
-      // }
       const {
         location: { search: prevSearch },
         match: { params: { id: prevId } },
       } = prevProps;
       const { location: { search }, match: { params: { id } } } = this.props;
       if (prevSearch !== search || prevId !== id || user !== newContext ) {
-        // console.log("CALLING LOAD DATA FROM COMPONENT DID UPDATE");
-        // console.log("FROM LOAD DATA OLD SEARCH: ", prevSearch);
-        // console.log("FROM LOAD DATA NEW SEARCH: ", search);
-        // console.log("FROM LOAD DATA OLD PREV ID: ", prevId);
-        // console.log("FROM LOAD DATA OLD NEW ID: ", id);
-        // console.log("FROM LOAD DATA OLD USER: ", user);
-        // console.log("FROM LOAD DATA NEW USER: ", newContext);
         this.loadData();
       }
     }
@@ -169,11 +140,9 @@ class IssueList extends React.Component {
   async loadData() {
     // Getting user data from the context and passing to FetchData function
     const user = this.context;
-    // console.log("CALLING FROM LOAD DATA" , user);
     const { location: { search }, match, showError } = this.props;
-    console.log("[loadData()] match:", match);
+    //console.log("[loadData()] match:", match);
     const data = await IssueList.fetchData(match, search, showError, user);
-    // console.log("FETCHED DATA: ", data);
     if (this._isMounted && data) {
       this.setState({
         // changed to contactList query and contacts
@@ -184,16 +153,9 @@ class IssueList extends React.Component {
         pages: data.contactList.pages,
         user: user,
       });
-      // console.log("LOAD DATA, data.contact", data.contact);
     }
   }
 
-  // Implemented OFF status DONE: Implemented On/Off in the same button with success message
-  // ^ agreed, toggle button may need some more work, as we may need to pass on props
-  // to IssueTable to keep track of the activeStatus and call toggleActiveStatus or reactivateContact 
-  // depending on the value of activeStatus
-  /*{TODO: there is a weird behavior with the on/off button when clicking, this behavior
-     disappears after clicking on any other part of the screen or closing the success message }*/
   async toggleActiveStatus(index) {
     const { showSuccess, showError } = this.props;
     const { contacts } = this.state;
@@ -227,7 +189,6 @@ class IssueList extends React.Component {
       this.setState((prevState) => {
         const newList = [...prevState.contacts];
         newList[index] = data.contactUpdate;
-        // console.log("CALLING LOAD DATA FROM TOGGLE SUCCESS");
         this.loadData()
         return { contacts: newList };
       });
@@ -238,7 +199,6 @@ class IssueList extends React.Component {
       );
       showSuccess(actionMessage);
     } else {
-      // console.log("CALLING LOAD DATA FROM TOGGLE NO DATA");
       this.loadData();
     }
   }
@@ -272,7 +232,6 @@ class IssueList extends React.Component {
       );
       showSuccess(undoMessage);
     } else {
-      // console.log("CALLING LOAD DATA FROM DELETE CONTACT");
       this.loadData();
     }
   }
@@ -286,43 +245,23 @@ class IssueList extends React.Component {
     const data = await graphQLFetch(query, { id }, showError);
     if (data) {
       showSuccess(`Contact ${name} restored successfully.`);
-      // console.log("CALLING LOAD DATA FROM RESTORE CONTACT");
       this.loadData();
     }
   }
 
-  // changeContext(oldContext){
-  //   console.log("CALLING FROM CHANGE CONTEXT OLD: ", oldContext);
-  //   const newContext = this.context;
-  //   console.log("CALLLING FROM CHANGE CONTEXT NEW: :", newContext);
-  //   if(newContext !== oldContext) {
-  //     this.loadData();
-  //   }
-  // }
-
   render() {
-    // const {user} = this.state;
     const user = this.context;
     const disabled = !user.signedIn;
-
-    // this.changeContext(user);
-
-    // if(email !== null){
-    //   this.loadData();
-    // }
-
     const { contacts } = this.state;
 
     if (contacts == null || disabled) {
       return null;
     }
 
-    // if (disabled) return null;
-
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
-    console.log("[Render()] Selected Contact:", selectedContact);
+    //console.log("[Render()] Selected Contact:", selectedContact);
 
     const params = new URLSearchParams(search);
     let page = parseInt(params.get('page'), 10);
