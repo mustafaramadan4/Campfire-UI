@@ -68,14 +68,6 @@ class ContactRowPlain extends React.Component {
         <td>{contact.familiarity}</td>
         <td>{contact.contextSpace}</td>
         <td>
-          <LinkContainer to={`/edit/${contact.id}`}>
-            <OverlayTrigger delayShow={1000} overlay={editTooltip}>
-              <Button bsSize="xsmall">
-                <Glyphicon glyph="edit" />
-              </Button>
-            </OverlayTrigger>
-          </LinkContainer>
-          {' '}
           <OverlayTrigger delayShow={1000} overlay={closeTooltip}>
               <Toggle
                 id='close-tooltip'
@@ -83,6 +75,14 @@ class ContactRowPlain extends React.Component {
                 checked={contact.activeStatus}
                 onChange={onToggle} />
           </OverlayTrigger>
+          {'  '}
+          <LinkContainer to={`/edit/${contact.id}`}>
+            <OverlayTrigger delayShow={1000} overlay={editTooltip}>
+              <Button bsSize="xsmall">
+                <Glyphicon glyph="edit" />
+              </Button>
+            </OverlayTrigger>
+          </LinkContainer>
           {' '}
           <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
             <Button disabled={disabled} bsSize="xsmall" onClick={onDelete}>
