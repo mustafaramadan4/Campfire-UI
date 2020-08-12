@@ -3,14 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './routes.js';
 import Welcome from  './Welcome.jsx';
-import Dashboard from './Dashboard.jsx';
-import IssueList from './IssueList.jsx';
-import IssueReport from './IssueReport.jsx';
-import IssueEdit from './IssueEdit.jsx';
-import About from './About.jsx';
-import NotFound from './NotFound.jsx';
-
-
 
 export default function Contents({user}) {
   if (user.signedIn) {

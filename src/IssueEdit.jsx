@@ -91,11 +91,9 @@ class IssueEdit extends React.Component {
   onPhoneChange(new_phone) {
     let valid = true;
     const value = new_phone === undefined ? '' : new_phone;
-    console.log("PHONE: ", value);
     if(value !== ''){
       valid = isValidPhoneNumber(value);
     }
-    console.log("VALID PHONE: ", valid);
     const { invalidFields } = this.state;
     if(!valid) {
       this.setState((prevState) => {
@@ -203,7 +201,7 @@ class IssueEdit extends React.Component {
     return (
       <Panel>
         <Panel.Heading>
-          <Panel.Title>{`Editing Contact: ${id}`}</Panel.Title>
+          <Panel.Title>{`Editing Contact: ${contact.name}`}</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <Form horizontal onSubmit={this.handleSubmit}>

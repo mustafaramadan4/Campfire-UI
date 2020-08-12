@@ -1,7 +1,6 @@
 import Welcome from  './Welcome.jsx';
 import Dashboard from './Dashboard.jsx';
 import IssueList from './IssueList.jsx';
-import IssueReport from './IssueReport.jsx';
 import IssueEdit from './IssueEdit.jsx';
 import About from './About.jsx';
 import NotFound from './NotFound.jsx';

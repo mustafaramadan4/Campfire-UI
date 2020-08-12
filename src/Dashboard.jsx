@@ -1,6 +1,10 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
+<<<<<<< HEAD
 import { Panel, Pagination, Button, Jumbotron } from 'react-bootstrap';
+=======
+import { Panel, Pagination } from 'react-bootstrap';
+>>>>>>> 9335657481908660723b29fab58d9132d29892b5
 import { LinkContainer } from 'react-router-bootstrap';
 import UserContext from './UserContext.js';
 
@@ -29,7 +33,6 @@ function PageLink({
   );
 }
 
-
 class Dashboard extends React.Component {
   static async fetchData(match, search, showError, user) {
     const params = new URLSearchParams(search);
@@ -39,7 +42,7 @@ class Dashboard extends React.Component {
       hasSelection: false, 
       selectedId: 0,
       nextContactDate: new Date(),
-      daysAhead: 3,
+      daysAhead: 1,
       ownerEmail: email
     };
     // set the "default" daysAhead as whatever we define above,
@@ -97,7 +100,6 @@ class Dashboard extends React.Component {
 
     // modified to contact list query
     const data = await graphQLFetch(contactListQuery, vars, showError);
-    console.log("[Dashboard]FETCHDATA:", data);
     return data;
   }
 
@@ -115,7 +117,6 @@ class Dashboard extends React.Component {
       pages,
       user,
     };
-    console.log("Dashboard selectedcontact CONSTRUCTOR: ", selectedContact);
     this.reconnectContact = this.reconnectContact.bind(this);
   }
 
@@ -139,9 +140,6 @@ class Dashboard extends React.Component {
   }
 
   async loadData() {
-    // TODO: loadData doesn't define data.contact so that we can set it to selectedContact,
-    // so it's just returing undefined causing the IssueDetail not to render.
-    // Currently trying to figure out if the hasSelection and selectedId is working as it should.
     const { location: { search }, match, showError } = this.props;
     console.log("[loadData()] match:", match);
     const user= this.context;
@@ -156,7 +154,6 @@ class Dashboard extends React.Component {
         pages: data.contactList.pages,
         user: user,
       });
-      console.log("LOAD DATA, data.contact", data.contact);
     }
   }
 
@@ -194,8 +191,6 @@ class Dashboard extends React.Component {
     const { selectedContact, pages } = this.state;
     const { location: { search } } = this.props;
 
-    console.log("[Render()] Selected Contact:", selectedContact);
-
     const params = new URLSearchParams(search);
     let page = parseInt(params.get('page'), 10);
     if (Number.isNaN(page)) page = 1;
@@ -216,7 +211,6 @@ class Dashboard extends React.Component {
 
     return (
       <React.Fragment>
-        {/* TO DO: DECIDE IF WE WILL HAVE FILTER ON DASHBOARD */}
         <Panel>
           <Panel.Heading>
             <Panel.Title toggle>Filter</Panel.Title>
@@ -233,12 +227,6 @@ class Dashboard extends React.Component {
           reconnectContact={this.reconnectContact}
           daysAhead={7}
         />
-        {/* <h2>More Upcoming contacts...</h2>
-        <ReconnectTable
-          issues={contacts}
-          reconnectContact={this.reconnectContact}
-          daysAhead={15}
-        /> */}
         <IssueDetail contact={selectedContact} />
         <Pagination>
           <PageLink params={params} page={prevSection}>
