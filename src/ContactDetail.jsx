@@ -37,7 +37,6 @@ class ContactDetail extends React.Component {
               <td>
               <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
                 <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
-                  {/* <Glyphicon glyph="new-window" /> */}
                   <FontAwesomeIcon icon={faLinkedin} />
                 </Button>
               </OverlayTrigger>

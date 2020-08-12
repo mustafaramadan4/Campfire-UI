@@ -1,9 +1,11 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
   Button, Glyphicon, Tooltip, OverlayTrigger, Table,
 } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
 import UserContext from './UserContext.js';
 import Toggle from 'react-toggle';
@@ -60,7 +62,8 @@ class ContactRowPlain extends React.Component {
         <td>
         <OverlayTrigger delayShow={1000} overlay={linkedinTooltip}>
           <Button bsSize="xsmall" onClick={(e)=>openLinkedIn(e, contact.LinkedIn)}>
-              <Glyphicon glyph="new-window" />
+              {/* <Glyphicon glyph="new-window" /> */}
+              <FontAwesomeIcon icon={faLinkedin} />
           </Button>
         </OverlayTrigger>
         </td>
