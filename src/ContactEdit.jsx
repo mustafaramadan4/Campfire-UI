@@ -428,7 +428,7 @@ class ContactEdit extends React.Component {
                     Submit
                   </Button>
                   <LinkContainer to="/contacts">
-                    <Button bsStyle="link">Back</Button>
+                    <Button bsStyle="info">Back</Button>
                   </LinkContainer>
                 </ButtonToolbar>
               </Col>
